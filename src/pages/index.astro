@@ -66,6 +66,7 @@ const homeSchema = {
   <meta name="twitter:image" content={new URL("assets/smarter-mapping-nepal.jpg", siteUrl)}>
   <meta name="twitter:image:alt" content="Aerial imagery from geospatial mapping work in Nepal">
   <meta name="theme-color" content="#ffffff">
+  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
   <script is:inline>
     (() => {
       const saved = localStorage.getItem("nishon-theme");
@@ -415,6 +416,19 @@ const homeSchema = {
     .contact-panel h2 { max-width: 780px; margin-top: 10px; }
     .contact-panel p { max-width: 650px; margin: 22px 0 0; color: var(--muted); font-size: 18px; }
     .contact-panel .button { gap: 9px; min-height: 50px; padding-inline: 23px; white-space: nowrap; }
+    .contact-gate { width: min(100%, 340px); }
+    .contact-gate .button { width: 100%; margin-top: 12px; }
+    .contact-status { min-height: 24px; margin: 12px 0 0; color: var(--muted); font-size: 13px; }
+    .contact-status a { color: var(--accent); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+    .honeypot {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
 
     .about {
       display: grid;
@@ -535,7 +549,7 @@ const homeSchema = {
           <p>I build geoprocessing workflows, spatial data systems, geospatial data pipelines, and GeoAI workflows.</p>
           <div class="hero-actions">
             <a class="button" href="#writing">Read my work <span class="ui-icon icon-arrow-right" aria-hidden="true"></span></a>
-            <a class="button button-secondary" href="mailto:hello@nishon.com.np?subject=Geospatial%20project%20inquiry">Discuss a project <span class="ui-icon icon-mail" aria-hidden="true"></span></a>
+            <a class="button button-secondary" href="#contact">Discuss a project <span class="ui-icon icon-mail" aria-hidden="true"></span></a>
           </div>
         </div>
       </div>
@@ -637,7 +651,12 @@ const homeSchema = {
           <h2 id="contact-title">Have a geospatial problem to solve?</h2>
           <p>I’m available for selected geoprocessing, spatial data systems, geospatial data pipelines, and GeoAI projects.</p>
         </div>
-        <a class="button" href="mailto:hello@nishon.com.np?subject=Geospatial%20project%20inquiry">Email Nishon <span class="ui-icon icon-mail" aria-hidden="true"></span></a>
+        <form class="contact-gate" id="contact-gate" action="/api/reveal-email" method="post">
+          <label class="honeypot">Company<input type="text" name="company" tabindex="-1" autocomplete="off"></label>
+          <div class="cf-turnstile" data-action="turnstile-spin-v2"></div>
+          <button class="button" type="submit" disabled>Reveal email <span class="ui-icon icon-mail" aria-hidden="true"></span></button>
+          <p class="contact-status" id="contact-status" role="status" aria-live="polite">Loading security check…</p>
+        </form>
       </div>
     </section>
 
@@ -665,7 +684,7 @@ const homeSchema = {
       <a href="https://medium.com/@niyo177" target="_blank" rel="noopener">Medium</a>
       <a href="https://www.linkedin.com/in/nishon-tandukar/" target="_blank" rel="noopener">LinkedIn</a>
       <a href="https://www.instagram.com/life.of.nishon/" target="_blank" rel="noopener">Instagram</a>
-      <a href="mailto:hello@nishon.com.np">Email</a>
+      <a href="#contact">Email</a>
     </div>
   </footer>
 
@@ -852,6 +871,88 @@ const homeSchema = {
       if (document.documentElement.dataset.themeMode === "auto") applyThemeMode("auto", false);
     });
     syncThemeToggle();
+
+    const contactGate = document.getElementById("contact-gate");
+    const contactStatus = document.getElementById("contact-status");
+    const turnstileWidget = contactGate?.querySelector(".cf-turnstile");
+    const submitButton = contactGate?.querySelector('button[type="submit"]');
+
+    const waitForTurnstile = () => new Promise((resolve, reject) => {
+      if (window.turnstile) return resolve(window.turnstile);
+
+      const startedAt = Date.now();
+      const timer = window.setInterval(() => {
+        if (window.turnstile) {
+          window.clearInterval(timer);
+          resolve(window.turnstile);
+        } else if (Date.now() - startedAt > 10000) {
+          window.clearInterval(timer);
+          reject(new Error("The security check did not load."));
+        }
+      }, 100);
+    });
+
+    const initializeTurnstile = async () => {
+      try {
+        const response = await fetch("/api/turnstile-config", {
+          headers: { accept: "application/json" }
+        });
+        const result = await response.json();
+        if (!response.ok || !result.siteKey) {
+          throw new Error(result.error || "The security check is not configured.");
+        }
+
+        const turnstile = await waitForTurnstile();
+        turnstile.render(turnstileWidget, {
+          sitekey: result.siteKey,
+          action: "turnstile-spin-v2",
+          theme: "auto",
+          size: "flexible",
+          callback: () => {
+            submitButton.disabled = false;
+            contactStatus.textContent = "";
+          },
+          "expired-callback": () => {
+            submitButton.disabled = true;
+            contactStatus.textContent = "Please complete the security check again.";
+          },
+          "error-callback": () => {
+            submitButton.disabled = true;
+            contactStatus.textContent = "The security check could not load. Please refresh the page.";
+          }
+        });
+      } catch (error) {
+        contactStatus.textContent = error.message || "The security check could not load.";
+      }
+    };
+
+    initializeTurnstile();
+
+    contactGate?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      submitButton.disabled = true;
+      contactStatus.textContent = "Checking…";
+
+      try {
+        const response = await fetch(contactGate.action, {
+          method: "POST",
+          body: new FormData(contactGate),
+          headers: { accept: "application/json" }
+        });
+        const result = await response.json();
+        if (!response.ok || !result.email) throw new Error(result.error || "Unable to reveal the email.");
+
+        const link = document.createElement("a");
+        link.href = `mailto:${result.email}?subject=Geospatial%20project%20inquiry`;
+        link.textContent = result.email;
+        contactStatus.replaceChildren("Email Nishon at ", link, ".");
+        contactGate.querySelector(".cf-turnstile").hidden = true;
+        submitButton.hidden = true;
+      } catch (error) {
+        contactStatus.textContent = error.message || "Unable to reveal the email. Please try again.";
+        window.turnstile?.reset();
+      }
+    });
   </script>
 </body>
 </html>
