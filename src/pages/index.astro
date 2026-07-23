@@ -56,11 +56,15 @@ const homeSchema = {
   <meta property="og:type" content="website">
   <meta property="og:url" content={siteUrl}>
   <meta property="og:site_name" content="Nishon Notes">
-  <meta property="og:image" content={new URL("assets/nepal-earthquake-data.png", siteUrl)}>
+  <meta property="og:image" content={new URL("assets/smarter-mapping-nepal.jpg", siteUrl)}>
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="800">
+  <meta property="og:image:alt" content="Aerial imagery from geospatial mapping work in Nepal">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Nishon Tandukar — Notes from the Field">
   <meta name="twitter:description" content="Writing about maps, research, technology, and the ideas connecting them.">
-  <meta name="twitter:image" content={new URL("assets/nepal-earthquake-data.png", siteUrl)}>
+  <meta name="twitter:image" content={new URL("assets/smarter-mapping-nepal.jpg", siteUrl)}>
+  <meta name="twitter:image:alt" content="Aerial imagery from geospatial mapping work in Nepal">
   <meta name="theme-color" content="#ffffff">
   <script is:inline>
     (() => {
@@ -401,7 +405,7 @@ const homeSchema = {
       .hero-meta { justify-content: flex-start; }
       .feature-art { grid-row: 1; }
       .about { gap: 50px; }
-      .globe-wrap { top: 58px; right: -120px; width: 430px; opacity: .62; }
+      .globe-wrap { top: 64px; right: 0; width: min(400px, 52vw); opacity: .68; }
       .post-card { grid-template-columns: 135px 1fr; }
       .post-card p, .post-card .read-link { grid-column: 2; }
     }
@@ -409,9 +413,30 @@ const homeSchema = {
       .shell, .nav { width: min(100% - 24px, 1140px); }
       .nav-links { gap: 14px; font-size: 13px; }
       .theme-toggle { width: 40px; height: 40px; }
-      .hero { padding: 56px 0 48px; }
-      .globe-wrap { top: 138px; right: -142px; width: 330px; opacity: .48; }
-      .globe-caption { bottom: -1%; padding: 8px 10px; font-size: 11px; }
+      .hero {
+        display: grid;
+        padding: 56px 0 48px;
+      }
+      .hero h1 { grid-row: 1; }
+      .hero-bottom { grid-row: 2; }
+      .globe-wrap {
+        position: relative;
+        grid-row: 3;
+        top: auto;
+        right: auto;
+        width: min(100%, 360px);
+        margin: 22px auto 0;
+        opacity: .82;
+      }
+      .globe-caption {
+        bottom: 1%;
+        max-width: calc(100% - 20px);
+        padding: 8px 10px;
+        font-size: 11px;
+        line-height: 1.25;
+        text-align: center;
+        white-space: normal;
+      }
       h1 { font-size: 56px; line-height: .9; }
       .hero-bottom { gap: 22px; margin-top: 30px; padding-top: 24px; }
       .hero-bottom p { font-size: 18px; line-height: 1.7; }
