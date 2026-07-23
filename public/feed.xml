@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nishon Notes</title>
+    <link>https://nishon.com.np/</link>
+    <description>Technical writing by Nishon Tandukar on GeoAI, open mapping, spatial data, and software.</description>
+    <language>en</language>
+    <lastBuildDate>Thu, 23 Jul 2026 00:00:00 +0545</lastBuildDate>
+    <atom:link href="https://nishon.com.np/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Building a Public Nepal Earthquake Dataset</title>
+      <link>https://nishon.com.np/building-a-public-nepal-earthquake-dataset.html</link>
+      <guid isPermaLink="true">https://nishon.com.np/building-a-public-nepal-earthquake-dataset.html</guid>
+      <pubDate>Thu, 23 Jul 2026 00:00:00 +0545</pubDate>
+      <description>Turning Nepal's published earthquake records into a reusable, automated dataset for maps, analysis, and research.</description>
+    </item>
+    <item>
+      <title>Finding Nepal's Local Level from a Coordinate</title>
+      <link>https://nishon.com.np/finding-nepals-local-level-from-a-coordinate.html</link>
+      <guid isPermaLink="true">https://nishon.com.np/finding-nepals-local-level-from-a-coordinate.html</guid>
+      <pubDate>Thu, 23 Jul 2026 00:00:00 +0545</pubDate>
+      <description>Using FlatGeobuf and a Shapely spatial index to identify a Gaupalika or Nagarpalika from coordinates.</description>
+    </item>
+    <item>
+      <title>Visualizing Pathfinding on OpenStreetMap</title>
+      <link>https://nishon.com.np/visualizing-pathfinding-on-openstreetmap.html</link>
+      <guid isPermaLink="true">https://nishon.com.np/visualizing-pathfinding-on-openstreetmap.html</guid>
+      <pubDate>Thu, 23 Jul 2026 00:00:00 +0545</pubDate>
+      <description>Watching BFS, Dijkstra, A*, and Greedy Best-First Search move through real road networks.</description>
+    </item>
+    <item>
+      <title>Reading the Landscape with AI</title>
+      <link>https://nishon.com.np/reading-the-landscape-with-ai.html</link>
+      <guid isPermaLink="true">https://nishon.com.np/reading-the-landscape-with-ai.html</guid>
+      <pubDate>Wed, 01 Jul 2026 00:00:00 +0545</pubDate>
+      <description>Using vision-language models and NLP to explain change in aerial imagery.</description>
+    </item>
+  </channel>
+</rss>

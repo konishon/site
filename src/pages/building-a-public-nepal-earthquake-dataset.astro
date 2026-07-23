@@ -1,0 +1,85 @@
+---
+import ArticleLayout from "../layouts/ArticleLayout.astro";
+const contents = [
+  { id: "problem", label: "Starting from the source table" },
+  { id: "pipeline", label: "Collecting the records" },
+  { id: "identity", label: "IDs and duplicates" },
+  { id: "formats", label: "Output files" },
+  { id: "automation", label: "Weekly automation" },
+  { id: "limits", label: "Responsible use" },
+  { id: "run", label: "Use the dataset" }
+];
+---
+<ArticleLayout
+  title="Building a Public Nepal Earthquake Dataset"
+  description="Turning Nepal’s published earthquake records into a reusable, automated dataset for maps, analysis, and research."
+  category="Open data + automation"
+  readingTime="7 min read"
+  published="23 July 2026"
+  publishedISO="2026-07-23"
+  hero="assets/nepal-earthquake-data.png"
+  heroAlt="Map and interface showing earthquake epicenters across Nepal"
+  heroCaption="The project’s public interface for exploring and downloading Nepal earthquake records."
+  sourceUrl="https://github.com/konishon/nepal-earthquake-epicenter-data"
+  contents={contents}
+>
+  <p class="lead">Nepal’s National Earthquake Monitoring and Research Center publishes earthquake records in a paginated table. I wanted the same records in files I could open in QGIS or load into a notebook.</p>
+  <p>The <a href="https://github.com/konishon/nepal-earthquake-epicenter-data" target="_blank" rel="noopener">Nepal Earthquake Epicenter Data</a> repository collects that table and publishes CSV, JSON, and GeoJSON. The repository snapshot I reviewed for this post has 5,626 records. A GitHub Action checks for additions every Sunday.</p>
+
+  <h2 id="problem">Starting from the source table</h2>
+  <p>Each source row contains an ID, dates in Bikram Sambat and Gregorian calendars, local and UTC time, latitude, longitude, magnitude, and a named epicenter. That is enough for many analyses, but copying pages by hand is slow and difficult to repeat.</p>
+  <p>I kept the source fields close to their published form. The repository does not attempt to recalculate magnitudes or reinterpret locations; it changes how the records are packaged.</p>
+
+  <h2 id="pipeline">Collecting the records</h2>
+  <p>The collector uses Playwright to open each results page in a headless Chromium browser. It waits for the earthquake table, passes the resulting HTML to Beautiful Soup, and parses each row into a normalized record.</p>
+  <div class="flow">NEMRC earthquake pages
+        ↓
+Headless browser with retries
+        ↓
+HTML table parsing
+        ↓
+Normalized earthquake records
+        ↓
+Deduplication
+        ↓
+CSV + JSON + GeoJSON
+        ↓
+Static download and map interface</div>
+  <p>I used a browser because the source site was more reliable that way than with a plain request. The script sets a normal desktop user agent, waits for <code>table.table-striped</code>, retries a page up to three times, and sleeps between page loads.</p>
+  <p>Collection stops when the pagination ends or a page contains no unseen rows. After the initial archive, a weekly run usually finishes near the first pages.</p>
+
+  <h2 id="identity">IDs and duplicates</h2>
+  <p>The source rows have an ID, but the collector also generates its own unique identifier. It serializes the normalized record with sorted keys and hashes that representation with SHA-256.</p>
+  <p>Before scraping, the script reads existing hashes from the CSV into a set. Rows with known hashes are skipped. The same normalized values always produce the same hash.</p>
+  <div class="callout"><strong>Correction caveat</strong>A correction to any source field produces a different hash. The corrected row may therefore be appended beside the earlier version instead of replacing it.</div>
+
+  <h2 id="formats">Output files</h2>
+  <h3>CSV for inspection and analysis</h3>
+  <p><code>earthquakes.csv</code> works well for spreadsheets, dataframes, and quick command-line checks.</p>
+  <h3>JSON for applications</h3>
+  <p><code>earthquakes.json</code> stores the same rows as an array of objects.</p>
+  <h3>GeoJSON for maps</h3>
+  <p><code>earthquakes.geojson</code> converts longitude and latitude into Point geometry. The other values remain feature properties, so the file opens directly in QGIS and common web-mapping libraries.</p>
+  <pre><code>const response = await fetch("earthquakes.geojson");
+const earthquakes = await response.json();
+
+// Add the FeatureCollection to a web map
+map.getSource("earthquakes").setData(earthquakes);</code></pre>
+
+  <h2 id="automation">GitHub as a small data platform</h2>
+  <p>A scheduled GitHub Actions workflow runs every Sunday at midnight UTC. It installs Python dependencies and Playwright, executes the collector, commits any changes to the three data files, and pushes them back to the repository.</p>
+  <p>GitHub Pages serves the map and download files. Each successful update is also a commit, so earlier versions of the dataset remain available in repository history.</p>
+
+  <h2 id="limits">Responsible use</h2>
+  <p>This is a secondary publication of publicly available data, not an independent seismic monitoring system. Accuracy, timeliness, and completeness depend on the original NEMRC records and on the collector continuing to match the source website.</p>
+  <p>The collector depends on the current table structure. A renamed class, changed column order, or different pagination pattern can stop it or misread a row. I check the latest collected record against the source when changing the scraper.</p>
+  <p>The repository snapshot inspected for this article contains 5,626 records and spans dates from 1994 to 2025. Those figures describe the repository at review time, not a guarantee about the full historical earthquake catalogue.</p>
+
+  <h2 id="run">Use the dataset</h2>
+  <p>The files can be downloaded directly or consumed from their raw GitHub URLs. The public interface provides a visual entry point for exploring the archive.</p>
+  <pre><code>git clone https://github.com/konishon/nepal-earthquake-epicenter-data.git
+cd nepal-earthquake-epicenter-data
+pip install -r requirements.txt
+python scrape_earthquake_data_nepal.py</code></pre>
+  <p><a class="repo-link" href="https://konishon.github.io/nepal-earthquake-epicenter-data/" target="_blank" rel="noopener">Explore and download the data ↗</a></p>
+</ArticleLayout>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://nishon.com.np/</loc>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://nishon.com.np/building-a-public-nepal-earthquake-dataset.html</loc>
+    <lastmod>2026-07-23</lastmod>
+    <image:image>
+      <image:loc>https://nishon.com.np/assets/nepal-earthquake-data.png</image:loc>
+      <image:title>Building a Public Nepal Earthquake Dataset</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://nishon.com.np/finding-nepals-local-level-from-a-coordinate.html</loc>
+    <lastmod>2026-07-23</lastmod>
+    <image:image>
+      <image:loc>https://nishon.com.np/assets/nepal-palika-boundaries.png</image:loc>
+      <image:title>Finding Nepal's Local Level from a Coordinate</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://nishon.com.np/visualizing-pathfinding-on-openstreetmap.html</loc>
+    <lastmod>2026-07-23</lastmod>
+    <image:image>
+      <image:loc>https://nishon.com.np/assets/osm-pathfinding-astar.gif</image:loc>
+      <image:title>Visualizing Pathfinding on OpenStreetMap</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://nishon.com.np/reading-the-landscape-with-ai.html</loc>
+    <lastmod>2026-07-01</lastmod>
+    <image:image>
+      <image:loc>https://nishon.com.np/assets/smarter-mapping-nepal.jpg</image:loc>
+      <image:title>Reading the Landscape with AI</image:title>
+    </image:image>
+  </url>
+</urlset>

@@ -1,0 +1,55 @@
+{
+  "site": {
+    "name": "Nishon Notes",
+    "url": "https://nishon.com.np/",
+    "language": "en",
+    "author": {
+      "name": "Nishon Tandukar",
+      "github": "https://github.com/konishon",
+      "medium": "https://medium.com/@niyo177",
+      "linkedin": "https://www.linkedin.com/in/nishon-tandukar/",
+      "instagram": "https://www.instagram.com/life.of.nishon/"
+    },
+    "topics": [
+      "GeoAI",
+      "OpenStreetMap",
+      "spatial data infrastructure",
+      "Python",
+      "open data",
+      "humanitarian technology",
+      "remote sensing"
+    ]
+  },
+  "discovery": {
+    "sitemap": "https://nishon.com.np/sitemap.xml",
+    "rss": "https://nishon.com.np/feed.xml",
+    "llms": "https://nishon.com.np/llms.txt",
+    "llms_full": "https://nishon.com.np/llms-full.txt"
+  },
+  "articles": [
+    {
+      "title": "Building a Public Nepal Earthquake Dataset",
+      "url": "https://nishon.com.np/building-a-public-nepal-earthquake-dataset.html",
+      "published": "2026-07-23",
+      "topics": ["Nepal", "earthquakes", "open data", "GeoJSON", "GitHub Actions"]
+    },
+    {
+      "title": "Finding Nepal's Local Level from a Coordinate",
+      "url": "https://nishon.com.np/finding-nepals-local-level-from-a-coordinate.html",
+      "published": "2026-07-23",
+      "topics": ["Nepal", "Palika", "FlatGeobuf", "Shapely", "spatial indexing"]
+    },
+    {
+      "title": "Visualizing Pathfinding on OpenStreetMap",
+      "url": "https://nishon.com.np/visualizing-pathfinding-on-openstreetmap.html",
+      "published": "2026-07-23",
+      "topics": ["OpenStreetMap", "pathfinding", "A*", "Dijkstra", "BFS", "Python"]
+    },
+    {
+      "title": "Reading the Landscape with AI",
+      "url": "https://nishon.com.np/reading-the-landscape-with-ai.html",
+      "published": "2026-07-01",
+      "topics": ["GeoAI", "remote sensing", "vision-language models", "NLP", "change detection"]
+    }
+  ]
+}

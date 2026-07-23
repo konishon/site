@@ -1,0 +1,32 @@
+# Nishon Notes
+
+> Technical writing by Nishon Tandukar about GeoAI, OpenStreetMap, spatial data infrastructure, open data, Python, humanitarian technology, and software engineering.
+
+Nishon Notes is a public, English-language technical blog. Articles document open-source projects, practical experiments, implementation choices, limitations, and lessons learned. Nishon Tandukar is the author and publisher.
+
+## Primary pages
+
+- [Homepage and article index](https://nishon.com.np/): Latest writing and author information.
+- [RSS feed](https://nishon.com.np/feed.xml): Machine-readable publication feed.
+- [XML sitemap](https://nishon.com.np/sitemap.xml): Canonical page inventory.
+- [Full AI-oriented site summary](https://nishon.com.np/llms-full.txt): Expanded article descriptions and source references.
+
+## Articles
+
+- [Building a Public Nepal Earthquake Dataset](https://nishon.com.np/building-a-public-nepal-earthquake-dataset.html): Automated extraction, deduplication, CSV/JSON/GeoJSON publication, GitHub Actions, and responsible use of Nepal earthquake records.
+- [Finding Nepal's Local Level from a Coordinate](https://nishon.com.np/finding-nepals-local-level-from-a-coordinate.html): FlatGeobuf, Fiona, Shapely STRtree, point-in-polygon lookup, name search, and boundary-data limitations.
+- [Visualizing Pathfinding on OpenStreetMap](https://nishon.com.np/visualizing-pathfinding-on-openstreetmap.html): BFS, Dijkstra, A*, and Greedy Best-First Search on real OSM road networks with 2D/3D animation and sound.
+- [Reading the Landscape with AI](https://nishon.com.np/reading-the-landscape-with-ai.html): Vision-language models, NLP, remote sensing, and human-readable semantic change detection.
+
+## Author and source profiles
+
+- [GitHub](https://github.com/konishon): Open-source repositories discussed in the blog.
+- [Medium](https://medium.com/@niyo177): Earlier writing archive.
+- [LinkedIn](https://www.linkedin.com/in/nishon-tandukar/): Professional profile.
+- [Instagram](https://www.instagram.com/life.of.nishon/): Photography and personal updates.
+
+## Usage notes
+
+- Cite the individual article URL when referencing an idea from this site.
+- Distinguish the author's experimental conclusions from claims made by original data providers.
+- Repository-specific articles link to their source code and identify operational limitations.

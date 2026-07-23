@@ -1,0 +1,90 @@
+---
+import ArticleLayout from "../layouts/ArticleLayout.astro";
+const contents = [
+  { id: "problem", label: "The repeated lookup" },
+  { id: "format", label: "Bundling the boundaries" },
+  { id: "index", label: "The coordinate lookup" },
+  { id: "names", label: "Name search" },
+  { id: "package", label: "Packaging the data" },
+  { id: "limits", label: "Limits and improvements" },
+  { id: "run", label: "Use the library" }
+];
+---
+<ArticleLayout
+  title="Finding Nepal’s Local Level from a Coordinate"
+  description="How a bundled FlatGeobuf file and a Shapely spatial index turn latitude and longitude into a Palika lookup."
+  category="Python + spatial data"
+  readingTime="7 min read"
+  published="23 July 2026"
+  publishedISO="2026-07-23"
+  hero="assets/nepal-palika-boundaries.png"
+  heroAlt="Map of Nepal divided into local-level administrative boundaries"
+  heroCaption="Local-level geometries rendered from the FlatGeobuf dataset bundled with Nepal Palika Finder."
+  sourceUrl="https://github.com/konishon/nepal-palika-finder"
+  contents={contents}
+>
+  <p class="lead">I kept needing the same lookup in Nepal projects: give me a latitude and longitude, and tell me which Gaupalika or Nagarpalika contains it.</p>
+  <p><a href="https://github.com/konishon/nepal-palika-finder" target="_blank" rel="noopener">Nepal Palika Finder</a> puts the boundary file and lookup code in one Python package. It can identify a local level from coordinates, search names for autocomplete, and return a boundary as GeoJSON.</p>
+
+  <h2 id="problem">The repeated lookup</h2>
+  <p>The geometry operation is point-in-polygon. Earlier implementations tended to carry a separate GeoJSON file, load it again for each task, and scan every feature. Other versions depended on an API even though the boundaries changed much less frequently than the queries.</p>
+  <p>This library loads the dataset once when <code>PalikaLocator</code> is created. The cost is noticeable at startup, but repeated queries share the same features and index.</p>
+
+  <h2 id="format">Bundling the boundaries</h2>
+  <p>The package includes <code>local_levels.fgb</code>. I chose FlatGeobuf because the binary file is smaller than equivalent GeoJSON and Fiona can read it directly.</p>
+  <p>At initialization, Fiona reads the features and Shapely converts their geometries to polygon objects. The file inspected for this post contains 735 features.</p>
+  <div class="flow">Bundled local_levels.fgb
+        ↓
+Fiona feature reader
+        ↓
+Shapely polygon geometries
+        ↓
+STRtree spatial index
+        ↓
+Coordinate and name lookup methods</div>
+
+  <h2 id="index">The coordinate lookup</h2>
+  <p>The locator builds a Shapely <code>STRtree</code> from the local-level geometries. A query point first goes through the tree, which returns polygons with bounding boxes near the point. The code then calls <code>contains</code> on that much smaller candidate set.</p>
+  <pre><code>from nepal_palika_finder.locator import PalikaLocator
+
+locator = PalikaLocator()
+result = locator.find_palika(
+    latitude=27.7041,
+    longitude=85.3074
+)
+
+print(result["properties"]["PALIKA"])</code></pre>
+  <div class="callout"><strong>Coordinate order matters</strong>The public method accepts latitude first and longitude second, but Shapely Point receives longitude as x and latitude as y.</div>
+
+  <h2 id="names">Name search</h2>
+  <p>A second index stores lowercase Palika and district names with the original properties and feature position. <code>search_palikas_by_name</code> performs case-insensitive prefix matching for autocomplete.</p>
+  <p>Exact-name geometry lookup accepts a district because some Palika names occur in multiple districts. If the name remains ambiguous, the method returns no geometry and warns with the matching district names.</p>
+
+  <h2 id="package">Making the data travel with the code</h2>
+  <p>The FlatGeobuf file is installed inside the Python package. <code>importlib.resources</code> locates it at runtime, so callers do not need to set a data path.</p>
+  <pre><code>pip install git+https://github.com/konishon/nepal-palika-finder.git</code></pre>
+  <p>The locator can return the full feature, a GeoJSON-compatible geometry dictionary, properties only, or the complete list of bundled local levels.</p>
+
+  <h2 id="limits">Limits worth making explicit</h2>
+  <h3>Boundary points need a policy</h3>
+  <p>Shapely’s <code>contains</code> predicate excludes points exactly on a polygon boundary. Real coordinates rarely land perfectly on a municipal border, but operational systems should decide whether <code>covers</code> better matches their policy.</p>
+  <h3>Administrative data has a vintage</h3>
+  <p>The bundled FlatGeobuf file inspected for this post contains 735 features. Nepal’s administrative datasets can change, and the repository does not currently expose strong metadata about source, date, or completeness. Applications should confirm the boundary vintage before using results for official decisions.</p>
+  <h3>Initialization trades time for fast repeated queries</h3>
+  <p>The current implementation loads every feature and builds indexes in memory. That is a sensible trade for services performing many lookups, but it can feel expensive for a one-off command.</p>
+  <h3>Name variants are not handled</h3>
+  <p>The current name index only matches the beginning of the stored lowercase name. It does not handle alternate spellings, Nepali-script queries, or fuzzy matches.</p>
+
+  <h2 id="run">Use the library</h2>
+  <p>Install directly from GitHub, create one locator instance, and reuse it for all queries in the process.</p>
+  <pre><code>from nepal_palika_finder.locator import PalikaLocator
+
+locator = PalikaLocator()
+
+matches = locator.search_palikas_by_name("pata", limit=5)
+geometry = locator.get_palika_geometry_by_name(
+    "Bhimdatta",
+    district_name="Kanchanpur"
+)</code></pre>
+  <p><a class="repo-link" href="https://github.com/konishon/nepal-palika-finder" target="_blank" rel="noopener">Explore the library on GitHub ↗</a></p>
+</ArticleLayout>

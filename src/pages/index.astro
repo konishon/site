@@ -1,0 +1,746 @@
+---
+const siteUrl = new URL("https://nishon.com.np");
+const homeSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${siteUrl.href}#nishon`,
+      name: "Nishon Tandukar",
+      url: siteUrl.href,
+      image: new URL("assets/nishon-tandukar.jpg", siteUrl).href,
+      sameAs: [
+        "https://github.com/konishon",
+        "https://medium.com/@niyo177",
+        "https://www.linkedin.com/in/nishon-tandukar/",
+        "https://www.instagram.com/life.of.nishon/"
+      ],
+      knowsAbout: ["GeoAI", "OpenStreetMap", "spatial data infrastructure", "Python", "humanitarian technology"]
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl.href}#website`,
+      name: "Nishon Notes",
+      url: siteUrl.href,
+      description: "Technical writing by Nishon Tandukar on GeoAI, open mapping, spatial data, and software.",
+      inLanguage: "en",
+      author: { "@id": `${siteUrl.href}#nishon` }
+    },
+    {
+      "@type": "Blog",
+      name: "Nishon Notes",
+      url: siteUrl.href,
+      author: { "@id": `${siteUrl.href}#nishon` },
+      blogPost: [
+        "building-a-public-nepal-earthquake-dataset",
+        "finding-nepals-local-level-from-a-coordinate",
+        "visualizing-pathfinding-on-openstreetmap",
+        "reading-the-landscape-with-ai"
+      ].map((slug) => ({ "@type": "BlogPosting", url: new URL(`${slug}.html`, siteUrl).href }))
+    }
+  ]
+};
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Writing by Nishon Tandukar on GeoAI, open mapping, spatial data infrastructure, humanitarian technology, and software.">
+  <meta name="author" content="Nishon Tandukar">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="canonical" href={siteUrl}>
+  <link rel="alternate" type="application/rss+xml" title="Nishon Notes" href={new URL("feed.xml", siteUrl)}>
+  <meta property="og:title" content="Nishon Tandukar — Notes from the Field">
+  <meta property="og:description" content="Writing about maps, research, technology, and the ideas connecting them.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content={siteUrl}>
+  <meta property="og:site_name" content="Nishon Notes">
+  <meta property="og:image" content={new URL("assets/nepal-earthquake-data.png", siteUrl)}>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nishon Tandukar — Notes from the Field">
+  <meta name="twitter:description" content="Writing about maps, research, technology, and the ideas connecting them.">
+  <meta name="twitter:image" content={new URL("assets/nepal-earthquake-data.png", siteUrl)}>
+  <meta name="theme-color" content="#ffffff">
+  <script is:inline>
+    (() => {
+      const saved = localStorage.getItem("nishon-theme");
+      const mode = ["light", "dark", "auto"].includes(saved) ? saved : "auto";
+      document.documentElement.dataset.themeMode = mode;
+      document.documentElement.dataset.theme = mode === "auto"
+        ? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+        : mode;
+    })();
+  </script>
+  <title>Nishon Tandukar — Notes from the Field</title>
+  <script type="application/ld+json" set:html={JSON.stringify(homeSchema)} />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%230055ff%22/><text x=%2250%22 y=%2268%22 text-anchor=%22middle%22 font-size=%2256%22 fill=%22%23ffab00%22>N</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display:ital@0;1&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #333132;
+      --muted: #6f7278;
+      --paper: #ffffff;
+      --card: #f4f4f4;
+      --line: #e6e6e6;
+      --accent: #0055ff;
+      --green: #001acb;
+      --radius: 26px;
+    }
+    html[data-theme="dark"] {
+      --ink: #f4f4f4;
+      --muted: #a9adb7;
+      --paper: #11131a;
+      --card: #1a1e29;
+      --line: #303542;
+      --accent: #738dff;
+      --green: #ffb100;
+      color-scheme: dark;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 3%, rgba(0,85,255,.09), transparent 28rem),
+        var(--paper);
+      font: 400 16px/1.65 "DM Sans", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    html[data-theme="dark"] body {
+      background:
+        radial-gradient(circle at 8% 3%, rgba(0,85,255,.2), transparent 30rem),
+        radial-gradient(circle at 92% 18%, rgba(255,171,0,.055), transparent 24rem),
+        var(--paper);
+    }
+    body, .nav::before, .featured, .feature-copy, .post-card, .field-photo figcaption, footer {
+      transition: color .25s ease, background-color .25s ease, border-color .25s ease;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    .shell { width: min(1140px, calc(100% - 40px)); margin-inline: auto; }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      isolation: isolate;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: min(1140px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 22px 0 18px;
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(16px);
+    }
+    .nav::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: 0 auto;
+      left: 50%;
+      width: 100vw;
+      transform: translateX(-50%);
+      background: rgba(255,255,255,.92);
+    }
+    html[data-theme="dark"] .nav::before { background: rgba(17,19,26,.92); }
+    .logo { font: 800 15px/1 "Manrope", sans-serif; letter-spacing: -.04em; }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; align-items: center; gap: 26px; color: #505249; font-size: 14px; font-weight: 600; }
+    html[data-theme="dark"] .nav-links { color: #c2c5ce; }
+    .nav-links a { display: inline-flex; align-items: center; min-height: 44px; }
+    .nav-links a:hover, footer a:hover { color: var(--accent); }
+    .theme-toggle {
+      display: inline-grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      color: var(--ink);
+      background: transparent;
+      cursor: pointer;
+    }
+    .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+    .theme-toggle:active { transform: scale(.94); }
+    .theme-toggle span { display: none; }
+    html[data-theme-mode="auto"] .theme-toggle .auto,
+    html[data-theme-mode="light"] .theme-toggle .sun,
+    html[data-theme-mode="dark"] .theme-toggle .moon { display: block; }
+    .theme-toggle .auto { font: 700 10px/1 "Manrope", sans-serif; letter-spacing: .04em; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 19px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--ink);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform .2s, background .2s;
+    }
+    .button:hover { transform: translateY(-2px); background: var(--accent); }
+    .nav .button { min-height: 40px; font-size: 13px; }
+
+    .hero { position: relative; isolation: isolate; overflow: hidden; padding: 68px 0 66px; }
+    .hero > *:not(.globe-wrap) { position: relative; z-index: 2; }
+    .globe-wrap {
+      position: absolute;
+      z-index: 0;
+      top: 24px;
+      right: -35px;
+      width: min(470px, 38vw);
+      aspect-ratio: 1;
+      pointer-events: none;
+      opacity: .52;
+      -webkit-mask-image: radial-gradient(circle, #000 54%, transparent 73%);
+      mask-image: radial-gradient(circle, #000 54%, transparent 73%);
+    }
+    #geo-globe { display: block; width: 100%; height: 100%; }
+    html[data-theme="dark"] .globe-wrap { opacity: .72; }
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { content: ""; width: 32px; height: 2px; background: var(--accent); }
+    h1, h2, h3 { margin: 0; }
+    h1 {
+      max-width: 1000px;
+      font: 400 clamp(64px, 9vw, 118px)/.9 "DM Serif Display", serif;
+      letter-spacing: -.045em;
+    }
+    h1 em { color: var(--accent); font-weight: 400; }
+    .hero-bottom {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 60px;
+      align-items: end;
+      margin-top: 40px;
+      padding-top: 28px;
+      border-top: 1px solid var(--line);
+    }
+    .hero-bottom p { max-width: 610px; margin: 0; color: var(--muted); font-size: 19px; }
+    .hero-meta { display: flex; justify-content: flex-end; gap: 25px; color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 26px; font-size: 14px; font-weight: 700; }
+    .hero-actions a { display: inline-flex; align-items: center; gap: 7px; }
+    .hero-actions a:hover { color: var(--accent); }
+
+    section { padding: 76px 0; }
+    .section-head { display: flex; justify-content: space-between; align-items: end; gap: 30px; margin-bottom: 40px; }
+    .label { color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+    h2 { margin-top: 8px; font: 400 clamp(42px, 5vw, 68px)/1 "DM Serif Display", serif; letter-spacing: -.035em; }
+
+    .featured {
+      display: grid;
+      grid-template-columns: .92fr 1.08fr;
+      overflow: hidden;
+      min-height: 500px;
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+      background: transparent;
+    }
+    html[data-theme="dark"] .featured {
+      border-color: #42495a;
+      background: rgba(20,24,34,.72);
+    }
+    .feature-art {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 380px;
+      overflow: hidden;
+      background: var(--green);
+    }
+    .feature-art img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.82) contrast(1.04); }
+    .media-credit { position: absolute; left: 18px; bottom: 18px; z-index: 2; padding: 7px 11px; border-radius: 999px; background: rgba(23,24,20,.76); color: white; font-size: 11px; font-weight: 600; backdrop-filter: blur(8px); }
+    .map-paper {
+      position: relative;
+      z-index: 1;
+      width: 68%;
+      aspect-ratio: 1;
+      border-radius: 10px;
+      background:
+        linear-gradient(120deg, transparent 46%, #0055ff 47%, #0055ff 49%, transparent 50%),
+        linear-gradient(35deg, transparent 44%, #ffab00 45%, #ffab00 47%, transparent 48%),
+        repeating-linear-gradient(0deg, transparent 0 28px, rgba(0,26,203,.14) 29px 30px),
+        repeating-linear-gradient(90deg, transparent 0 28px, rgba(0,26,203,.14) 29px 30px),
+        #f5f0df;
+      box-shadow: 0 30px 70px rgba(0,0,0,.24);
+      transform: rotate(-5deg);
+    }
+    .map-paper::after { content: "×"; position: absolute; top: 43%; left: 61%; color: var(--accent); font: 700 44px/1 "Manrope"; }
+    .feature-copy { display: flex; flex-direction: column; justify-content: center; padding: clamp(32px,5vw,64px); border-left: 1px solid var(--line); }
+    html[data-theme="dark"] .feature-copy { background: linear-gradient(145deg, rgba(26,30,41,.94), rgba(17,19,26,.7)); }
+    html[data-theme="dark"] .feature-art img { filter: saturate(.72) brightness(.78) contrast(1.08); }
+    html[data-theme="dark"] .media-credit { background: rgba(10,12,18,.82); }
+    .post-meta { display: flex; flex-wrap: wrap; gap: 10px; color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .post-meta span:first-child { color: var(--accent); }
+    .featured h3 { margin: 22px 0 18px; font: 400 clamp(38px,4vw,58px)/1.02 "DM Serif Display", serif; letter-spacing: -.035em; }
+    .featured p { margin: 0 0 32px; color: var(--muted); font-size: 17px; }
+    .read-link { display: inline-flex; align-items: center; gap: 10px; width: fit-content; font-weight: 700; }
+    .read-link span { color: var(--accent); transition: transform .2s; }
+    .read-link:hover span { transform: translateX(4px); }
+
+    .filters { display: flex; flex-wrap: wrap; gap: 18px; margin-bottom: 26px; }
+    .filter {
+      min-height: 44px;
+      padding: 8px 0 5px;
+      border: 0;
+      border-bottom: 1px solid transparent;
+      color: var(--muted);
+      background: transparent;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .filter:hover, .filter.active { border-color: var(--accent); color: var(--ink); }
+    .post-grid { display: block; border-bottom: 1px solid var(--line); }
+    .post-card {
+      display: grid;
+      grid-template-columns: 170px minmax(260px,1fr) minmax(220px,.75fr) auto;
+      gap: 28px;
+      align-items: center;
+      min-height: 0;
+      padding: 28px 0;
+      border: 0;
+      border-top: 1px solid var(--line);
+      border-radius: 0;
+      background: transparent;
+      transition: color .2s, padding .2s;
+    }
+    .post-card:hover { padding-left: 10px; color: var(--accent); }
+    html[data-theme="dark"] .post-card:hover { background: rgba(115,141,255,.055); }
+    .post-card[hidden] { display: none; }
+    .post-card h3 { margin: 0; font: 400 clamp(25px,2.5vw,36px)/1.08 "DM Serif Display", serif; letter-spacing: -.03em; }
+    .post-card p { margin: 0; color: var(--muted); font-size: 14px; }
+    .post-card .read-link { margin: 0; padding: 10px 0; white-space: nowrap; font-size: 13px; }
+
+    .about {
+      display: grid;
+      grid-template-columns: .75fr 1.25fr;
+      gap: 80px;
+      padding: clamp(34px,6vw,72px);
+      border-radius: 0;
+      background: var(--ink);
+      color: white;
+    }
+    html[data-theme="dark"] .about { background: #171a23; }
+    html[data-theme="dark"] .about { box-shadow: inset 0 0 0 1px #303542; }
+    .about h2 { max-width: 400px; }
+    .author-photo { width: 150px; aspect-ratio: 1; margin-bottom: 28px; border-radius: 50%; object-fit: cover; border: 4px solid #343630; }
+    .about-copy { align-self: end; }
+    .about-copy p { margin: 0; color: #bfc1b8; font-size: 19px; }
+    .topics { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 28px; }
+    .topics span { padding: 0 0 4px; border-bottom: 1px solid #55574f; color: #e4e5df; font-size: 13px; }
+    .field-photo { margin-top: 0; overflow: hidden; border-radius: 0; background: var(--card); border: 0; }
+    .field-photo img { display: block; width: 100%; max-height: 570px; object-fit: cover; }
+    html[data-theme="dark"] .field-photo img { filter: brightness(.8) saturate(.78); }
+    html[data-theme="dark"] .field-photo figcaption { background: #171a23; }
+    .field-photo figcaption { display: flex; justify-content: space-between; gap: 24px; padding: 18px 22px; color: var(--muted); font-size: 13px; }
+    .field-photo figcaption a { color: var(--accent); font-weight: 700; }
+
+    footer { display: flex; justify-content: space-between; gap: 20px; padding: 26px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+    .footer-links { display: flex; gap: 20px; }
+    :focus-visible { outline: 3px solid rgba(0,85,255,.38); outline-offset: 4px; }
+
+    @media (max-width: 820px) {
+      .hero-bottom, .featured, .about { grid-template-columns: 1fr; }
+      .hero-meta { justify-content: flex-start; }
+      .feature-art { grid-row: 1; }
+      .about { gap: 50px; }
+      .globe-wrap { top: 58px; right: -120px; width: 430px; opacity: .28; }
+      .post-card { grid-template-columns: 135px 1fr; }
+      .post-card p, .post-card .read-link { grid-column: 2; }
+    }
+    @media (max-width: 600px) {
+      .shell, .nav { width: min(100% - 24px, 1140px); }
+      .nav-links { gap: 14px; font-size: 13px; }
+      .theme-toggle { width: 40px; height: 40px; }
+      .hero { padding: 56px 0 48px; }
+      .globe-wrap { top: 138px; right: -142px; width: 330px; opacity: .13; }
+      h1 { font-size: 56px; line-height: .9; }
+      .hero-bottom { gap: 22px; margin-top: 30px; padding-top: 24px; }
+      .hero-bottom p { font-size: 18px; line-height: 1.7; }
+      .hero-actions { gap: 16px 24px; margin-top: 20px; }
+      .hero-meta { gap: 18px; }
+      section { padding: 58px 0; }
+      .section-head { align-items: start; flex-direction: column; }
+      .post-card { grid-template-columns: 1fr; gap: 10px; padding: 24px 0; }
+      .post-card p, .post-card .read-link { grid-column: 1; }
+      .field-photo figcaption { flex-direction: column; }
+      footer { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Main navigation">
+    <a class="logo" href="#top" aria-label="Nishon Tandukar, home">NISHON<span>•</span>NOTES</a>
+    <div class="nav-links">
+      <a href="#writing">Writing</a>
+      <a href="#about">About</a>
+      <button class="theme-toggle" type="button" aria-label="Theme: Auto, following device settings" title="Theme: Auto (device)"><span class="auto" aria-hidden="true">AUTO</span><span class="sun" aria-hidden="true">☼</span><span class="moon" aria-hidden="true">☾</span></button>
+    </div>
+  </nav>
+
+  <main id="top">
+    <header class="hero shell">
+      <div class="globe-wrap" aria-hidden="true"><canvas id="geo-globe"></canvas></div>
+      <h1>Nishon <em>Tandukar.</em></h1>
+      <div class="hero-bottom">
+        <div>
+          <p>I use this site to talk about the geospatial things I do.</p>
+          <div class="hero-actions">
+            <a href="reading-the-landscape-with-ai.html">Read the latest →</a>
+            <a href="https://medium.com/@niyo177" target="_blank" rel="noopener">Medium archive ↗</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section aria-labelledby="featured-title">
+      <div class="shell">
+        <div class="section-head"><div><div class="label">Featured</div><h2 id="featured-title">Latest article</h2></div></div>
+        <article class="featured">
+          <div class="feature-art">
+            <img src="assets/nepal-earthquake-data.png" alt="Map and interface showing earthquake epicenters across Nepal">
+            <a class="media-credit" href="https://github.com/konishon/nepal-earthquake-epicenter-data" target="_blank" rel="noopener">Open dataset ↗</a>
+          </div>
+          <div class="feature-copy">
+            <div class="post-meta"><span>Open data + automation</span><span>7 min read</span><span>23 July 2026</span></div>
+            <h3>Building a Public Nepal Earthquake Dataset</h3>
+            <p>Turning published earthquake records into reusable CSV, JSON, and GeoJSON through an automated open-data pipeline.</p>
+            <a class="read-link" href="building-a-public-nepal-earthquake-dataset.html" aria-label="Read Building a Public Nepal Earthquake Dataset">Read article <span>→</span></a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="writing" aria-labelledby="writing-title">
+      <div class="shell">
+        <div class="section-head">
+          <div><div class="label">Writing</div><h2 id="writing-title">All articles</h2></div>
+          <p>Experiments, lessons from practice, and a public record of learning.</p>
+        </div>
+        <div class="filters" aria-label="Filter articles by topic">
+          <button class="filter active" type="button" data-filter="all">All</button>
+          <button class="filter" type="button" data-filter="geospatial">Geospatial</button>
+          <button class="filter" type="button" data-filter="technology">Technology</button>
+          <button class="filter" type="button" data-filter="notes">Field notes</button>
+        </div>
+        <div class="post-grid">
+          <article class="post-card" data-topic="geospatial">
+            <div class="post-meta"><span>Open data + automation</span><span>7 min read</span><span>2026</span></div>
+            <h3>Building a Public Nepal Earthquake Dataset</h3>
+            <p>Maintaining a reusable spatial archive from Nepal’s published earthquake records.</p>
+            <a class="read-link" href="building-a-public-nepal-earthquake-dataset.html">Read article <span>→</span></a>
+          </article>
+          <article class="post-card" data-topic="geospatial">
+            <div class="post-meta"><span>Python + spatial data</span><span>7 min read</span><span>2026</span></div>
+            <h3>Finding Nepal’s Local Level from a Coordinate</h3>
+            <p>Using FlatGeobuf and a Shapely spatial index to identify a Gaupalika or Nagarpalika.</p>
+            <a class="read-link" href="finding-nepals-local-level-from-a-coordinate.html">Read article <span>→</span></a>
+          </article>
+          <article class="post-card" data-topic="geospatial">
+            <div class="post-meta"><span>OpenStreetMap + algorithms</span><span>8 min read</span><span>2026</span></div>
+            <h3>Visualizing Pathfinding on OpenStreetMap</h3>
+            <p>Building a Python tool to compare four pathfinding strategies on real road networks.</p>
+            <a class="read-link" href="visualizing-pathfinding-on-openstreetmap.html">Read article <span>→</span></a>
+          </article>
+          <article class="post-card" data-topic="technology">
+            <div class="post-meta"><span>Frontier technology</span><span>14 min read</span></div>
+            <h3>Reading the Landscape with AI</h3>
+            <p>Using image captioning and NLP to explain what changed across two aerial images.</p>
+            <a class="read-link" href="reading-the-landscape-with-ai.html">Read article <span>→</span></a>
+          </article>
+          <article class="post-card" data-topic="notes">
+            <div class="post-meta"><span>Field notes</span><span>5 min read</span><span>2022</span></div>
+            <h3>3 Problems, 3 Solutions for Ride Tracking</h3>
+            <p>Lessons from tracking a 50-kilometre Kora ride with the Greenway Nepal mobile application.</p>
+            <a class="read-link" href="https://medium.com/@niyo177/3-problems-3-solutions-for-ride-tracking-in-green-way-nepal-mobile-application-78e51c708c28" target="_blank" rel="noopener">Read on Medium <span>↗</span></a>
+          </article>
+          <article class="post-card" data-topic="technology">
+            <div class="post-meta"><span>Android + geospatial</span><span>4 min read</span><span>2019</span></div>
+            <h3>Recreating a Google Pixel Live Wallpaper</h3>
+            <p>A five-day logbook combining terrain data, satellite imagery, Blender, and Android.</p>
+            <a class="read-link" href="https://medium.com/@niyo177/recreating-a-basic-google-pixel-live-wallpapers-part-1-751fb7330139" target="_blank" rel="noopener">Read on Medium <span>↗</span></a>
+          </article>
+          <article class="post-card" data-topic="technology">
+            <div class="post-meta"><span>Software</span><span>2 min read</span><span>2017</span></div>
+            <h3>Vertical Code Formatting</h3>
+            <p>Why source code should read like an article, from high-level intent to implementation detail.</p>
+            <a class="read-link" href="https://medium.com/@niyo177/vertical-code-formatting-bb52055b2f27" target="_blank" rel="noopener">Read on Medium <span>↗</span></a>
+          </article>
+          <article class="post-card" data-topic="geospatial">
+            <div class="post-meta"><span>OpenStreetMap</span><span>1 min read</span><span>2017</span></div>
+            <h3>Android: Offline Maps Using osmdroid</h3>
+            <p>A concise guide to packaging OpenStreetMap tiles for offline use in an Android application.</p>
+            <a class="read-link" href="https://medium.com/@niyo177/offline-maps-using-osmdroid-2123af7d71cf" target="_blank" rel="noopener">Read on Medium <span>↗</span></a>
+          </article>
+          <article class="post-card" data-topic="geospatial">
+            <div class="post-meta"><span>Open mapping</span><span>Talk</span><span>2026</span></div>
+            <h3>Bridging Municipal Road Data and OSM</h3>
+            <p>Introducing OSM-Validate at State of the Map India 2026.</p>
+            <a class="read-link" href="https://wiki.openstreetmap.org/wiki/State_of_the_Map_India_2026" target="_blank" rel="noopener">View programme <span>↗</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="shell about">
+        <div><img class="author-photo" src="assets/nishon-tandukar.jpg" alt="Portrait of Nishon Tandukar"><div class="label">About</div><h2>Nishon Tandukar</h2></div>
+        <div class="about-copy">
+          <p>I build geospatial software and data systems in Nepal. My work has included Nepal’s National Geoportal, GeoNadir, and post-disaster mapping from aerial imagery. On this blog, I share the geospatial work I do.</p>
+          <div class="topics"><span>GeoAI</span><span>OpenStreetMap</span><span>Spatial data infrastructure</span><span>Humanitarian technology</span><span>Software engineering</span></div>
+        </div>
+      </div>
+      <figure class="shell field-photo">
+        <img src="assets/naxa-hot-tasking-manager-team.jpg" alt="NAXA and Humanitarian OpenStreetMap Team members together in Kathmandu">
+        <figcaption><span>NAXA and Humanitarian OpenStreetMap Team members after Tasking Manager onboarding in Kathmandu. Nishon is third from the right.</span><a href="https://www.hotosm.org/en/news/hot-tasking-manager-welcome-to-naxa/" target="_blank" rel="noopener">Read the HOT announcement ↗</a></figcaption>
+      </figure>
+    </section>
+
+  </main>
+
+  <footer class="shell">
+    <span>© <span id="year"></span> Nishon Tandukar</span>
+    <div class="footer-links">
+      <a href="#writing">Archive</a>
+      <a href="https://medium.com/@niyo177" target="_blank" rel="noopener">Medium</a>
+      <a href="https://www.linkedin.com/in/nishon-tandukar/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://www.instagram.com/life.of.nishon/" target="_blank" rel="noopener">Instagram</a>
+      <a href="mailto:hello@nishon.com.np">Email</a>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+    const filters = document.querySelectorAll(".filter");
+    const posts = document.querySelectorAll(".post-card");
+    filters.forEach((button) => {
+      button.addEventListener("click", () => {
+        filters.forEach((item) => item.classList.remove("active"));
+        button.classList.add("active");
+        const topic = button.dataset.filter;
+        posts.forEach((post) => {
+          post.hidden = topic !== "all" && post.dataset.topic !== topic;
+        });
+      });
+    });
+
+    const canvas = document.getElementById("geo-globe");
+    const context = canvas.getContext("2d");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let rotation = -0.55;
+    let frame;
+    let startTime = performance.now();
+
+    function spherePoint(latitude, longitude, radius) {
+      const lat = latitude * Math.PI / 180;
+      const lon = (longitude * Math.PI / 180) + rotation;
+      return {
+        x: radius * Math.cos(lat) * Math.sin(lon),
+        y: -radius * Math.sin(lat),
+        z: radius * Math.cos(lat) * Math.cos(lon)
+      };
+    }
+
+    function project(point, center, radius) {
+      const perspective = 2.7 / (3.7 - point.z / radius);
+      return {
+        x: center + point.x * perspective,
+        y: center + point.y * perspective,
+        z: point.z,
+        scale: perspective
+      };
+    }
+
+    function drawPath(points, center, radius, color, width) {
+      let drawing = false;
+      context.beginPath();
+      points.forEach((point) => {
+        const projected = project(point, center, radius);
+        if (point.z > -radius * .16) {
+          if (!drawing) context.moveTo(projected.x, projected.y);
+          else context.lineTo(projected.x, projected.y);
+          drawing = true;
+        } else {
+          drawing = false;
+        }
+      });
+      context.strokeStyle = color;
+      context.lineWidth = width;
+      context.stroke();
+    }
+
+    function drawScanWindow(center, radius, elapsed) {
+      const dark = document.documentElement.dataset.theme === "dark";
+      const scanRgb = dark ? "255,177,0" : "0,85,255";
+      const progress = reducedMotion ? .5 : (Math.sin(elapsed * .00072) + 1) / 2;
+      const windowWidth = radius * .52;
+      const scanX = center - radius + progress * (radius * 2);
+      const left = scanX - windowWidth / 2;
+
+      context.save();
+      context.beginPath();
+      context.arc(center, center, radius - 1, 0, Math.PI * 2);
+      context.clip();
+
+      const wash = context.createLinearGradient(left, 0, left + windowWidth, 0);
+      wash.addColorStop(0, `rgba(${scanRgb},0)`);
+      wash.addColorStop(.18, `rgba(${scanRgb},${dark ? .025 : .05})`);
+      wash.addColorStop(.5, dark ? "rgba(115,141,255,.075)" : "rgba(255,255,255,.22)");
+      wash.addColorStop(.82, `rgba(${scanRgb},${dark ? .025 : .05})`);
+      wash.addColorStop(1, `rgba(${scanRgb},0)`);
+      context.fillStyle = wash;
+      context.fillRect(left, center - radius, windowWidth, radius * 2);
+
+      context.beginPath();
+      context.rect(left, center - radius, windowWidth, radius * 2);
+      context.clip();
+
+      for (let lat = -70; lat <= 70; lat += 10) {
+        const points = [];
+        for (let lon = -180; lon <= 180; lon += 2) points.push(spherePoint(lat, lon, radius));
+        drawPath(points, center, radius, dark ? "rgba(255,177,0,.075)" : "rgba(0,85,255,.17)", .7);
+      }
+
+      context.restore();
+
+      const edgeFade = Math.max(0, 1 - Math.abs(scanX - center) / radius);
+      context.save();
+      context.beginPath();
+      context.arc(center, center, radius - 1, 0, Math.PI * 2);
+      context.clip();
+      context.strokeStyle = `rgba(${scanRgb},${dark ? .12 + edgeFade * .2 : .22 + edgeFade * .28})`;
+      context.lineWidth = 1.4;
+      context.strokeRect(left, center - radius, windowWidth, radius * 2);
+      context.beginPath();
+      context.moveTo(scanX, center - radius);
+      context.lineTo(scanX, center + radius);
+      context.strokeStyle = `rgba(${scanRgb},${dark ? .28 + edgeFade * .3 : .3 + edgeFade * .35})`;
+      context.lineWidth = 1;
+      context.stroke();
+      context.restore();
+    }
+
+    function drawGlobe(timestamp = performance.now()) {
+      const dark = document.documentElement.dataset.theme === "dark";
+      const bounds = canvas.getBoundingClientRect();
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      const size = Math.max(1, Math.round(bounds.width));
+      if (canvas.width !== size * ratio) {
+        canvas.width = size * ratio;
+        canvas.height = size * ratio;
+      }
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      context.clearRect(0, 0, size, size);
+
+      const center = size / 2;
+      const radius = size * .34;
+      const glow = context.createRadialGradient(center - radius * .28, center - radius * .35, radius * .05, center, center, radius * 1.05);
+      glow.addColorStop(0, dark ? "rgba(115,141,255,.12)" : "rgba(255,255,255,.78)");
+      glow.addColorStop(.55, dark ? "rgba(0,85,255,.055)" : "rgba(0,85,255,.1)");
+      glow.addColorStop(1, dark ? "rgba(255,177,0,.012)" : "rgba(255,171,0,.04)");
+      context.beginPath();
+      context.arc(center, center, radius, 0, Math.PI * 2);
+      context.fillStyle = glow;
+      context.fill();
+      context.strokeStyle = dark ? "rgba(115,141,255,.32)" : "rgba(0,26,203,.27)";
+      context.lineWidth = 1.3;
+      context.stroke();
+
+      for (let lat = -60; lat <= 60; lat += 20) {
+        const points = [];
+        for (let lon = -180; lon <= 180; lon += 3) points.push(spherePoint(lat, lon, radius));
+        drawPath(points, center, radius, dark ? "rgba(115,141,255,.18)" : "rgba(0,26,203,.22)", 1);
+      }
+      for (let lon = -180; lon < 180; lon += 20) {
+        const points = [];
+        for (let lat = -90; lat <= 90; lat += 3) points.push(spherePoint(lat, lon, radius));
+        drawPath(points, center, radius, dark ? "rgba(115,141,255,.14)" : "rgba(0,26,203,.19)", 1);
+      }
+
+      drawScanWindow(center, radius, timestamp - startTime);
+
+      [
+        [27.7172, 85.3240, 4.6],
+        [28.6139, 77.2090, 3.2],
+        [52.0116, 4.3571, 3.2],
+        [46.5197, 6.6323, 3.2],
+        [1.3521, 103.8198, 3.2],
+        [-1.2921, 36.8219, 3.2]
+      ].forEach(([lat, lon, dot]) => {
+        const point = spherePoint(lat, lon, radius);
+        if (point.z < 0) return;
+        const p = project(point, center, radius);
+        context.beginPath();
+        context.arc(p.x, p.y, dot * p.scale, 0, Math.PI * 2);
+        context.fillStyle = lat === 27.7172 ? (dark ? "#ffb100" : "#ffab00") : (dark ? "rgba(151,169,255,.7)" : "rgba(0,85,255,.7)");
+        context.fill();
+        if (lat === 27.7172) {
+          context.beginPath();
+          context.arc(p.x, p.y, (dark ? 8 : 11) * p.scale, 0, Math.PI * 2);
+          context.strokeStyle = dark ? "rgba(255,177,0,.3)" : "rgba(255,171,0,.42)";
+          context.lineWidth = dark ? 1 : 1.2;
+          context.stroke();
+        }
+      });
+
+      if (!reducedMotion) {
+        rotation += .00135;
+        frame = requestAnimationFrame(drawGlobe);
+      }
+    }
+
+    drawGlobe();
+    window.addEventListener("resize", () => {
+      if (frame) cancelAnimationFrame(frame);
+      drawGlobe();
+    });
+
+    const themeToggle = document.querySelector(".theme-toggle");
+    const deviceTheme = matchMedia("(prefers-color-scheme: dark)");
+    const themeModes = ["auto", "light", "dark"];
+    function applyThemeMode(mode, save = true) {
+      const theme = mode === "auto" ? (deviceTheme.matches ? "dark" : "light") : mode;
+      document.documentElement.dataset.themeMode = mode;
+      document.documentElement.dataset.theme = theme;
+      if (save) localStorage.setItem("nishon-theme", mode);
+      syncThemeToggle();
+      if (reducedMotion) drawGlobe();
+    }
+    function syncThemeToggle() {
+      const mode = document.documentElement.dataset.themeMode || "auto";
+      const dark = document.documentElement.dataset.theme === "dark";
+      const next = themeModes[(themeModes.indexOf(mode) + 1) % themeModes.length];
+      const label = mode === "auto" ? "Auto, following device settings" : mode[0].toUpperCase() + mode.slice(1);
+      themeToggle.setAttribute("aria-label", `Theme: ${label}. Switch to ${next}`);
+      themeToggle.setAttribute("title", `Theme: ${label}`);
+      document.querySelector('meta[name="theme-color"]').content = dark ? "#11131a" : "#ffffff";
+    }
+    themeToggle.addEventListener("click", () => {
+      const mode = document.documentElement.dataset.themeMode || "auto";
+      applyThemeMode(themeModes[(themeModes.indexOf(mode) + 1) % themeModes.length]);
+    });
+    deviceTheme.addEventListener("change", () => {
+      if (document.documentElement.dataset.themeMode === "auto") applyThemeMode("auto", false);
+    });
+    syncThemeToggle();
+  </script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+# Nishon Notes: expanded machine-readable summary
+
+Site: https://nishon.com.np/
+Author: Nishon Tandukar
+Language: English
+Primary subjects: GeoAI, OpenStreetMap, spatial data infrastructure, Python, open data, humanitarian technology, remote sensing, and software engineering.
+
+## Author
+
+Nishon Tandukar works on open-source geospatial systems, humanitarian mapping, spatial data infrastructure, and applied AI. The blog is a public record of technical experiments, open-source projects, implementation decisions, limitations, and lessons from practice.
+
+Canonical author profiles:
+- GitHub: https://github.com/konishon
+- Medium: https://medium.com/@niyo177
+- LinkedIn: https://www.linkedin.com/in/nishon-tandukar/
+- Instagram: https://www.instagram.com/life.of.nishon/
+
+## Article: Building a Public Nepal Earthquake Dataset
+
+Canonical URL: https://nishon.com.np/building-a-public-nepal-earthquake-dataset.html
+Published: 2026-07-23
+Source repository: https://github.com/konishon/nepal-earthquake-epicenter-data
+Original data source: National Earthquake Monitoring and Research Center, Government of Nepal.
+
+Summary: The article explains a Playwright and Beautiful Soup pipeline that extracts earthquake records published by Nepal's National Earthquake Monitoring and Research Center. Records include Bikram Sambat and Gregorian dates, local and UTC times, coordinates, magnitude, and epicenter. A SHA-256 identifier deduplicates normalized records. The project appends results to CSV and JSON and creates GeoJSON Point features for mapping. A weekly GitHub Actions workflow runs collection and commits updates. The article emphasizes that this is a secondary publication whose accuracy and completeness depend on the original source and on continued compatibility with the source website.
+
+## Article: Finding Nepal's Local Level from a Coordinate
+
+Canonical URL: https://nishon.com.np/finding-nepals-local-level-from-a-coordinate.html
+Published: 2026-07-23
+Source repository: https://github.com/konishon/nepal-palika-finder
+
+Summary: The article explains a Python library for identifying the Nepali Gaupalika or Nagarpalika containing a latitude-longitude coordinate. The package bundles local-level polygons as FlatGeobuf, loads features through Fiona, and builds a Shapely STRtree. Each query first retrieves spatial candidates and then applies an exact point-in-polygon predicate. The library also supports prefix-based name search, district-assisted disambiguation, geometry retrieval, and enumeration of bundled features. The article notes that points exactly on boundaries need an explicit predicate policy and that operational users should verify the source, date, and completeness of the bundled administrative data.
+
+## Article: Visualizing Pathfinding on OpenStreetMap
+
+Canonical URL: https://nishon.com.np/visualizing-pathfinding-on-openstreetmap.html
+Published: 2026-07-23
+Source repository: https://github.com/konishon/osm-pathfinding-visualizer
+
+Summary: The article describes a Python pathfinding visualizer that downloads drivable OpenStreetMap networks through OSMnx, projects them into metric coordinates, and compares Breadth-First Search, Dijkstra, A*, and Greedy Best-First Search. Traversal implementations yield explored edges, separating algorithm execution from rendering. Matplotlib displays the search and final route in 2D or 3D. Generated sine-wave audio provides search progress and a path-found signal. The application supports interactive viewing, static previews, GIF export, and MP4 export with audio.
+
+## Article: Reading the Landscape with AI
+
+Canonical URL: https://nishon.com.np/reading-the-landscape-with-ai.html
+Published: 2026-07-01
+
+Summary: The article explores a lightweight semantic change-detection workflow for aerial imagery. A vision-language model captions images from two dates. NLP extracts land-cover and land-use concepts, compares feature sets, and produces a readable change summary. The method is presented as an explanation layer rather than a replacement for pixel-level change detection. Limitations include missed details, hallucination, weak spatial localization, caption similarity that does not equal physical change, and brittle keyword extraction. A stronger future workflow would combine classical segmentation or change detection with a vision-language explanation layer.
+
+## Citation guidance
+
+Use each article's canonical URL. When discussing source datasets or repositories, cite both the blog article and its linked primary repository. Do not treat experimental results as operational guarantees. Preserve the limitations described in each article.

@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A lightweight experiment combining image captioning, NLP, and remote sensing to produce human-readable change summaries.">
+  <meta name="author" content="Nishon Tandukar">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="canonical" href="https://nishon.com.np/reading-the-landscape-with-ai.html">
+  <link rel="alternate" type="application/rss+xml" title="Nishon Notes" href="https://nishon.com.np/feed.xml">
+  <meta property="og:title" content="Reading the Landscape with AI — Nishon Tandukar">
+  <meta property="og:description" content="Using vision-language models and NLP to explain change in aerial imagery.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://nishon.com.np/reading-the-landscape-with-ai.html">
+  <meta property="og:site_name" content="Nishon Notes">
+  <meta property="og:image" content="https://nishon.com.np/assets/smarter-mapping-nepal.jpg">
+  <meta property="article:published_time" content="2026-07-01">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Reading the Landscape with AI">
+  <meta name="twitter:description" content="Using vision-language models and NLP to explain change in aerial imagery.">
+  <meta name="twitter:image" content="https://nishon.com.np/assets/smarter-mapping-nepal.jpg">
+  <meta name="theme-color" content="#ffffff">
+  <script is:inline>
+    (() => {
+      const saved = localStorage.getItem("nishon-theme");
+      const mode = ["light", "dark", "auto"].includes(saved) ? saved : "auto";
+      document.documentElement.dataset.themeMode = mode;
+      document.documentElement.dataset.theme = mode === "auto"
+        ? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+        : mode;
+    })();
+  </script>
+  <title>Reading the Landscape with AI — Nishon Tandukar</title>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Reading the Landscape with AI",
+    "description": "A lightweight experiment combining image captioning, NLP, and remote sensing to produce human-readable change summaries.",
+    "datePublished": "2026-07-01",
+    "dateModified": "2026-07-01",
+    "image": "https://nishon.com.np/assets/smarter-mapping-nepal.jpg",
+    "url": "https://nishon.com.np/reading-the-landscape-with-ai.html",
+    "mainEntityOfPage": "https://nishon.com.np/reading-the-landscape-with-ai.html",
+    "inLanguage": "en",
+    "author": {
+      "@type": "Person",
+      "name": "Nishon Tandukar",
+      "url": "https://nishon.com.np",
+      "sameAs": ["https://github.com/konishon", "https://medium.com/@niyo177"]
+    },
+    "keywords": ["GeoAI", "remote sensing", "vision-language models", "NLP", "change detection"]
+  }
+  </script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%230055ff%22/><text x=%2250%22 y=%2268%22 text-anchor=%22middle%22 font-size=%2256%22 fill=%22%23ffab00%22>N</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&family=DM+Serif+Display:ital@0;1&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--ink:#333132;--muted:#6f7278;--paper:#fff;--card:#f4f4f4;--line:#e6e6e6;--accent:#0055ff;--green:#001acb}html[data-theme="dark"]{--ink:#f4f4f4;--muted:#a9adb7;--paper:#11131a;--card:#1a1e29;--line:#303542;--accent:#738dff;--green:#ffb100;color-scheme:dark}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:var(--paper);font:400 18px/1.78 "DM Sans",sans-serif;-webkit-font-smoothing:antialiased}html[data-theme="dark"] body{background:radial-gradient(circle at 12% 0,rgba(0,85,255,.16),transparent 34rem),var(--paper)}body,.nav::before,.question,.callout,.flow,pre,.result,.article-end{transition:color .25s ease,background-color .25s ease,border-color .25s ease}a{color:inherit;text-decoration:none}.shell{width:min(1140px,calc(100% - 40px));margin-inline:auto}
+    .nav{position:sticky;top:0;z-index:20;isolation:isolate;display:flex;align-items:center;justify-content:space-between;width:min(1140px,calc(100% - 40px));margin:0 auto;padding:18px 0;border-bottom:1px solid var(--line);backdrop-filter:blur(16px)}.nav::before{content:"";position:absolute;z-index:-1;inset:0 auto;left:50%;width:100vw;transform:translateX(-50%);background:rgba(255,255,255,.92)}html[data-theme="dark"] .nav::before{background:rgba(17,19,26,.92)}.logo{font:800 15px/1 "Manrope",sans-serif;letter-spacing:-.04em}.logo span{color:#ffab00}.nav-links{display:flex;align-items:center;gap:24px;color:#505249;font-size:14px;font-weight:600}html[data-theme="dark"] .nav-links{color:#c2c5ce}.nav-links a{display:inline-flex;align-items:center;min-height:44px}.nav-links a:hover{color:var(--accent)}.back{display:inline-flex;align-items:center;gap:8px}.theme-toggle{display:inline-grid;place-items:center;width:44px;height:44px;padding:0;border:1px solid var(--line);border-radius:50%;color:var(--ink);background:transparent;cursor:pointer}.theme-toggle:hover{border-color:var(--accent);color:var(--accent)}.theme-toggle span{display:none}html[data-theme-mode="auto"] .theme-toggle .auto,html[data-theme-mode="light"] .theme-toggle .sun,html[data-theme-mode="dark"] .theme-toggle .moon{display:block}.theme-toggle .auto{font:700 10px/1 "Manrope",sans-serif;letter-spacing:.04em}
+    .article-head{padding:76px 0 48px}.meta{display:flex;flex-wrap:wrap;gap:12px;color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}.meta span:first-child{color:var(--accent)}h1,h2,h3{margin:0}h1{max-width:1050px;margin:20px 0 24px;font:400 clamp(58px,8vw,104px)/.92 "DM Serif Display",serif;letter-spacing:-.045em}.dek{max-width:770px;margin:0;color:var(--muted);font-size:clamp(20px,2.4vw,27px);line-height:1.5}.byline{display:flex;align-items:center;gap:14px;margin-top:32px;padding-top:20px;border-top:1px solid var(--line);font-size:14px}.avatar{width:44px;height:44px;border-radius:50%;object-fit:cover}.byline strong{display:block}.byline span{color:var(--muted)}
+    .hero-visual{margin:0;background:var(--green)}.hero-visual img{display:block;width:100%;height:min(680px,68vw);min-height:390px;object-fit:cover}.hero-visual figcaption{display:flex;justify-content:space-between;gap:24px;width:min(1140px,calc(100% - 40px));margin:auto;padding:15px 0;color:var(--muted);font-size:12px}.hero-visual figcaption a{color:var(--accent);font-weight:700}html[data-theme="dark"] .hero-visual{background:#171a23}html[data-theme="dark"] .hero-visual img{filter:brightness(.76) saturate(.72) contrast(1.08)}
+    .layout{display:grid;grid-template-columns:220px minmax(0,720px);gap:80px;justify-content:center;padding:90px 0 120px}.toc{position:sticky;top:110px;align-self:start;font-size:13px}.toc strong{display:block;margin-bottom:14px;font-size:11px;letter-spacing:.12em;text-transform:uppercase}.toc a{display:block;padding:5px 0;color:var(--muted)}.toc a:hover{color:var(--accent)}article p{margin:0 0 28px}article h2{margin:72px 0 22px;font:400 clamp(38px,4vw,52px)/1.05 "DM Serif Display",serif;letter-spacing:-.035em}article h3{margin:42px 0 15px;font:700 22px/1.3 "Manrope",sans-serif;letter-spacing:-.025em}article ul,article ol{margin:0 0 30px;padding-left:24px}article li{margin:8px 0}article a{text-decoration:underline;text-decoration-color:rgba(0,85,255,.5);text-underline-offset:3px}.lead{font-size:21px;color:#45483f}.question{margin:38px 0;padding:30px;border-left:4px solid var(--accent);background:var(--card);font:400 31px/1.3 "DM Serif Display",serif}.flow{margin:38px 0;padding:28px;border-radius:20px;background:var(--ink);color:#e9e9e3;font:500 14px/1.9 "DM Mono",monospace;white-space:pre-wrap}.callout{margin:38px 0;padding:28px;border:1px solid var(--line);border-radius:20px;background:var(--card)}.callout strong{display:block;margin-bottom:8px;color:var(--accent);font-size:12px;letter-spacing:.1em;text-transform:uppercase}pre{max-width:100%;overflow:auto;margin:30px 0;padding:25px;border-radius:18px;background:#20211d;color:#e9e8df;font:400 13px/1.7 "DM Mono",monospace}code{font-family:"DM Mono",monospace}.result{margin:35px 0;padding:28px;border-radius:18px;background:#e9ebff;color:#001acb;font:500 15px/1.75 "DM Mono",monospace;white-space:pre-wrap}.big-idea{margin:70px 0;padding:48px;border-radius:26px;background:var(--accent);color:white;font:400 clamp(32px,4vw,48px)/1.18 "DM Serif Display",serif}.references{font-size:15px;color:var(--muted)}.references li{margin-bottom:14px}.article-end{padding:70px 0;text-align:center;border-top:1px solid var(--line)}.article-end h2{max-width:720px;margin:8px auto 25px;font:400 clamp(38px,5vw,60px)/1 "DM Serif Display",serif}.button{display:inline-flex;align-items:center;min-height:46px;padding:0 21px;border-radius:999px;background:var(--ink);color:white;font-size:15px;font-weight:600;text-decoration:none}.button:hover{background:var(--accent)}footer{display:flex;justify-content:space-between;gap:20px;padding:26px 0;border-top:1px solid var(--line);color:var(--muted);font-size:13px}.footer-links{display:flex;gap:20px}
+    html[data-theme="dark"] .lead{color:#c8cbd3}html[data-theme="dark"] .question{background:#171a23;border-left-color:#ffb100}html[data-theme="dark"] .callout{background:#171a23;border-color:#3a4050}html[data-theme="dark"] .flow,html[data-theme="dark"] pre{background:#090b11;color:#eef0f5;box-shadow:inset 0 0 0 1px #2b3140}html[data-theme="dark"] .result{background:#171f42;color:#d4dcff;box-shadow:inset 0 0 0 1px #2c3a76}html[data-theme="dark"] .big-idea{background:linear-gradient(135deg,#0055ff,#001acb)}html[data-theme="dark"] .button{background:var(--accent);color:#fff}html[data-theme="dark"] article p code{padding:.12em .34em;border-radius:4px;background:#252a37;color:#d9e0ff}
+    :focus-visible{outline:3px solid rgba(0,85,255,.38);outline-offset:4px}@media(max-width:820px){.layout{grid-template-columns:minmax(0,720px)}.toc{display:none}}@media(max-width:560px){body{font-size:17px}.shell,.nav{width:min(100% - 24px,1140px)}.nav-links a:not(.back){display:none}.article-head{padding:75px 0 45px}h1{font-size:57px}.hero-visual img{min-height:340px}.hero-visual figcaption{width:calc(100% - 24px);flex-direction:column}.layout{padding:65px 0 90px}.question,.callout,.big-idea{padding:24px}.flow,pre{margin-inline:-2px;padding:20px}footer{flex-direction:column}}
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a class="logo" href="index.html">NISHON<span>•</span>NOTES</a>
+    <div class="nav-links"><a href="index.html#writing">All writing</a><a class="back" href="index.html">← Home</a><button class="theme-toggle" type="button" aria-label="Theme: Auto, following device settings" title="Theme: Auto (device)"><span class="auto" aria-hidden="true">AUTO</span><span class="sun" aria-hidden="true">☼</span><span class="moon" aria-hidden="true">☾</span></button></div>
+  </nav>
+
+  <header class="article-head shell">
+    <div class="meta"><span>Frontier technology</span><span>14 min read</span><span>1 July 2026</span></div>
+    <h1>Reading the Landscape with AI</h1>
+    <p class="dek">A lightweight experiment combining image captioning, NLP, and remote sensing to produce human-readable change summaries.</p>
+    <div class="byline"><img class="avatar" src="assets/nishon-tandukar.jpg" alt=""><div><strong>Nishon Tandukar</strong><span>GeoAI research and data specialist</span></div></div>
+  </header>
+
+  <figure class="hero-visual">
+    <img src="assets/smarter-mapping-nepal.jpg" alt="Aerial image showing flooded homes and farmland in Nepal">
+    <figcaption><span>Real aerial imagery from Smarter Mapping for Recovery, a hyper-localized GeoAI project in Nepal involving Nishon and NAXA.</span><a href="https://www.essentialtech.ch/projects/smarter-mapping-for-recovery" target="_blank" rel="noopener">Source: EPFL EssentialTech ↗</a></figcaption>
+  </figure>
+
+  <div class="layout shell">
+    <aside class="toc" aria-label="Article contents">
+      <strong>In this article</strong>
+      <a href="#idea">The idea</a><a href="#context">Academic context</a><a href="#vlm">Vision-language models</a><a href="#workflow">The workflow</a><a href="#useful">Why this is useful</a><a href="#limits">Limitations</a><a href="#next">What comes next</a><a href="#references">References</a>
+    </aside>
+    <article>
+      <p class="lead">Remote sensing change detection is usually treated as a pixel problem. We compare two images from different dates, identify changed areas, and produce a binary mask or classified map.</p>
+      <p>This is useful when the goal is measurement: how many pixels changed, where they changed, and how much area was affected. Change detection is commonly framed as assigning change or no-change labels to pixels in co-registered images from different times—especially for urban expansion, land-use monitoring, deforestation, and damage assessment.</p>
+      <div class="question">But many real users also want something more direct: what actually changed on the ground?</div>
+      <p>Did open land become a built-up area? Did vegetation disappear? Did new roads or parking lots appear? Did a construction site turn into a commercial complex?</p>
+      <p>This experiment explores a lightweight semantic change detection workflow. Instead of starting with pixel differencing, I use a vision-language model to describe two aerial images in natural language. I then apply NLP techniques to compare the generated descriptions and produce a readable summary of land-cover and land-use change.</p>
+      <div class="callout"><strong>Important distinction</strong>This is not a replacement for classical change detection models. It is a semantic explanation layer—a way to turn visual differences into readable observations.</div>
+
+      <h2 id="idea">The idea</h2>
+      <p>The key shift is that the image pair is converted into text before comparison. Once the visual content is represented as language, we can compare meaning, extract land-use features, and generate a readable summary.</p>
+      <div class="flow">Image at Time 1 → Vision-Language Model → Caption 1
+Image at Time 2 → Vision-Language Model → Caption 2
+Caption 1 + Caption 2 → NLP comparison → Change summary</div>
+      <p>The pipeline has three main parts:</p>
+      <ol><li>Image captioning using a vision-language model</li><li>NLP-based feature extraction from generated captions</li><li>Semantic comparison for change detection</li></ol>
+
+      <h2 id="context">Academic context</h2>
+      <p>This experiment sits between two research areas. The first is remote sensing image change detection. Modern methods learn from bitemporal image pairs and produce pixel-level change maps. The field has moved from hand-crafted features toward CNNs, attention mechanisms, transformers, and foundation-model-inspired pipelines.</p>
+      <p>The Bitemporal Image Transformer (BIT) is a useful reference because it argues that high-resolution change detection needs both semantic understanding and spatial-temporal context—not just raw image differencing.</p>
+      <p>The second area is vision-language representation learning. CLIP showed that large-scale image-text supervision can produce visual models that transfer across tasks using natural-language prompts. Recent remote sensing work has begun exploring similar language-guided approaches to semantic and open-vocabulary change detection.</p>
+      <p>My method is much lighter than those systems. It does not train a change detection model. It asks a practical question: can captioning plus NLP provide a readable first-pass interpretation of change?</p>
+
+      <h2 id="vlm">What is a vision-language model?</h2>
+      <p>A vision-language model (VLM) connects visual information with language. It can take an image as input and answer questions, generate captions, classify objects, or describe a scene.</p>
+      <p>In a geospatial context, a VLM can inspect an aerial image and describe visible features such as buildings, roads, vegetation, water bodies, agricultural fields, construction sites, parking lots, and industrial areas. Instead of raw pixel values, it produces a description humans can read.</p>
+      <p>For this experiment, I used the <code>vikhyatk/moondream2</code> model from Hugging Face:</p>
+      <pre><code>from transformers import AutoModelForCausalLM
+
+model = AutoModelForCausalLM.from_pretrained(
+    "vikhyatk/moondream2",
+    revision="2025-06-21",
+    trust_remote_code=True,
+    device_map={"": "cuda"},
+)</code></pre>
+
+      <h2 id="workflow">The workflow</h2>
+      <h3>Step 1: Load a pair of aerial images</h3>
+      <p>The experiment uses a pair of aerial images from the LEVIR-CD change detection dataset. Each pair contains images of the same area captured at different times.</p>
+      <pre><code>from PIL import Image
+import matplotlib.pyplot as plt
+
+pair_number = 5
+image_path1 = f"/kaggle/input/levir-cd-change-detection/LEVIR-CD+/train/A/train_{pair_number}.png"
+image_path2 = f"/kaggle/input/levir-cd-change-detection/LEVIR-CD+/train/B/train_{pair_number}.png"
+
+image1 = Image.open(image_path1)
+image2 = Image.open(image_path2)</code></pre>
+      <p>The first image contains mostly open land, roads, sparse vegetation, and a development area. The second shows a much more developed scene, with large buildings, parking lots, and organized road infrastructure.</p>
+
+      <h3>Step 2: Generate captions</h3>
+      <pre><code>caption1 = model.caption(image1, length="long")["caption"]
+caption2 = model.caption(image2, length="long")["caption"]</code></pre>
+      <p>This is where the workflow becomes language-based. Instead of comparing image arrays directly, we now have two text descriptions. The captions already offer a quick qualitative reading—but they still need to be compared.</p>
+
+      <h3>Step 3: Bring in NLP</h3>
+      <p>NLP turns free-form captions into structured signals. The goal is to identify features shared by both images, features unique to each date, and how similar the descriptions are semantically.</p>
+      <pre><code>from sentence_transformers import SentenceTransformer, util
+
+embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
+embedding1 = embedding_model.encode(caption1, convert_to_tensor=True)
+embedding2 = embedding_model.encode(caption2, convert_to_tensor=True)
+
+cosine_score = util.cos_sim(embedding1, embedding2).item()
+semantic_difference = 1.0 - cosine_score</code></pre>
+      <p>A high similarity score suggests that the captions describe comparable scenes. A lower score suggests meaningfully different scenes. But semantic similarity is not physical change: two captions can use the same words while hiding major changes in amount, position, or density.</p>
+
+      <h3>Extract land-use and land-cover features</h3>
+      <p>I used compact keyword lists and spaCy to extract relevant nouns, adjectives, and verbs from each caption.</p>
+      <pre><code>def extract_land_components(text):
+    doc = nlp(text)
+    components = {
+        "land_cover": set(),
+        "land_use": set(),
+        "descriptors": {t.lemma_.lower() for t in doc if t.pos_ == "ADJ"},
+        "actions": {t.lemma_.lower() for t in doc if t.pos_ == "VERB"},
+    }
+    for token in doc:
+        if token.pos_ in {"NOUN", "PROPN"}:
+            lemma = token.lemma_.lower()
+            if lemma in LAND_COVER_KEYWORDS:
+                components["land_cover"].add(lemma)
+            if lemma in LAND_USE_KEYWORDS:
+                components["land_use"].add(lemma)
+    return components</code></pre>
+      <p>The most useful comparison is not the raw set of words, but the difference between them:</p>
+      <div class="result">Shared features:
+• roads
+• vegetation
+
+Features reduced or lost:
+• open fields
+• sparse land cover
+
+Features gained:
+• buildings
+• parking lots
+• commercial or industrial development</div>
+
+      <h3>Step 4: Calculate a feature-change score</h3>
+      <p>To estimate how different the extracted feature sets are, I used Jaccard distance: one minus the overlap divided by all unique features.</p>
+      <pre><code>features_1 = features_a["land_cover"] | features_a["land_use"]
+features_2 = features_b["land_cover"] | features_b["land_use"]
+
+intersection = len(features_1 & features_2)
+union = len(features_1 | features_2)
+
+feature_change_score = None if union == 0 else 1.0 - (intersection / union)</code></pre>
+      <div class="callout"><strong>Implementation note</strong>If both captions yield zero matched keywords, that is insufficient evidence—not “no change.” Otherwise, extraction failure can be mistaken for landscape stability.</div>
+
+      <h3>Step 5: Produce a readable summary</h3>
+      <div class="result">The first image appears to show mostly open land, sparse vegetation, roads, and limited development.
+
+The second image appears to show a more developed commercial or industrial area, with large buildings, parking lots, and organized road infrastructure.
+
+Overall, the area appears to have changed from a more open or rural landscape into a more built-up developed landscape.</div>
+
+      <h2 id="useful">Why this is useful</h2>
+      <p>Classical change detection remains essential for measurement, localization, and validation. But its outputs often require technical interpretation. A language layer can complement these methods with:</p>
+      <ul><li>Quick scene summaries</li><li>Land-use and land-cover explanations</li><li>Human-readable reports</li><li>Searchable text descriptions</li><li>First-pass interpretation for analysts</li></ul>
+      <p>Instead of ending with a binary mask, the system could say: “Open land and sparse vegetation were replaced by large commercial buildings, parking areas, and internal roads.” That is much easier to include in reports, dashboards, and decision-support tools.</p>
+
+      <h2 id="limits">Where this approach falls short</h2>
+      <h3>1. Captions can miss important details</h3><p>Vision-language models may miss small objects, confuse land-use categories, or describe an object too generally.</p>
+      <h3>2. Captions can hallucinate</h3><p>A model may mention plausible features that are not actually present—especially where aerial object scale and resolution are ambiguous.</p>
+      <h3>3. Text similarity is not spatial change</h3><p>Captions may remain semantically similar even when the spatial layout has changed significantly.</p>
+      <h3>4. Keyword lists are limited</h3><p>A transparent keyword approach is also brittle. It can miss multi-word concepts such as “parking lot,” “construction site,” or “power plant.”</p>
+      <h3>5. There is no pixel-level localization</h3><p>This workflow can suggest what changed, but not precisely where. Operational use should combine it with segmentation, object detection, or classical change detection.</p>
+
+      <h2 id="next">A better next version</h2>
+      <p>The next version should ask the VLM to compare the image pair directly, rather than captioning each image independently:</p>
+      <div class="flow">Compare these two aerial images of the same location.
+Describe only visible land-use and land-cover changes.
+Return JSON with:
+• unchanged_features
+• lost_features
+• gained_features
+• likely_change_type
+• confidence</div>
+      <p>Another improvement is to validate the semantic output against ground-truth change masks from datasets like LEVIR-CD. That would answer two important questions: did the model describe the correct kind of change, and did that description correspond to actual changed pixels?</p>
+      <h3>A practical hybrid workflow</h3>
+      <div class="flow">Satellite or aerial image pair
+        ↓
+Classical change detection or segmentation model
+        ↓
+Changed regions
+        ↓
+Vision-language model
+        ↓
+Semantic explanation
+        ↓
+Human-readable change report</div>
+      <p>Here, the classical model finds where change happened, while the VLM and NLP layer explain what the change means. That combination is much stronger than captions alone.</p>
+
+      <h2>Conclusion</h2>
+      <p>This experiment demonstrates a simple but useful idea: aerial-image change detection does not always have to end with a mask. Sometimes, we also need language.</p>
+      <p>By using a vision-language model, we can convert aerial imagery into scene descriptions. With NLP, we can compare those descriptions and extract semantic signals about land-cover and land-use change.</p>
+      <div class="big-idea">Pixel-level change tells us where the image changed. Semantic change helps us explain what changed.</div>
+      <p>For geospatial applications, both views matter.</p>
+
+      <h2 id="references">References</h2>
+      <ol class="references">
+        <li>Chen, H., Qi, Z., and Shi, Z. (2021). <em>Remote Sensing Image Change Detection with Transformers.</em> arXiv:2103.00208.</li>
+        <li>Khelifi, L., and Mignotte, M. (2020). <em>Deep Learning for Change Detection in Remote Sensing Images: Comprehensive Review and Meta-Analysis.</em> arXiv:2006.05612.</li>
+        <li>Radford, A., Kim, J. W., Hallacy, C., Ramesh, A., Goh, G., Agarwal, S., et al. (2021). <em>Learning Transferable Visual Models From Natural Language Supervision.</em> arXiv:2103.00020.</li>
+        <li>Reimers, N., and Gurevych, I. (2019). <em>Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks.</em> arXiv:1908.10084.</li>
+        <li>Zhu, Y., Li, L., Chen, K., Liu, C., Zhou, F., and Shi, Z. (2025). <em>Semantic-CD: Remote Sensing Image Semantic Change Detection towards Open-vocabulary Setting.</em> arXiv:2501.06808.</li>
+      </ol>
+    </article>
+  </div>
+
+  <section class="article-end">
+    <div class="shell"><div class="meta" style="justify-content:center"><span>Keep reading</span></div><h2>More notes on maps, research, and technology.</h2><a class="button" href="index.html#writing">Browse all writing →</a></div>
+  </section>
+  <footer class="shell"><span>© <span id="year"></span> Nishon Tandukar</span><div class="footer-links"><a href="index.html#writing">Archive</a><a href="https://www.linkedin.com/in/nishon-tandukar/" target="_blank" rel="noopener">LinkedIn</a><a href="https://www.instagram.com/life.of.nishon/" target="_blank" rel="noopener">Instagram</a><a href="mailto:hello@nishon.com.np">Email</a></div></footer>
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+    const themeToggle = document.querySelector(".theme-toggle");
+    const deviceTheme = matchMedia("(prefers-color-scheme: dark)");
+    const themeModes = ["auto", "light", "dark"];
+    function applyThemeMode(mode, save = true) {
+      const theme = mode === "auto" ? (deviceTheme.matches ? "dark" : "light") : mode;
+      document.documentElement.dataset.themeMode = mode;
+      document.documentElement.dataset.theme = theme;
+      if (save) localStorage.setItem("nishon-theme", mode);
+      syncThemeToggle();
+    }
+    function syncThemeToggle() {
+      const mode = document.documentElement.dataset.themeMode || "auto";
+      const dark = document.documentElement.dataset.theme === "dark";
+      const next = themeModes[(themeModes.indexOf(mode) + 1) % themeModes.length];
+      const label = mode === "auto" ? "Auto, following device settings" : mode[0].toUpperCase() + mode.slice(1);
+      themeToggle.setAttribute("aria-label", `Theme: ${label}. Switch to ${next}`);
+      themeToggle.setAttribute("title", `Theme: ${label}`);
+      document.querySelector('meta[name="theme-color"]').content = dark ? "#11131a" : "#ffffff";
+    }
+    themeToggle.addEventListener("click", () => {
+      const mode = document.documentElement.dataset.themeMode || "auto";
+      applyThemeMode(themeModes[(themeModes.indexOf(mode) + 1) % themeModes.length]);
+    });
+    deviceTheme.addEventListener("change", () => {
+      if (document.documentElement.dataset.themeMode === "auto") applyThemeMode("auto", false);
+    });
+    syncThemeToggle();
+  </script>
+</body>
+</html>
