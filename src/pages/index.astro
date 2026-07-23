@@ -121,6 +121,20 @@ const homeSchema = {
     }
     a { color: inherit; text-decoration: none; }
     button { font: inherit; }
+    .ui-icon {
+      display: inline-block;
+      flex: none;
+      width: 16px;
+      height: 16px;
+      background: currentColor;
+      -webkit-mask: var(--icon) center / contain no-repeat;
+      mask: var(--icon) center / contain no-repeat;
+    }
+    .icon-monitor { --icon: url("/assets/icons/monitor.svg"); }
+    .icon-sun { --icon: url("/assets/icons/sun.svg"); }
+    .icon-moon { --icon: url("/assets/icons/moon.svg"); }
+    .icon-arrow-right { --icon: url("/assets/icons/arrow-right.svg"); }
+    .icon-external-link { --icon: url("/assets/icons/external-link.svg"); }
     .shell { width: min(1140px, calc(100% - 40px)); margin-inline: auto; }
 
     .nav {
@@ -149,7 +163,7 @@ const homeSchema = {
     }
     html[data-theme="dark"] .nav::before { background: rgba(17,19,26,.92); }
     .logo { font: 800 15px/1 "Manrope", sans-serif; letter-spacing: -.04em; }
-    .logo span { color: var(--accent); }
+    .logo span { display: inline-block; width: 5px; height: 5px; margin: 0 2px 2px; border-radius: 50%; background: var(--accent); }
     .nav-links { display: flex; align-items: center; gap: 26px; color: #505249; font-size: 14px; font-weight: 600; }
     html[data-theme="dark"] .nav-links { color: #c2c5ce; }
     .nav-links a { display: inline-flex; align-items: center; min-height: 44px; }
@@ -168,11 +182,10 @@ const homeSchema = {
     }
     .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
     .theme-toggle:active { transform: scale(.94); }
-    .theme-toggle span { display: none; }
-    html[data-theme-mode="auto"] .theme-toggle .auto,
-    html[data-theme-mode="light"] .theme-toggle .sun,
-    html[data-theme-mode="dark"] .theme-toggle .moon { display: block; }
-    .theme-toggle .auto { font: 700 10px/1 "Manrope", sans-serif; letter-spacing: .04em; }
+    .theme-toggle .ui-icon { display: none; width: 18px; height: 18px; }
+    html[data-theme-mode="auto"] .theme-toggle .icon-monitor,
+    html[data-theme-mode="light"] .theme-toggle .icon-sun,
+    html[data-theme-mode="dark"] .theme-toggle .icon-moon { display: block; }
     .button {
       display: inline-flex;
       align-items: center;
@@ -415,11 +428,11 @@ const homeSchema = {
 </head>
 <body>
   <nav class="nav" aria-label="Main navigation">
-    <a class="logo" href="#top" aria-label="Nishon Tandukar, home">NISHON<span>•</span>NOTES</a>
+    <a class="logo" href="#top" aria-label="Nishon Tandukar, home">NISHON<span aria-hidden="true"></span>NOTES</a>
     <div class="nav-links">
       <a href="#writing">Writing</a>
       <a href="#about">About</a>
-      <button class="theme-toggle" type="button" aria-label="Theme: Auto, following device settings" title="Theme: Auto (device)"><span class="auto" aria-hidden="true">AUTO</span><span class="sun" aria-hidden="true">☼</span><span class="moon" aria-hidden="true">☾</span></button>
+      <button class="theme-toggle" type="button" aria-label="Theme: Auto, following device settings" title="Theme: Auto (device)"><span class="ui-icon icon-monitor" aria-hidden="true"></span><span class="ui-icon icon-sun" aria-hidden="true"></span><span class="ui-icon icon-moon" aria-hidden="true"></span></button>
     </div>
   </nav>
 
@@ -434,8 +447,8 @@ const homeSchema = {
         <div>
           <p>I use this site to talk about the geospatial things I do.</p>
           <div class="hero-actions">
-            <a href="reading-the-landscape-with-ai.html">Read the featured article →</a>
-            <a href="https://medium.com/@niyo177" target="_blank" rel="noopener">Medium archive ↗</a>
+            <a href="reading-the-landscape-with-ai.html">Read the featured article <span class="ui-icon icon-arrow-right" aria-hidden="true"></span></a>
+            <a href="https://medium.com/@niyo177" target="_blank" rel="noopener">Medium archive <span class="ui-icon icon-external-link" aria-hidden="true"></span></a>
           </div>
         </div>
       </div>
@@ -447,13 +460,13 @@ const homeSchema = {
         <article class="featured">
           <div class="feature-art">
             <img src="assets/smarter-mapping-nepal.jpg" alt="Aerial image showing flooded homes and farmland in Nepal">
-            <a class="media-credit" href="https://www.essentialtech.ch/projects/smarter-mapping-for-recovery" target="_blank" rel="noopener">Image source ↗</a>
+            <a class="media-credit" href="https://www.essentialtech.ch/projects/smarter-mapping-for-recovery" target="_blank" rel="noopener">Image source <span class="ui-icon icon-external-link" aria-hidden="true"></span></a>
           </div>
           <div class="feature-copy">
             <div class="post-meta"><span>Remote sensing + GeoAI</span><span>10 min read</span><span>Updated 23 July 2026</span></div>
             <h3>Testing Semantic Change Detection with Aerial Image Captions</h3>
             <p>What Moondream2 captions and sentence embeddings can and cannot say about change between two aerial images.</p>
-            <a class="read-link" href="reading-the-landscape-with-ai.html" aria-label="Read Testing Semantic Change Detection with Aerial Image Captions">Read article <span>→</span></a>
+            <a class="read-link" href="reading-the-landscape-with-ai.html" aria-label="Read Testing Semantic Change Detection with Aerial Image Captions">Read article <span class="ui-icon icon-arrow-right" aria-hidden="true"></span></a>
           </div>
         </article>
       </div>
@@ -476,55 +489,55 @@ const homeSchema = {
             <div class="post-meta"><span>Open data + automation</span><span>7 min read</span><span>2026</span></div>
             <h3>Building a Public Nepal Earthquake Dataset</h3>
             <p>Maintaining a reusable spatial archive from Nepal’s published earthquake records.</p>
-            <a class="read-link" href="building-a-public-nepal-earthquake-dataset.html">Read article <span>→</span></a>
+            <a class="read-link" href="building-a-public-nepal-earthquake-dataset.html">Read article <span class="ui-icon icon-arrow-right" aria-hidden="true"></span></a>
           </article>
           <article class="post-card" data-topic="geospatial">
             <div class="post-meta"><span>Python + spatial data</span><span>7 min read</span><span>2026</span></div>
             <h3>Finding Nepal’s Local Level from a Coordinate</h3>
             <p>Using FlatGeobuf and a Shapely spatial index to identify a Gaupalika or Nagarpalika.</p>
-            <a class="read-link" href="finding-nepals-local-level-from-a-coordinate.html">Read article <span>→</span></a>
+            <a class="read-link" href="finding-nepals-local-level-from-a-coordinate.html">Read article <span class="ui-icon icon-arrow-right" aria-hidden="true"></span></a>
           </article>
           <article class="post-card" data-topic="geospatial">
             <div class="post-meta"><span>OpenStreetMap + algorithms</span><span>8 min read</span><span>2026</span></div>
             <h3>Visualizing Pathfinding on OpenStreetMap</h3>
             <p>Building a Python tool to compare four pathfinding strategies on real road networks.</p>
-            <a class="read-link" href="visualizing-pathfinding-on-openstreetmap.html">Read article <span>→</span></a>
+            <a class="read-link" href="visualizing-pathfinding-on-openstreetmap.html">Read article <span class="ui-icon icon-arrow-right" aria-hidden="true"></span></a>
           </article>
           <article class="post-card" data-topic="technology">
             <div class="post-meta"><span>Remote sensing + GeoAI</span><span>10 min read</span><span>2026</span></div>
             <h3>Testing Semantic Change Detection with Aerial Image Captions</h3>
             <p>A small caption-comparison experiment using a LEVIR-CD image pair.</p>
-            <a class="read-link" href="reading-the-landscape-with-ai.html">Read article <span>→</span></a>
+            <a class="read-link" href="reading-the-landscape-with-ai.html">Read article <span class="ui-icon icon-arrow-right" aria-hidden="true"></span></a>
           </article>
           <article class="post-card" data-topic="notes">
             <div class="post-meta"><span>Field notes</span><span>5 min read</span><span>2022</span></div>
             <h3>3 Problems, 3 Solutions for Ride Tracking</h3>
             <p>Lessons from tracking a 50-kilometre Kora ride with the Greenway Nepal mobile application.</p>
-            <a class="read-link" href="https://medium.com/@niyo177/3-problems-3-solutions-for-ride-tracking-in-green-way-nepal-mobile-application-78e51c708c28" target="_blank" rel="noopener">Read on Medium <span>↗</span></a>
+            <a class="read-link" href="https://medium.com/@niyo177/3-problems-3-solutions-for-ride-tracking-in-green-way-nepal-mobile-application-78e51c708c28" target="_blank" rel="noopener">Read on Medium <span class="ui-icon icon-external-link" aria-hidden="true"></span></a>
           </article>
           <article class="post-card" data-topic="technology">
             <div class="post-meta"><span>Android + geospatial</span><span>4 min read</span><span>2019</span></div>
             <h3>Recreating a Google Pixel Live Wallpaper</h3>
             <p>A five-day logbook combining terrain data, satellite imagery, Blender, and Android.</p>
-            <a class="read-link" href="https://medium.com/@niyo177/recreating-a-basic-google-pixel-live-wallpapers-part-1-751fb7330139" target="_blank" rel="noopener">Read on Medium <span>↗</span></a>
+            <a class="read-link" href="https://medium.com/@niyo177/recreating-a-basic-google-pixel-live-wallpapers-part-1-751fb7330139" target="_blank" rel="noopener">Read on Medium <span class="ui-icon icon-external-link" aria-hidden="true"></span></a>
           </article>
           <article class="post-card" data-topic="technology">
             <div class="post-meta"><span>Software</span><span>2 min read</span><span>2017</span></div>
             <h3>Vertical Code Formatting</h3>
             <p>Why source code should read like an article, from high-level intent to implementation detail.</p>
-            <a class="read-link" href="https://medium.com/@niyo177/vertical-code-formatting-bb52055b2f27" target="_blank" rel="noopener">Read on Medium <span>↗</span></a>
+            <a class="read-link" href="https://medium.com/@niyo177/vertical-code-formatting-bb52055b2f27" target="_blank" rel="noopener">Read on Medium <span class="ui-icon icon-external-link" aria-hidden="true"></span></a>
           </article>
           <article class="post-card" data-topic="geospatial">
             <div class="post-meta"><span>OpenStreetMap</span><span>1 min read</span><span>2017</span></div>
             <h3>Android: Offline Maps Using osmdroid</h3>
             <p>A concise guide to packaging OpenStreetMap tiles for offline use in an Android application.</p>
-            <a class="read-link" href="https://medium.com/@niyo177/offline-maps-using-osmdroid-2123af7d71cf" target="_blank" rel="noopener">Read on Medium <span>↗</span></a>
+            <a class="read-link" href="https://medium.com/@niyo177/offline-maps-using-osmdroid-2123af7d71cf" target="_blank" rel="noopener">Read on Medium <span class="ui-icon icon-external-link" aria-hidden="true"></span></a>
           </article>
           <article class="post-card" data-topic="geospatial">
             <div class="post-meta"><span>Open mapping</span><span>Talk</span><span>2026</span></div>
             <h3>Bridging Municipal Road Data and OSM</h3>
             <p>Introducing OSM-Validate at State of the Map India 2026.</p>
-            <a class="read-link" href="https://wiki.openstreetmap.org/wiki/State_of_the_Map_India_2026" target="_blank" rel="noopener">View programme <span>↗</span></a>
+            <a class="read-link" href="https://wiki.openstreetmap.org/wiki/State_of_the_Map_India_2026" target="_blank" rel="noopener">View programme <span class="ui-icon icon-external-link" aria-hidden="true"></span></a>
           </article>
         </div>
       </div>
@@ -540,7 +553,7 @@ const homeSchema = {
       </div>
       <figure class="shell field-photo">
         <img src="assets/naxa-hot-tasking-manager-team.jpg" alt="NAXA and Humanitarian OpenStreetMap Team members together in Kathmandu">
-        <figcaption><span>NAXA and Humanitarian OpenStreetMap Team members after Tasking Manager onboarding in Kathmandu. Nishon is third from the right.</span><a href="https://www.hotosm.org/en/news/hot-tasking-manager-welcome-to-naxa/" target="_blank" rel="noopener">Read the HOT announcement ↗</a></figcaption>
+        <figcaption><span>NAXA and Humanitarian OpenStreetMap Team members after Tasking Manager onboarding in Kathmandu. Nishon is third from the right.</span><a href="https://www.hotosm.org/en/news/hot-tasking-manager-welcome-to-naxa/" target="_blank" rel="noopener">Read the HOT announcement <span class="ui-icon icon-external-link" aria-hidden="true"></span></a></figcaption>
       </figure>
     </section>
 
