@@ -54,8 +54,8 @@ Variables and Secrets**:
 - `PUBLIC_TURNSTILE_SITE_KEY`: the public widget sitekey, read from the Worker
   runtime environment
 - `TURNSTILE_SECRET_KEY`: the matching Turnstile secret, stored as a secret
-- `CONTACT_EMAIL`: the email address returned after successful verification,
-  stored as a secret
+
+`CONTACT_EMAIL` is optional and can override the server-side contact address.
 
 Redeploy after adding the variables. Do not commit the secret key or contact
 email to the repository.

@@ -7,9 +7,11 @@ const json = (body, status = 200) => new Response(JSON.stringify(body), {
 });
 
 export async function onRequestPost({ request, env }) {
-  if (!env.TURNSTILE_SECRET_KEY || !env.CONTACT_EMAIL) {
-    return json({ error: "Contact protection is not configured." }, 503);
+  if (!env.TURNSTILE_SECRET_KEY) {
+    return json({ error: "Turnstile protection is not configured." }, 503);
   }
+
+  const contactEmail = env.CONTACT_EMAIL || "hello@nishon.com.np";
 
   let formData;
   try {
@@ -55,7 +57,7 @@ export async function onRequestPost({ request, env }) {
     return json({ error: "The security check was issued for another website." }, 403);
   }
 
-  return json({ email: env.CONTACT_EMAIL });
+  return json({ email: contactEmail });
 }
 
 export function onRequestGet() {
