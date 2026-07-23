@@ -877,6 +877,14 @@ const homeSchema = {
     const turnstileWidget = contactGate?.querySelector(".cf-turnstile");
     const submitButton = contactGate?.querySelector('button[type="submit"]');
 
+    const readJsonResponse = async (response) => {
+      const contentType = response.headers.get("content-type") || "";
+      if (!contentType.includes("application/json")) {
+        throw new Error("The contact service is unavailable. Please try again later.");
+      }
+      return response.json();
+    };
+
     const waitForTurnstile = () => new Promise((resolve, reject) => {
       if (window.turnstile) return resolve(window.turnstile);
 
@@ -897,7 +905,7 @@ const homeSchema = {
         const response = await fetch("/api/turnstile-config", {
           headers: { accept: "application/json" }
         });
-        const result = await response.json();
+        const result = await readJsonResponse(response);
         if (!response.ok || !result.siteKey) {
           throw new Error(result.error || "The security check is not configured.");
         }
@@ -939,7 +947,7 @@ const homeSchema = {
           body: new FormData(contactGate),
           headers: { accept: "application/json" }
         });
-        const result = await response.json();
+        const result = await readJsonResponse(response);
         if (!response.ok || !result.email) throw new Error(result.error || "Unable to reveal the email.");
 
         const link = document.createElement("a");

@@ -38,7 +38,11 @@ The current long-form article remains in `public/reading-the-landscape-with-ai.h
 
 - Build command: `npm run build`
 - Output directory: `dist`
+- Deploy command: `npx wrangler deploy`
 - Node version: `22` or newer
+
+The Worker entry point handles `/api/*` before static assets. Other requests are
+served directly from `dist`.
 
 ### Protected email contact
 
