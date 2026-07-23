@@ -4,6 +4,8 @@ import {
   onRequestPost as revealEmail
 } from "../functions/api/reveal-email.js";
 
+const API_PREFIX = "/api/";
+
 const json = (body, status = 200, extraHeaders = {}) => new Response(JSON.stringify(body), {
   status,
   headers: {
@@ -37,7 +39,7 @@ export default {
       return json({ error: "Method not allowed." }, 405, { allow: "POST" });
     }
 
-    if (pathname.startsWith("/api/")) {
+    if (pathname.startsWith(API_PREFIX)) {
       return json({ error: "Not found." }, 404);
     }
 
