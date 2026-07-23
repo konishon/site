@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="background-glow" cx="0" cy="0" r="1" gradientTransform="translate(1050 80) rotate(135) scale(690 620)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1e2d73"/>
+      <stop offset=".55" stop-color="#11131a"/>
+      <stop offset="1" stop-color="#0b0d13"/>
+    </radialGradient>
+    <linearGradient id="globe-fill" x1="760" y1="100" x2="1120" y2="520" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#738dff" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#0055ff" stop-opacity=".06"/>
+    </linearGradient>
+    <clipPath id="globe-clip">
+      <circle cx="940" cy="310" r="212"/>
+    </clipPath>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#background-glow)"/>
+  <path d="M0 0h14v630H0z" fill="#0055ff"/>
+  <path d="M14 0h5v630h-5z" fill="#ffb100"/>
+
+  <g font-family="DejaVu Sans, Arial, sans-serif">
+    <text x="76" y="78" fill="#f4f4f4" font-size="22" font-weight="700" letter-spacing="2">NISHON</text>
+    <circle cx="240" cy="71" r="5" fill="#ffb100"/>
+    <text x="258" y="78" fill="#f4f4f4" font-size="22" font-weight="700" letter-spacing="2">NOTES</text>
+
+    <text x="76" y="224" fill="#ffffff" font-family="DejaVu Serif, Georgia, serif" font-size="82" font-weight="700">Nishon</text>
+    <text x="76" y="310" fill="#ffffff" font-family="DejaVu Serif, Georgia, serif" font-size="82" font-weight="700">Tandukar.</text>
+
+    <text x="80" y="378" fill="#8da1ff" font-size="20" font-weight="700" letter-spacing="1">GEOSPATIAL SOFTWARE ENGINEER</text>
+    <text x="80" y="432" fill="#c8cbd3" font-size="23">I build geoprocessing workflows, spatial data systems,</text>
+    <text x="80" y="469" fill="#c8cbd3" font-size="23">geospatial data pipelines, and GeoAI workflows.</text>
+
+    <line x1="80" y1="526" x2="610" y2="526" stroke="#303542" stroke-width="2"/>
+    <text x="80" y="568" fill="#a9adb7" font-size="18" font-weight="600" letter-spacing="1">NISHON.COM.NP</text>
+  </g>
+
+  <g clip-path="url(#globe-clip)">
+    <circle cx="940" cy="310" r="212" fill="url(#globe-fill)"/>
+    <ellipse cx="940" cy="310" rx="82" ry="212" fill="none" stroke="#8da1ff" stroke-opacity=".3" stroke-width="2"/>
+    <ellipse cx="940" cy="310" rx="155" ry="212" fill="none" stroke="#8da1ff" stroke-opacity=".18" stroke-width="2"/>
+    <path d="M728 310h424M750 230c112 48 268 48 380 0M750 390c112-48 268-48 380 0M790 150c86 45 214 45 300 0M790 470c86-45 214-45 300 0" fill="none" stroke="#8da1ff" stroke-opacity=".22" stroke-width="2"/>
+    <path d="M760 330c62-54 112-58 172-16 58 40 119 39 185-18M790 235c55 34 100 29 151-13 50-42 100-47 155-15M810 430c49-34 92-32 132 8 43 43 93 41 150-5" fill="none" stroke="#f4f4f4" stroke-opacity=".16" stroke-width="12" stroke-linecap="round"/>
+  </g>
+  <circle cx="940" cy="310" r="212" fill="none" stroke="#8da1ff" stroke-opacity=".72" stroke-width="3"/>
+
+  <g fill="#ffb100" stroke="#fff2cf" stroke-width="3">
+    <circle cx="1030" cy="278" r="7"/>
+    <circle cx="817" cy="234" r="7"/>
+    <circle cx="879" cy="220" r="7"/>
+    <circle cx="908" cy="252" r="7"/>
+    <circle cx="962" cy="241" r="7"/>
+    <circle cx="1002" cy="330" r="7"/>
+    <circle cx="866" cy="407" r="7"/>
+  </g>
+
+  <rect x="760" y="542" width="360" height="42" rx="21" fill="#171a23" stroke="#303542"/>
+  <text x="940" y="569" text-anchor="middle" fill="#c8cbd3" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="600" letter-spacing=".7">GEOPROCESSING · DATA SYSTEMS · GEOAI</text>
+</svg>
