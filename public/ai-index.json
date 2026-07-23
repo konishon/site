@@ -5,6 +5,13 @@
     "language": "en",
     "author": {
       "name": "Nishon Tandukar",
+      "job_title": "Geospatial Software Engineer",
+      "location": "Nepal",
+      "organization": {
+        "name": "NAXA",
+        "role": "Director of Geospatial Intelligence",
+        "url": "https://naxa.com.np/"
+      },
       "github": "https://github.com/konishon",
       "medium": "https://medium.com/@niyo177",
       "linkedin": "https://www.linkedin.com/in/nishon-tandukar/",
@@ -12,6 +19,10 @@
     },
     "topics": [
       "GeoAI",
+      "GeoAI workflows",
+      "geospatial data pipelines",
+      "geoprocessing workflows",
+      "geospatial software engineering Nepal",
       "OpenStreetMap",
       "spatial data infrastructure",
       "Python",
@@ -31,25 +42,32 @@
       "title": "Building a Public Nepal Earthquake Dataset",
       "url": "https://nishon.com.np/building-a-public-nepal-earthquake-dataset.html",
       "published": "2026-07-23",
-      "topics": ["Nepal", "earthquakes", "open data", "GeoJSON", "GitHub Actions"]
+      "summary": "An automated pipeline that republishes Nepal earthquake records as versioned CSV, JSON, and GeoJSON and checks for updates weekly.",
+      "source_repository": "https://github.com/konishon/nepal-earthquake-epicenter-data",
+      "topics": ["Nepal", "earthquakes", "open data", "GeoJSON", "GitHub Actions", "geospatial data pipelines"]
     },
     {
       "title": "Finding Nepal's Local Level from a Coordinate",
       "url": "https://nishon.com.np/finding-nepals-local-level-from-a-coordinate.html",
       "published": "2026-07-23",
-      "topics": ["Nepal", "Palika", "FlatGeobuf", "Shapely", "spatial indexing"]
+      "summary": "A Python coordinate-to-Palika lookup using bundled FlatGeobuf boundaries and a Shapely STRtree, with no external API dependency.",
+      "source_repository": "https://github.com/konishon/nepal-palika-finder",
+      "topics": ["Nepal", "Palika", "FlatGeobuf", "Shapely", "spatial indexing", "geospatial software engineering"]
     },
     {
       "title": "Visualizing Pathfinding on OpenStreetMap",
       "url": "https://nishon.com.np/visualizing-pathfinding-on-openstreetmap.html",
       "published": "2026-07-23",
-      "topics": ["OpenStreetMap", "pathfinding", "A*", "Dijkstra", "BFS", "Python"]
+      "summary": "A Python visualizer comparing BFS, Dijkstra, A*, and Greedy Best-First Search on real OpenStreetMap road networks.",
+      "source_repository": "https://github.com/konishon/osm-pathfinding-visualizer",
+      "topics": ["OpenStreetMap", "pathfinding", "A*", "Dijkstra", "BFS", "Python", "OSMnx"]
     },
     {
       "title": "Testing Semantic Change Detection with Aerial Image Captions",
       "url": "https://nishon.com.np/reading-the-landscape-with-ai.html",
       "published": "2026-07-01",
-      "topics": ["GeoAI", "remote sensing", "vision-language models", "NLP", "change detection"]
+      "summary": "A GeoAI experiment comparing aerial-image captions across two dates; useful for broad descriptions, but not for locating, measuring, or verifying change.",
+      "topics": ["GeoAI workflows", "remote sensing", "vision-language models", "NLP", "semantic change detection", "LEVIR-CD"]
     }
   ]
 }

@@ -3,11 +3,11 @@
 Site: https://nishon.com.np/
 Author: Nishon Tandukar
 Language: English
-Primary subjects: GeoAI, OpenStreetMap, spatial data infrastructure, Python, open data, humanitarian technology, remote sensing, and software engineering.
+Primary subjects: Geospatial software engineering in Nepal, GeoAI workflows, geospatial data pipelines, geoprocessing workflows, OpenStreetMap, spatial data infrastructure, Python, open data, humanitarian technology, and remote sensing.
 
 ## Author
 
-Nishon Tandukar works on open-source geospatial systems, humanitarian mapping, spatial data infrastructure, and applied AI. The blog is a public record of technical experiments, open-source projects, implementation decisions, limitations, and lessons from practice.
+Nishon Tandukar is a Geospatial Software Engineer based in Nepal and Director of Geospatial Intelligence at NAXA. He works on open-source geospatial systems, humanitarian mapping, spatial data infrastructure, geospatial data pipelines, and applied GeoAI. The blog is a public record of technical experiments, open-source projects, implementation decisions, limitations, and lessons from practice.
 
 Canonical author profiles:
 - GitHub: https://github.com/konishon

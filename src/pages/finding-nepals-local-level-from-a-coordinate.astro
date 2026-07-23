@@ -17,9 +17,22 @@ const contents = [
   readingTime="7 min read"
   published="23 July 2026"
   publishedISO="2026-07-23"
-  hero="assets/nepal-palika-boundaries.png"
+  hero="assets/nepal-palika-boundaries.webp"
+  heroWidth={1600}
+  heroHeight={921}
   heroAlt="Map of Nepal divided into local-level administrative boundaries"
   heroCaption="Local-level geometries rendered from the FlatGeobuf dataset bundled with Nepal Palika Finder."
+  ogImage="assets/og-nepal-palika.jpg"
+  ogImageAlt="Map of Nepal’s local-level administrative boundaries"
+  keywords={["geospatial software engineering Nepal", "Nepal Palika lookup", "FlatGeobuf", "Shapely STRtree", "point in polygon", "spatial indexing"]}
+  summary="Nepal Palika Finder packages administrative boundaries with a reusable Python lookup. A FlatGeobuf dataset and Shapely STRtree identify the local level containing a coordinate without requiring an external API."
+  project={{
+    name: "Nepal Palika Finder",
+    description: "A Python library for coordinate-to-Palika lookup using bundled FlatGeobuf boundaries and a Shapely spatial index.",
+    repository: "https://github.com/konishon/nepal-palika-finder",
+    programmingLanguage: "Python",
+    applicationCategory: "Geospatial lookup library"
+  }}
   sourceUrl="https://github.com/konishon/nepal-palika-finder"
   contents={contents}
 >

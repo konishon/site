@@ -1,12 +1,12 @@
 # Nishon Notes
 
-> Technical writing by Nishon Tandukar about GeoAI, OpenStreetMap, spatial data infrastructure, open data, Python, humanitarian technology, and software engineering.
+> Technical writing by Nishon Tandukar, a Geospatial Software Engineer in Nepal, about GeoAI workflows, geospatial data pipelines, geoprocessing, OpenStreetMap, spatial data infrastructure, and open data.
 
-Nishon Notes is a public, English-language technical blog. Articles document open-source projects, practical experiments, implementation choices, limitations, and lessons learned. Nishon Tandukar is the author and publisher.
+Nishon Notes is a public, English-language technical blog. Articles document open-source projects, practical experiments, implementation choices, limitations, and lessons learned. Nishon Tandukar is the author and publisher and serves as Director of Geospatial Intelligence at NAXA.
 
 ## Primary pages
 
-- [Homepage and article index](https://nishon.com.np/): Latest writing and author information.
+- [Homepage and article index](https://nishon.com.np/): Geospatial software engineering profile, latest writing, project context, and author information.
 - [RSS feed](https://nishon.com.np/feed.xml): Machine-readable publication feed.
 - [XML sitemap](https://nishon.com.np/sitemap.xml): Canonical page inventory.
 - [Full AI-oriented site summary](https://nishon.com.np/llms-full.txt): Expanded article descriptions and source references.

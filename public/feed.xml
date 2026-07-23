@@ -3,7 +3,7 @@
   <channel>
     <title>Nishon Notes</title>
     <link>https://nishon.com.np/</link>
-    <description>Technical writing by Nishon Tandukar on GeoAI, open mapping, spatial data, and software.</description>
+    <description>Geospatial software engineering notes by Nishon Tandukar on GeoAI workflows, geospatial data pipelines, geoprocessing, open mapping, and spatial data systems.</description>
     <language>en</language>
     <lastBuildDate>Thu, 23 Jul 2026 00:00:00 +0545</lastBuildDate>
     <atom:link href="https://nishon.com.np/feed.xml" rel="self" type="application/rss+xml"/>
