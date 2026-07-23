@@ -445,6 +445,23 @@ const homeSchema = {
     .author-photo { width: 150px; aspect-ratio: 1; margin-bottom: 28px; border-radius: 50%; object-fit: cover; border: 4px solid #343630; }
     .about-copy { align-self: end; }
     .about-copy p { margin: 0; color: #bfc1b8; font-size: 19px; }
+    .naxa-affiliation {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 15px;
+      margin-top: 28px;
+      padding: 15px 16px;
+      border: 1px solid #55574f;
+      border-radius: 12px;
+      background: rgba(255,255,255,.045);
+      transition: border-color .2s ease, transform .2s ease;
+    }
+    .naxa-affiliation:hover { transform: translateY(-2px); border-color: #8da1ff; }
+    .naxa-logo { display: block; width: 96px; height: auto; }
+    .naxa-context strong { display: block; color: white; font-size: 15px; }
+    .naxa-context small { display: block; margin-top: 2px; color: #bfc1b8; font-size: 12px; line-height: 1.45; }
+    .naxa-affiliation .ui-icon { color: #8da1ff; }
     .topics { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 28px; }
     .topics span { padding: 0 0 4px; border-bottom: 1px solid #55574f; color: #e4e5df; font-size: 13px; }
     .field-photo { margin-top: 0; overflow: hidden; border-radius: 0; background: var(--card); border: 0; }
@@ -512,6 +529,9 @@ const homeSchema = {
       .hero-bottom p { font-size: 18px; line-height: 1.7; }
       .hero-actions { gap: 10px; margin-top: 20px; }
       .hero-actions .button { width: 100%; }
+      .naxa-affiliation { gap: 11px; padding: 13px; }
+      .naxa-logo { width: 72px; }
+      .naxa-context small { font-size: 11px; }
       .contact-panel { gap: 28px; padding: 44px 0; }
       .hero-meta { gap: 18px; }
       section { padding: 58px 0; }
@@ -665,6 +685,11 @@ const homeSchema = {
         <div><img class="author-photo" src="assets/nishon-tandukar.jpg" alt="Portrait of Nishon Tandukar"><div class="label">About</div><h2>Nishon Tandukar</h2></div>
         <div class="about-copy">
           <p>I’m a Geospatial Software Engineer based in Nepal. I build mapping applications, spatial data infrastructure, and GeoAI workflows. My work includes Nepal’s National Geoportal, GeoNadir, and aerial-image mapping for disaster recovery. I’ve worked with clients across Nepal, Australia, the United States, Switzerland, Italy, India, and Malawi.</p>
+          <a class="naxa-affiliation" href="https://naxa.com.np/" target="_blank" rel="noopener" aria-label="Learn more about NAXA">
+            <img class="naxa-logo" src="/assets/naxa-logo.png" alt="NAXA">
+            <span class="naxa-context"><strong>Director of Geospatial Intelligence at NAXA</strong><small>I lead work across geospatial products, data systems, and GeoAI solutions.</small></span>
+            <span class="ui-icon icon-external-link" aria-hidden="true"></span>
+          </a>
           <div class="topics"><span>GeoAI</span><span>OpenStreetMap</span><span>Spatial data infrastructure</span><span>Humanitarian technology</span><span>Software engineering</span></div>
         </div>
       </div>
