@@ -46,7 +46,7 @@
       "topics": ["OpenStreetMap", "pathfinding", "A*", "Dijkstra", "BFS", "Python"]
     },
     {
-      "title": "Reading the Landscape with AI",
+      "title": "Testing Semantic Change Detection with Aerial Image Captions",
       "url": "https://nishon.com.np/reading-the-landscape-with-ai.html",
       "published": "2026-07-01",
       "topics": ["GeoAI", "remote sensing", "vision-language models", "NLP", "change detection"]

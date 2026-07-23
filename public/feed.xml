@@ -29,11 +29,11 @@
       <description>Watching BFS, Dijkstra, A*, and Greedy Best-First Search move through real road networks.</description>
     </item>
     <item>
-      <title>Reading the Landscape with AI</title>
+      <title>Testing Semantic Change Detection with Aerial Image Captions</title>
       <link>https://nishon.com.np/reading-the-landscape-with-ai.html</link>
       <guid isPermaLink="true">https://nishon.com.np/reading-the-landscape-with-ai.html</guid>
       <pubDate>Wed, 01 Jul 2026 00:00:00 +0545</pubDate>
-      <description>Using vision-language models and NLP to explain change in aerial imagery.</description>
+      <description>Testing what Moondream2 captions and sentence embeddings can say about change between two LEVIR-CD aerial images.</description>
     </item>
   </channel>
 </rss>

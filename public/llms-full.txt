@@ -40,12 +40,12 @@ Source repository: https://github.com/konishon/osm-pathfinding-visualizer
 
 Summary: The article describes a Python pathfinding visualizer that downloads drivable OpenStreetMap networks through OSMnx, projects them into metric coordinates, and compares Breadth-First Search, Dijkstra, A*, and Greedy Best-First Search. Traversal implementations yield explored edges, separating algorithm execution from rendering. Matplotlib displays the search and final route in 2D or 3D. Generated sine-wave audio provides search progress and a path-found signal. The application supports interactive viewing, static previews, GIF export, and MP4 export with audio.
 
-## Article: Reading the Landscape with AI
+## Article: Testing Semantic Change Detection with Aerial Image Captions
 
 Canonical URL: https://nishon.com.np/reading-the-landscape-with-ai.html
 Published: 2026-07-01
 
-Summary: The article explores a lightweight semantic change-detection workflow for aerial imagery. A vision-language model captions images from two dates. NLP extracts land-cover and land-use concepts, compares feature sets, and produces a readable change summary. The method is presented as an explanation layer rather than a replacement for pixel-level change detection. Limitations include missed details, hallucination, weak spatial localization, caption similarity that does not equal physical change, and brittle keyword extraction. A stronger future workflow would combine classical segmentation or change detection with a vision-language explanation layer.
+Summary: The article tests Moondream2 on two dates from a LEVIR-CD aerial-image pair. A small NLP pipeline compares sentence embeddings and extracts land-cover and land-use terms from separate captions. The resulting text suggests a shift from open land to built development, but it does not locate or measure change. Caption errors, guessed land use, limited keyword lists, and the loss of spatial detail prevent the method from serving as evidence on its own. The proposed next step is to connect model explanations to geometries produced by a conventional change-detection model and evaluate them against LEVIR-CD masks.
 
 ## Citation guidance
 

@@ -190,7 +190,8 @@ const homeSchema = {
     .button:hover { transform: translateY(-2px); background: var(--accent); }
     .nav .button { min-height: 40px; font-size: 13px; }
 
-    .hero { position: relative; isolation: isolate; overflow: hidden; padding: 68px 0 66px; }
+    main { overflow-x: clip; }
+    .hero { position: relative; isolation: isolate; overflow: visible; margin-bottom: 48px; padding: 68px 0 66px; }
     .hero > *:not(.globe-wrap) { position: relative; z-index: 2; }
     .globe-wrap {
       position: absolute;
@@ -404,7 +405,7 @@ const homeSchema = {
         <div>
           <p>I use this site to talk about the geospatial things I do.</p>
           <div class="hero-actions">
-            <a href="reading-the-landscape-with-ai.html">Read the latest →</a>
+            <a href="reading-the-landscape-with-ai.html">Read the featured article →</a>
             <a href="https://medium.com/@niyo177" target="_blank" rel="noopener">Medium archive ↗</a>
           </div>
         </div>
@@ -413,17 +414,17 @@ const homeSchema = {
 
     <section aria-labelledby="featured-title">
       <div class="shell">
-        <div class="section-head"><div><div class="label">Featured</div><h2 id="featured-title">Latest article</h2></div></div>
+        <div class="section-head"><div><div class="label">Featured</div><h2 id="featured-title">Featured article</h2></div></div>
         <article class="featured">
           <div class="feature-art">
-            <img src="assets/nepal-earthquake-data.png" alt="Map and interface showing earthquake epicenters across Nepal">
-            <a class="media-credit" href="https://github.com/konishon/nepal-earthquake-epicenter-data" target="_blank" rel="noopener">Open dataset ↗</a>
+            <img src="assets/smarter-mapping-nepal.jpg" alt="Aerial image showing flooded homes and farmland in Nepal">
+            <a class="media-credit" href="https://www.essentialtech.ch/projects/smarter-mapping-for-recovery" target="_blank" rel="noopener">Image source ↗</a>
           </div>
           <div class="feature-copy">
-            <div class="post-meta"><span>Open data + automation</span><span>7 min read</span><span>23 July 2026</span></div>
-            <h3>Building a Public Nepal Earthquake Dataset</h3>
-            <p>Turning published earthquake records into reusable CSV, JSON, and GeoJSON through an automated open-data pipeline.</p>
-            <a class="read-link" href="building-a-public-nepal-earthquake-dataset.html" aria-label="Read Building a Public Nepal Earthquake Dataset">Read article <span>→</span></a>
+            <div class="post-meta"><span>Remote sensing + GeoAI</span><span>10 min read</span><span>Updated 23 July 2026</span></div>
+            <h3>Testing Semantic Change Detection with Aerial Image Captions</h3>
+            <p>What Moondream2 captions and sentence embeddings can and cannot say about change between two aerial images.</p>
+            <a class="read-link" href="reading-the-landscape-with-ai.html" aria-label="Read Testing Semantic Change Detection with Aerial Image Captions">Read article <span>→</span></a>
           </div>
         </article>
       </div>
@@ -461,9 +462,9 @@ const homeSchema = {
             <a class="read-link" href="visualizing-pathfinding-on-openstreetmap.html">Read article <span>→</span></a>
           </article>
           <article class="post-card" data-topic="technology">
-            <div class="post-meta"><span>Frontier technology</span><span>14 min read</span></div>
-            <h3>Reading the Landscape with AI</h3>
-            <p>Using image captioning and NLP to explain what changed across two aerial images.</p>
+            <div class="post-meta"><span>Remote sensing + GeoAI</span><span>10 min read</span><span>2026</span></div>
+            <h3>Testing Semantic Change Detection with Aerial Image Captions</h3>
+            <p>A small caption-comparison experiment using a LEVIR-CD image pair.</p>
             <a class="read-link" href="reading-the-landscape-with-ai.html">Read article <span>→</span></a>
           </article>
           <article class="post-card" data-topic="notes">
