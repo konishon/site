@@ -625,7 +625,7 @@ const homeSchema = {
 
   <main id="main-content">
     <header class="hero shell" id="top">
-      <div class="globe-wrap" aria-hidden="true">
+      <div class="globe-wrap" role="img" aria-label="Rotating globe showing Nepal connected with client work in Australia, the United States, Switzerland, Italy, India, and Malawi.">
         <canvas id="geo-globe"></canvas>
         <span class="globe-caption">
           <span class="globe-caption-title">Worked with clients across 7 countries</span>
@@ -818,6 +818,10 @@ const homeSchema = {
     const globeWrap = canvas.closest(".globe-wrap");
     const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
     const mobileGlobe = window.matchMedia("(max-width: 600px)");
+    const observeMediaChange = (query, callback) => {
+      if ("addEventListener" in query) query.addEventListener("change", callback);
+      else query.addListener(callback);
+    };
     let reducedMotion = motionPreference.matches;
     let globeVisible = true;
     let pageVisible = !document.hidden;
@@ -1029,7 +1033,7 @@ const homeSchema = {
       else stopGlobe();
     });
 
-    motionPreference.addEventListener("change", (event) => {
+    observeMediaChange(motionPreference, (event) => {
       reducedMotion = event.matches;
       startGlobe();
     });
@@ -1040,6 +1044,17 @@ const homeSchema = {
         resizeFrame = null;
         startGlobe();
       });
+    });
+
+    if ("ResizeObserver" in window) {
+      const globeResizeObserver = new ResizeObserver(() => startGlobe());
+      globeResizeObserver.observe(globeWrap);
+    }
+
+    window.addEventListener("pagehide", stopGlobe);
+    window.addEventListener("pageshow", () => {
+      pageVisible = true;
+      startGlobe();
     });
 
     const themeToggle = document.querySelector(".theme-toggle");
@@ -1066,7 +1081,7 @@ const homeSchema = {
       const mode = document.documentElement.dataset.themeMode || "auto";
       applyThemeMode(themeModes[(themeModes.indexOf(mode) + 1) % themeModes.length]);
     });
-    deviceTheme.addEventListener("change", () => {
+    observeMediaChange(deviceTheme, () => {
       if (document.documentElement.dataset.themeMode === "auto") applyThemeMode("auto", false);
     });
     syncThemeToggle();
@@ -1082,6 +1097,19 @@ const homeSchema = {
         throw new Error("The contact service is unavailable. Please try again later.");
       }
       return response.json();
+    };
+
+    const fetchWithTimeout = async (input, options = {}, timeout = 10000) => {
+      const controller = new AbortController();
+      const timer = window.setTimeout(() => controller.abort(), timeout);
+      try {
+        return await fetch(input, { ...options, signal: controller.signal });
+      } catch (error) {
+        if (error.name === "AbortError") throw new Error("The contact service took too long to respond. Please try again.");
+        throw error;
+      } finally {
+        window.clearTimeout(timer);
+      }
     };
 
     const loadTurnstileScript = () => new Promise((resolve, reject) => {
@@ -1123,7 +1151,7 @@ const homeSchema = {
     const initializeTurnstile = async () => {
       try {
         const [response] = await Promise.all([
-          fetch("/api/turnstile-config", { headers: { accept: "application/json" } }),
+          fetchWithTimeout("/api/turnstile-config", { headers: { accept: "application/json" } }),
           loadTurnstileScript()
         ]);
         const result = await readJsonResponse(response);
@@ -1172,7 +1200,7 @@ const homeSchema = {
       contactStatus.textContent = "Checking…";
 
       try {
-        const response = await fetch(contactGate.action, {
+        const response = await fetchWithTimeout(contactGate.action, {
           method: "POST",
           body: new FormData(contactGate),
           headers: { accept: "application/json" }
