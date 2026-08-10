@@ -784,7 +784,7 @@ const homeSchema = {
   </footer>
 
   <script>
-    import { geoDistance, geoGraticule, geoOrthographic, geoPath } from "d3-geo";
+    import { geoDistance, geoGraticule, geoInterpolate, geoOrthographic, geoPath } from "d3-geo";
     import { feature } from "topojson-client";
     import countriesAtlas from "world-atlas/countries-110m.json";
 
@@ -837,6 +837,19 @@ const homeSchema = {
       geometry: countries.features.find((country) => String(country.id).padStart(3, "0") === client.id)
     }));
     const graticule = geoGraticule().step([30, 30])();
+    const nepal = clientCountries.find((client) => client.name === "Nepal");
+    const clientRoutes = clientCountries
+      .filter((client) => client !== nepal)
+      .map((client) => {
+        const interpolate = geoInterpolate(nepal.point, client.point);
+        return {
+          client,
+          geometry: {
+            type: "LineString",
+            coordinates: Array.from({ length: 33 }, (_, index) => interpolate(index / 32))
+          }
+        };
+      });
     const animationStart = performance.now();
     let frame = null;
     let resizeFrame = null;
@@ -892,6 +905,20 @@ const homeSchema = {
       context.lineWidth = .45;
       context.stroke();
 
+      // Great-circle routes make the globe read as a working geospatial network,
+      // with Nepal as the origin for the highlighted client locations.
+      context.save();
+      context.setLineDash([2, 5]);
+      context.lineDashOffset = reducedMotion ? 0 : -((timestamp - animationStart) * .012) % 7;
+      context.strokeStyle = dark ? "rgba(255,177,0,.52)" : "rgba(0,85,255,.5)";
+      context.lineWidth = 1;
+      clientRoutes.forEach(({ geometry }) => {
+        context.beginPath();
+        path(geometry);
+        context.stroke();
+      });
+      context.restore();
+
       clientCountries.forEach((client) => {
         if (!client.geometry) return;
         context.beginPath();
@@ -935,6 +962,20 @@ const homeSchema = {
         context.fillStyle = dark ? "#f4f4f4" : "#333132";
         context.fillText(label, labelX, labelY);
       });
+
+      // A quiet pulse gives the home location a clear focal point without
+      // competing with the page's headline.
+      if (geoDistance(visibleCenter, nepal.point) < Math.PI / 2) {
+        const origin = projection(nepal.point);
+        const pulse = reducedMotion ? .55 : ((timestamp - animationStart) % 1800) / 1800;
+        context.beginPath();
+        context.arc(origin[0], origin[1], 6 + pulse * 12, 0, Math.PI * 2);
+        context.strokeStyle = dark
+          ? `rgba(255, 177, 0, ${.46 * (1 - pulse)})`
+          : `rgba(255, 171, 0, ${.42 * (1 - pulse)})`;
+        context.lineWidth = 1.25;
+        context.stroke();
+      }
 
       context.beginPath();
       path({ type: "Sphere" });
