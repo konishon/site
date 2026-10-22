@@ -1,0 +1,85 @@
+---
+import { getCollection, render } from "astro:content";
+import { getImage } from "astro:assets";
+import ArticleLayout from "../layouts/ArticleLayout.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("posts");
+  return posts.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content, headings } = await render(entry);
+const site = "https://nishon.com.np/";
+const url = `${site}${entry.id}`;
+const hero = d.hero ? await getImage({ src: d.hero, width: 1400 }) : undefined;
+const contents = [
+  ...headings.filter((h) => h.depth === 2).map((h) => ({ id: h.slug, label: h.text })),
+  ...(d.faq.length ? [{ id: "faq", label: "Questions" }] : [])
+];
+const articleExtra = {
+  ...(d.license && { license: d.license }),
+  ...(d.temporalCoverage && { temporalCoverage: d.temporalCoverage }),
+  ...(d.places.length && { spatialCoverage: d.places, contentLocation: d.places, countryOfOrigin: { "@type": "Country", name: "Nepal" } }),
+  ...(d.sources.length && { isBasedOn: d.sources.map((s) => ({ "@type": "Dataset", ...s })) }),
+  ...(d.downloads.length && {
+    associatedMedia: d.downloads.map((f) => ({
+      "@type": "ImageObject",
+      contentUrl: `${site}assets/wallpapers/${f.file}.jpg`,
+      name: f.label,
+      encodingFormat: "image/jpeg",
+      license: d.license,
+      acquireLicensePage: url,
+      creditText: d.credit,
+      copyrightNotice: "© 2026 Nishon Tandukar, CC BY 4.0",
+      creator: { "@id": `${site}#nishon` },
+      width: f.width,
+      height: f.height
+    }))
+  })
+};
+const extraSchema = d.faq.length ? [{
+  "@type": "FAQPage",
+  "@id": `${url}#faq`,
+  mainEntity: d.faq.map(({ q, a }) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } }))
+}] : [];
+const published = d.published.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+---
+<ArticleLayout
+  title={d.title}
+  description={d.description}
+  category={d.category}
+  readingTime={d.readingTime}
+  published={published}
+  publishedISO={d.published.toISOString().slice(0, 10)}
+  hero={hero?.src}
+  heroWidth={hero?.options.width}
+  heroHeight={hero?.options.height}
+  heroAlt={d.heroAlt}
+  heroCaption={d.heroCaption}
+  ogImage={d.ogImage}
+  ogImageAlt={d.ogImageAlt}
+  keywords={d.keywords}
+  summary={d.summary}
+  sourceUrl={d.sourceUrl}
+  sourceLabel={d.sourceLabel}
+  contents={contents}
+  cleanUrl
+  articleExtra={articleExtra}
+  extraSchema={extraSchema}
+  geo={d.geo}
+>
+  <div class="post-body"><Content /></div>
+  {d.faq.length > 0 && <>
+    <h2 id="faq">Questions</h2>
+    {d.faq.map(({ q, a }) => <><h3>{q}</h3><p>{a}</p></>)}
+  </>}
+</ArticleLayout>
+
+<style is:global>
+  .post-body > p:first-child { font-size: 21px; color: #45483f; }
+  html[data-theme="dark"] .post-body > p:first-child { color: #c8cbd3; }
+  article img { display: block; max-width: 100%; height: auto; margin: 0 0 28px; }
+  article img[width="640"] { max-width: 320px; }
+</style>

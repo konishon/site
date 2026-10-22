@@ -30,6 +30,8 @@ category: "GeoAI"
 readingTime: "5 min read"
 featured: false
 ---
+
+Optional fields (see `src/content.config.ts`): `summary`, `keywords`, `hero` (image under `src/assets/`), `ogImage`, `license`, `credit`, `geo`, `places`, `sources`, `downloads`, `faq`. Posts render through `src/pages/[slug].astro`; `src/content/posts/dashain-flights-wallpapers.md` is the worked example.
 ```
 
 The current long-form article remains in `public/reading-the-landscape-with-ai.html` so its code examples and existing design are preserved exactly.
