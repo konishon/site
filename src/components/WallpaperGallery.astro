@@ -1,0 +1,75 @@
+---
+import { Image } from "astro:assets";
+import { statSync } from "node:fs";
+
+const { downloads } = Astro.props;
+const previews = import.meta.glob("../assets/wallpapers/*-preview.jpg", { eager: true, import: "default" });
+
+const cities = [
+  { id: "kathmandu", name: "Kathmandu", note: "1,259 flights counted at Tribhuvan International Airport. Fulpati was the busiest day with 278." },
+  { id: "pokhara", name: "Pokhara", note: "195 flights counted at Pokhara International Airport, about 39 a day." }
+];
+
+const items = downloads.map((d) => {
+  const parts = d.file.split("-");
+  const phone = parts.includes("phone");
+  const dark = parts.includes("dark");
+  const bytes = statSync(`public/assets/wallpapers/${d.file}.jpg`).size;
+  return {
+    ...d,
+    city: parts[0],
+    phone,
+    dark,
+    href: `/assets/wallpapers/${d.file}.jpg`,
+    preview: previews[`../assets/wallpapers/${d.file}-preview.jpg`],
+    size: `${(bytes / 1048576).toFixed(1)} MB`
+  };
+});
+---
+<section class="wp-gallery" aria-labelledby="download">
+  <h2 id="download">Download</h2>
+  {cities.map((city) => (
+    <div class="wp-city">
+      <h3>{city.name}</h3>
+      <p class="wp-note">{city.note}</p>
+      {[false, true].map((phone) => (
+        <div class={`wp-grid ${phone ? "wp-phone" : "wp-desktop"}`}>
+          {items.filter((i) => i.city === city.id && i.phone === phone).sort((a, b) => Number(a.dark) - Number(b.dark)).map((i) => (
+            <figure class="wp-card">
+              <a class="wp-thumb" href={i.href} target="_blank" rel="noopener" aria-label={`Open ${i.label} at full size`} style={`aspect-ratio:${i.width}/${i.height}`}>
+                <Image src={i.preview} alt={i.label} widths={phone ? [240, 480] : [480, 960]} sizes={phone ? "(max-width:600px) 45vw, 220px" : "(max-width:600px) 100vw, 380px"} loading="lazy" />
+              </a>
+              <figcaption>
+                <span class="wp-title">{phone ? "Phone" : "Desktop"} · {i.dark ? "Dark" : "Light"}</span>
+                <span class="wp-meta">{i.width} × {i.height} · JPG · {i.size}</span>
+                <a class="wp-btn" href={i.href} download>
+                  <span class="ui-icon icon-download" aria-hidden="true"></span> Download
+                </a>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      ))}
+    </div>
+  ))}
+</section>
+
+<style is:global>
+  .icon-download { --icon: url("/assets/icons/download.svg"); }
+  .wp-gallery { margin: 8px 0 48px; }
+  .wp-city { margin: 28px 0 40px; }
+  .wp-city h3 { margin-bottom: 4px; }
+  .wp-note { margin: 0 0 18px; color: var(--muted); }
+  .wp-grid { display: grid; gap: 18px; margin-bottom: 22px; }
+  .wp-desktop { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+  .wp-phone { grid-template-columns: repeat(auto-fit, minmax(150px, 220px)); }
+  .wp-card { margin: 0; padding: 10px; border: 1px solid var(--line); border-radius: 18px; background: var(--card); display: flex; flex-direction: column; gap: 12px; }
+  .wp-thumb { display: block; overflow: hidden; border-radius: 10px; background: var(--line); }
+  article .wp-thumb img { width: 100%; height: 100%; margin: 0; object-fit: cover; transition: transform .3s; }
+  .wp-thumb:hover img, .wp-thumb:focus-visible img { transform: scale(1.03); }
+  .wp-card figcaption { display: flex; flex-direction: column; gap: 2px; padding: 0 4px 4px; }
+  .wp-title { font-weight: 700; }
+  .wp-meta { color: var(--muted); font-size: 13px; }
+  .wp-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; min-height: 42px; padding: 0 18px; border-radius: 999px; background: var(--accent); color: var(--paper); font-weight: 700; font-size: 14px; text-decoration: none; transition: transform .2s; }
+  .wp-btn:hover, .wp-btn:focus-visible { transform: translateY(-2px); }
+</style>

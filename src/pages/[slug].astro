@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import { getImage } from "astro:assets";
 import ArticleLayout from "../layouts/ArticleLayout.astro";
+import WallpaperGallery from "../components/WallpaperGallery.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
@@ -15,6 +16,7 @@ const site = "https://nishon.com.np/";
 const url = `${site}${entry.id}`;
 const hero = d.hero ? await getImage({ src: d.hero, width: 1400 }) : undefined;
 const contents = [
+  ...(d.downloads.length ? [{ id: "download", label: "Download" }] : []),
   ...headings.filter((h) => h.depth === 2).map((h) => ({ id: h.slug, label: h.text })),
   ...(d.faq.length ? [{ id: "faq", label: "Questions" }] : [])
 ];
@@ -70,6 +72,7 @@ const published = d.published.toLocaleDateString("en-GB", { day: "numeric", mont
   extraSchema={extraSchema}
   geo={d.geo}
 >
+  {d.downloads.length > 0 && <WallpaperGallery downloads={d.downloads} />}
   <div class="post-body"><Content /></div>
   {d.faq.length > 0 && <>
     <h2 id="faq">Questions</h2>

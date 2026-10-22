@@ -49,48 +49,6 @@ faq:
 ---
 Five Dashain days of flights on one map, as wallpapers for your phone and your desktop, in a light and a dark version. Each line is one flight over Kathmandu or Pokhara, from Fulpati on 17 October to Vijaya Dashami on 21 October 2026.
 
-## Download
-
-### Kathmandu
-
-![Desktop wallpaper of flights over Kathmandu Valley](../../assets/wallpapers/kathmandu-dashain-2026-desktop-preview.jpg)
-
-- [Desktop, 3840 x 2160 (JPG, 5.9 MB)](/assets/wallpapers/kathmandu-dashain-2026-desktop.jpg)
-- [Phone, 1440 x 3120 (JPG, 2.7 MB)](/assets/wallpapers/kathmandu-dashain-2026-phone.jpg)
-
-![Phone wallpaper of Kathmandu flights during Dashain 2026](../../assets/wallpapers/kathmandu-dashain-2026-phone-preview.jpg)
-
-**Dark version**
-
-![Dark desktop wallpaper of flights over Kathmandu](../../assets/wallpapers/kathmandu-dashain-2026-desktop-dark-preview.jpg)
-
-- [Dark desktop, 3840 x 2160 (JPG, 3.7 MB)](/assets/wallpapers/kathmandu-dashain-2026-desktop-dark.jpg)
-- [Dark phone, 1440 x 3120 (JPG, 1.7 MB)](/assets/wallpapers/kathmandu-dashain-2026-phone-dark.jpg)
-
-![Dark phone wallpaper of Kathmandu flights during Dashain 2026](../../assets/wallpapers/kathmandu-dashain-2026-phone-dark-preview.jpg)
-
-1,259 flights counted at Tribhuvan International Airport. Fulpati was the busiest day with 278.
-
-### Pokhara
-
-![Desktop wallpaper of flights over Pokhara](../../assets/wallpapers/pokhara-dashain-2026-desktop-preview.jpg)
-
-- [Desktop, 3840 x 2160 (JPG, 4.9 MB)](/assets/wallpapers/pokhara-dashain-2026-desktop.jpg)
-- [Phone, 1440 x 3120 (JPG, 2.5 MB)](/assets/wallpapers/pokhara-dashain-2026-phone.jpg)
-
-![Phone wallpaper of Pokhara flights during Dashain 2026](../../assets/wallpapers/pokhara-dashain-2026-phone-preview.jpg)
-
-**Dark version**
-
-![Dark desktop wallpaper of flights over Pokhara](../../assets/wallpapers/pokhara-dashain-2026-desktop-dark-preview.jpg)
-
-- [Dark desktop, 3840 x 2160 (JPG, 3.0 MB)](/assets/wallpapers/pokhara-dashain-2026-desktop-dark.jpg)
-- [Dark phone, 1440 x 3120 (JPG, 1.6 MB)](/assets/wallpapers/pokhara-dashain-2026-phone-dark.jpg)
-
-![Dark phone wallpaper of Pokhara flights during Dashain 2026](../../assets/wallpapers/pokhara-dashain-2026-phone-dark-preview.jpg)
-
-195 flights counted at Pokhara International Airport, about 39 a day.
-
 ## How to read it
 
 Red lines are Nepali (domestic) flights. Blue lines are foreign (international) flights. Darker means lower, lighter means higher. The thick bundles are the approach and departure paths in and out of the valley. The orange ground is hills and the cream ground is the valley floor.
