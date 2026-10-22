@@ -1,0 +1,153 @@
+---
+import ArticleLayout from "../layouts/ArticleLayout.astro";
+const contents = [
+  { id: "download", label: "Download" },
+  { id: "read", label: "How to read it" },
+  { id: "set", label: "Set as wallpaper" },
+  { id: "data", label: "Where the data comes from" },
+  { id: "method", label: "How the flights were counted" },
+  { id: "limits", label: "Limits" },
+  { id: "faq", label: "Questions" },
+  { id: "credit", label: "Use and credit" }
+];
+const w = "assets/wallpapers/";
+const site = "https://nishon.com.np/";
+const url = `${site}dashain-flights-wallpapers`;
+const credit = "Nishon Tandukar (nishon.com.np/dashain-flights-wallpapers). Flight data © adsb.lol and its feeders, ODbL 1.0. Map data © OpenStreetMap contributors, ODbL 1.0 (openstreetmap.org/copyright). Terrain: SRTM and GMTED2010 data courtesy of the U.S. Geological Survey, via AWS Terrain Tiles.";
+const faq = [
+  ["How many flights were there over Kathmandu during Dashain 2026?", "1,259 flights were counted at Tribhuvan International Airport (VNKT) on 17, 18, 19, 20 and 21 October 2026. Fulpati, 17 October, was the busiest day with 278."],
+  ["How many flights were there over Pokhara during Dashain 2026?", "195 flights were counted at Pokhara International Airport on the same five days, about 39 a day."],
+  ["Where does the flight data come from?", "adsb.lol, an open community ADS-B receiver network. The map is built from OpenStreetMap and AWS terrain tiles."],
+  ["What do the colours mean?", "Red lines are Nepali (domestic) flights and blue lines are foreign (international) flights. Darker means lower altitude, lighter means higher."],
+  ["Can I use the wallpapers?", "Yes. The wallpapers are licensed CC BY 4.0: use, share, print or adapt them, including commercially, as long as you give the credit listed under Use and credit and link to this page."]
+];
+const places = [
+  { "@type": "Place", name: "Kathmandu Valley", sameAs: "https://en.wikipedia.org/wiki/Kathmandu_Valley", geo: { "@type": "GeoCoordinates", latitude: 27.7172, longitude: 85.324 } },
+  { "@type": "Airport", name: "Tribhuvan International Airport", iataCode: "KTM", icaoCode: "VNKT", sameAs: "https://en.wikipedia.org/wiki/Tribhuvan_International_Airport", geo: { "@type": "GeoCoordinates", latitude: 27.6966, longitude: 85.3591 } },
+  { "@type": "Place", name: "Pokhara", sameAs: "https://en.wikipedia.org/wiki/Pokhara", geo: { "@type": "GeoCoordinates", latitude: 28.2096, longitude: 83.9856 } },
+  { "@type": "Airport", name: "Pokhara International Airport", iataCode: "PHX", sameAs: "https://en.wikipedia.org/wiki/Pokhara_International_Airport", geo: { "@type": "GeoCoordinates", latitude: 28.1809, longitude: 83.9821 } }
+];
+const articleExtra = {
+  license: "https://creativecommons.org/licenses/by/4.0/",
+  temporalCoverage: "2026-10-17/2026-10-21",
+  spatialCoverage: places,
+  contentLocation: places,
+  countryOfOrigin: { "@type": "Country", name: "Nepal" },
+  isBasedOn: [
+    { "@type": "Dataset", name: "adsb.lol globe history", url: "https://github.com/adsblol/globe_history" },
+    { "@type": "Dataset", name: "OpenStreetMap", url: "https://www.openstreetmap.org/" },
+    { "@type": "Dataset", name: "AWS Terrain Tiles", url: "https://registry.opendata.aws/terrain-tiles/" }
+  ],
+  associatedMedia: ["kathmandu-dashain-2026-desktop", "kathmandu-dashain-2026-phone", "pokhara-dashain-2026-desktop", "pokhara-dashain-2026-phone"].map((n) => ({
+    "@type": "ImageObject",
+    contentUrl: `${site}${w}${n}.jpg`,
+    name: `${n.startsWith("kath") ? "Kathmandu" : "Pokhara"} Dashain 2026 flights wallpaper (${n.endsWith("phone") ? "phone" : "desktop"})`,
+    encodingFormat: "image/jpeg",
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    acquireLicensePage: url,
+    creditText: credit,
+    copyrightNotice: "© 2026 Nishon Tandukar, CC BY 4.0",
+    creator: { "@id": `${site}#nishon` },
+    width: n.endsWith("phone") ? 1440 : 3840,
+    height: n.endsWith("phone") ? 3120 : 2160
+  }))
+};
+const extraSchema = [{
+  "@type": "FAQPage",
+  "@id": `${url}#faq`,
+  mainEntity: faq.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } }))
+}];
+---
+<ArticleLayout
+  title="Dashain Flights Wallpapers for Kathmandu and Pokhara"
+  description="Free phone and desktop wallpapers of 1,259 flights over Kathmandu and 195 over Pokhara on five Dashain days in 2026, built from adsb.lol ADS-B data, OpenStreetMap and AWS terrain."
+  category="Open data + maps"
+  readingTime="4 min read"
+  published="23 October 2026"
+  publishedISO="2026-10-23"
+  hero={`${w}kathmandu-dashain-2026-desktop-preview.jpg`}
+  heroWidth={1400}
+  heroHeight={788}
+  heroAlt="Wallpaper of 1,259 flights over Kathmandu Valley on five Dashain days, 17 to 21 October 2026"
+  heroCaption="Kathmandu, 17 to 21 October 2026. Each line is one flight."
+  ogImage="assets/og-dashain-flights-wallpapers.jpg"
+  ogImageAlt="Dashain flights wallpapers for Kathmandu and Pokhara"
+  keywords={["Dashain 2026", "Kathmandu", "Pokhara", "wallpaper", "ADS-B", "adsb.lol", "Nepal aviation", "OpenStreetMap", "data visualization"]}
+  summary="Five Dashain days of flights over Kathmandu and Pokhara as free phone and desktop wallpapers. Flights come from adsb.lol public ADS-B data, the map from OpenStreetMap and AWS terrain tiles."
+  sourceUrl="https://github.com/adsblol/globe_history"
+  sourceLabel="Flight data: adsb.lol"
+  contents={contents}
+  cleanUrl
+  articleExtra={articleExtra}
+  extraSchema={extraSchema}
+  geo={{ region: "NP-BA", placename: "Kathmandu, Nepal", lat: 27.7172, lon: 85.324 }}
+>
+  <p class="lead">Five Dashain days of flights on one map, as wallpapers for your phone and your desktop. Each line is one flight over Kathmandu or Pokhara, from Fulpati on 17 October to Vijaya Dashami on 21 October 2026.</p>
+
+  <h2 id="download">Download</h2>
+  <h3>Kathmandu</h3>
+  <p><img src={`${w}kathmandu-dashain-2026-desktop-preview.jpg`} width="1400" height="788" loading="lazy" alt="Desktop wallpaper of flights over Kathmandu Valley" style="width:100%;height:auto"></p>
+  <ul>
+    <li><a href={`${w}kathmandu-dashain-2026-desktop.jpg`} download>Desktop, 3840 x 2160 (JPG, 5.9 MB)</a></li>
+    <li><a href={`${w}kathmandu-dashain-2026-phone.jpg`} download>Phone, 1440 x 3120 (JPG, 2.7 MB)</a></li>
+  </ul>
+  <p><img src={`${w}kathmandu-dashain-2026-phone-preview.jpg`} width="640" height="1387" loading="lazy" alt="Phone wallpaper of Kathmandu flights during Dashain 2026" style="max-width:320px;width:100%;height:auto"></p>
+  <p>1,259 flights counted at Tribhuvan International Airport. Fulpati was the busiest day with 278.</p>
+
+  <h3>Pokhara</h3>
+  <p><img src={`${w}pokhara-dashain-2026-desktop-preview.jpg`} width="1400" height="788" loading="lazy" alt="Desktop wallpaper of flights over Pokhara" style="width:100%;height:auto"></p>
+  <ul>
+    <li><a href={`${w}pokhara-dashain-2026-desktop.jpg`} download>Desktop, 3840 x 2160 (JPG, 4.9 MB)</a></li>
+    <li><a href={`${w}pokhara-dashain-2026-phone.jpg`} download>Phone, 1440 x 3120 (JPG, 2.5 MB)</a></li>
+  </ul>
+  <p><img src={`${w}pokhara-dashain-2026-phone-preview.jpg`} width="640" height="1387" loading="lazy" alt="Phone wallpaper of Pokhara flights during Dashain 2026" style="max-width:320px;width:100%;height:auto"></p>
+  <p>195 flights counted at Pokhara International Airport, about 39 a day.</p>
+
+  <h2 id="read">How to read it</h2>
+  <p>Red lines are Nepali (domestic) flights. Blue lines are foreign (international) flights. Darker means lower, lighter means higher. The thick bundles are the approach and departure paths in and out of the valley. The orange ground is hills and the cream ground is the valley floor.</p>
+
+  <h2 id="set">Set it as your wallpaper</h2>
+  <ul>
+    <li><strong>iPhone:</strong> open the image in Photos, tap Share, then Use as Wallpaper.</li>
+    <li><strong>Android:</strong> open the image in your gallery, open the menu, then Set as wallpaper.</li>
+    <li><strong>Windows:</strong> right-click the image, then Set as desktop background.</li>
+    <li><strong>macOS:</strong> right-click the image in Finder, then Set Desktop Picture.</li>
+  </ul>
+
+  <h2 id="data">Where the data comes from</h2>
+  <ul>
+    <li><strong>Flights:</strong> <a href="https://www.adsb.lol/" target="_blank" rel="noopener">adsb.lol</a>, a community network of ADS-B receivers. ADS-B is the position signal most aircraft broadcast every second or so. adsb.lol publishes each day as open data in its <a href="https://github.com/adsblol/globe_history" target="_blank" rel="noopener">globe history</a> archive.</li>
+    <li><strong>Roads, towns and runways:</strong> <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener">OpenStreetMap</a>, downloaded through the Overpass API.</li>
+    <li><strong>Terrain:</strong> the <a href="https://registry.opendata.aws/terrain-tiles/" target="_blank" rel="noopener">AWS terrain tiles</a> elevation dataset, shaded into the hills.</li>
+    <li><strong>Dashain dates:</strong> the Nepal government holiday list. Fulpati was 17 October, Maha Ashtami 18 and 19 October, Maha Navami 20 October and Vijaya Dashami 21 October.</li>
+  </ul>
+
+  <h2 id="method">How the flights were counted</h2>
+  <p>For each of the five days I took the final published adsb.lol file. The site posts a first version right after midnight UTC and a complete one a few hours later, and the first version is incomplete, so I only used the complete one. Nepal is UTC+5:45, so the day starts at 5:45 AM local time on the clock.</p>
+  <p>Flights that only pass over the area far from the airport are left out, and so are helicopters. Domestic means a Nepal-registered aircraft (registrations starting with 9N) that is not a wide-body. Everything else is foreign.</p>
+  <p>Arrivals and departures are counted at the runway. The five days were checked by downloading them a second time and comparing with the first copy, and 17, 18 and 20 October were identical.</p>
+
+  <h2 id="limits">Limits</h2>
+  <ul>
+    <li>Receivers on the ground lose low aircraft in the Kathmandu valley, because the hills block the signal. The last kilometres before touchdown and the take-off roll are modelled from the runway position, so those parts are an estimate, not a recording.</li>
+    <li>Only aircraft that carry a working ADS-B transmitter and are heard by a receiver appear. The counts are a lower bound.</li>
+    <li>Pokhara's one international arrival and one departure a day are flydubai flights from Dubai, which started on 23 September 2026.</li>
+  </ul>
+
+  <h2 id="faq">Questions</h2>
+  {faq.map(([q, a]) => <><h3>{q}</h3><p>{a}</p></>)}
+
+  <h2 id="credit">Use and credit</h2>
+  <p>The wallpapers are open licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">Creative Commons Attribution 4.0 (CC BY 4.0)</a>. You can use, share, print and adapt them, including commercially, as long as you give credit and link to this page.</p>
+  <p>The images contain data from three sources, and each has its own credit rule. Keep all of them when you share a wallpaper.</p>
+  <ul>
+    <li><strong>This wallpaper:</strong> Nishon Tandukar, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a>, with a link to this page. Say if you changed it.</li>
+    <li><strong>Flights:</strong> data from <a href="https://www.adsb.lol/" target="_blank" rel="noopener">adsb.lol</a> and its feeders, published under the <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener">Open Database License (ODbL) 1.0</a>. Credit adsb.lol and say the data is under the ODbL.</li>
+    <li><strong>Map:</strong> © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>, ODbL 1.0. Credit OpenStreetMap and make clear the data is under the ODbL. In print, write out the address openstreetmap.org/copyright.</li>
+    <li><strong>Terrain:</strong> SRTM and GMTED2010 elevation data courtesy of the U.S. Geological Survey, served as <a href="https://registry.opendata.aws/terrain-tiles/" target="_blank" rel="noopener">AWS Terrain Tiles</a>.</li>
+  </ul>
+  <p>Copy and paste credit:</p>
+  <pre><code>{credit}</code></pre>
+  <p>The fonts in the images, Yatra One and Mukta, are under the SIL Open Font License, which asks for no credit on pictures.</p>
+  <p>I also post these maps as videos, one for each Dashain day, plus a comparison with an ordinary Wednesday in September. Find them on <a href="https://www.instagram.com/life.of.nishon/" target="_blank" rel="noopener">Instagram at @life.of.nishon</a>.</p>
+</ArticleLayout>

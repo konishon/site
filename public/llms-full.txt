@@ -15,6 +15,15 @@ Canonical author profiles:
 - LinkedIn: https://www.linkedin.com/in/nishon-tandukar/
 - Instagram: https://www.instagram.com/life.of.nishon/
 
+## Article: Dashain Flights Wallpapers for Kathmandu and Pokhara
+
+Canonical URL: https://nishon.com.np/dashain-flights-wallpapers
+Published: 2026-10-23
+License: CC BY 4.0. Required credit: Nishon Tandukar (nishon.com.np/dashain-flights-wallpapers). Flight data © adsb.lol and its feeders, ODbL 1.0. Map data © OpenStreetMap contributors, ODbL 1.0 (openstreetmap.org/copyright). Terrain: SRTM and GMTED2010 data courtesy of the U.S. Geological Survey, via AWS Terrain Tiles.
+Data sources: adsb.lol globe history (flights), OpenStreetMap (roads, towns, runways), AWS Terrain Tiles (elevation)
+
+Summary: Free phone (1440x3120) and desktop (3840x2160) wallpapers showing every counted flight over Kathmandu (1,259 flights at Tribhuvan International Airport, VNKT) and Pokhara (195 flights at Pokhara International Airport) on the five Dashain days 17 to 21 October 2026. Fulpati, 17 October, was the busiest Kathmandu day with 278 flights. Red lines are Nepali (9N-registered, non-wide-body) flights and blue lines are foreign flights; darker means lower altitude. The final approach and take-off roll are modelled from runway geometry because ground receivers lose low aircraft in the Kathmandu valley, helicopters and distant overflights are excluded, and counts are a lower bound.
+
 ## Article: Building a Public Nepal Earthquake Dataset
 
 Canonical URL: https://nishon.com.np/building-a-public-nepal-earthquake-dataset.html

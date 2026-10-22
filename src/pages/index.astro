@@ -55,11 +55,12 @@ const homeSchema = {
       url: siteUrl.href,
       author: { "@id": `${siteUrl.href}#nishon` },
       blogPost: [
+        "dashain-flights-wallpapers",
         "building-a-public-nepal-earthquake-dataset",
         "finding-nepals-local-level-from-a-coordinate",
         "visualizing-pathfinding-on-openstreetmap",
         "reading-the-landscape-with-ai"
-      ].map((slug) => ({ "@type": "BlogPosting", url: new URL(`${slug}.html`, siteUrl).href }))
+      ].map((slug) => ({ "@type": "BlogPosting", url: new URL(slug === "dashain-flights-wallpapers" ? slug : `${slug}.html`, siteUrl).href }))
     }
   ]
 };
@@ -676,6 +677,12 @@ const homeSchema = {
         </div>
         <p class="sr-only" id="filter-status" role="status" aria-live="polite">Showing all 9 articles.</p>
         <div class="post-grid" id="article-list">
+          <article class="post-card" data-topic="geospatial">
+            <div class="post-meta"><span>Open data + maps</span><span>4 min read</span><span>2026</span></div>
+            <h3>Dashain Flights Wallpapers for Kathmandu and Pokhara</h3>
+            <p>Free phone and desktop wallpapers of Dashain flights, and the public data behind them.</p>
+            <a class="read-link" href="dashain-flights-wallpapers">Read article <span class="ui-icon icon-arrow-right" aria-hidden="true"></span></a>
+          </article>
           <article class="post-card" data-topic="geospatial">
             <div class="post-meta"><span>Open data + automation</span><span>7 min read</span><span>2026</span></div>
             <h3>Building a Public Nepal Earthquake Dataset</h3>
