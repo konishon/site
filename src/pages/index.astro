@@ -282,7 +282,7 @@ const homeSchema = {
       position: absolute;
       left: 50%;
       bottom: 2%;
-      display: inline-flex;
+      display: none;
       align-items: center;
       gap: 8px;
       width: max-content;
@@ -296,14 +296,6 @@ const homeSchema = {
       letter-spacing: .01em;
       transform: translateX(-50%);
       backdrop-filter: blur(8px);
-    }
-    .globe-caption::before {
-      content: "";
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #ffab00;
-      box-shadow: 0 0 0 3px rgba(255,171,0,.16);
     }
     .globe-country-list { display: none; }
     html[data-theme="dark"] .globe-wrap { opacity: .9; }
@@ -420,6 +412,8 @@ const homeSchema = {
     .featured h3 { margin: 22px 0 18px; font: 400 clamp(38px,4vw,58px)/1.02 "DM Serif Display", serif; letter-spacing: -.035em; }
     .featured p { margin: 0 0 32px; color: var(--muted); font-size: 17px; }
     .read-link { display: inline-flex; align-items: center; gap: 10px; width: fit-content; font-weight: 700; }
+    .post-card, .featured { position: relative; }
+    .read-link::after { content: ""; position: absolute; inset: 0; }
     .read-link span { color: var(--accent); transition: transform .2s; }
     .read-link:hover span, .read-link:focus-visible span { transform: translateX(4px); }
 
@@ -566,6 +560,7 @@ const homeSchema = {
         opacity: .82;
       }
       .globe-caption {
+        display: inline-flex;
         bottom: 1%;
         max-width: calc(100% - 20px);
         padding: 8px 10px;
@@ -626,10 +621,10 @@ const homeSchema = {
 
   <main id="main-content">
     <header class="hero shell" id="top">
-      <div class="globe-wrap" role="img" aria-label="Rotating globe showing Nepal connected with client work in Australia, the United States, Switzerland, Italy, India, and Malawi.">
+      <div class="globe-wrap" role="img" aria-label="Rotating globe showing Nepal connected with places I have been: India, France, and Switzerland.">
         <canvas id="geo-globe"></canvas>
         <span class="globe-caption">
-          <span class="globe-country-list">Nepal · Australia · USA · Switzerland · Italy · India · Malawi</span>
+          <span class="globe-country-list">Nepal · India · France · Switzerland</span>
         </span>
       </div>
       <h1>Nishon <em>Tandukar.</em></h1>
@@ -836,12 +831,9 @@ const homeSchema = {
     const countries = feature(countriesAtlas, countriesAtlas.objects.countries);
     const clientCountries = [
       { id: "524", name: "Nepal", point: [84, 28], labelOffset: [9, -12] },
-      { id: "036", name: "Australia", point: [134, -25], labelOffset: [9, -8] },
-      { id: "840", name: "USA", point: [-100, 39], labelOffset: [9, -9] },
-      { id: "756", name: "Switzerland", point: [8.2, 46.8], labelOffset: [-9, -11] },
-      { id: "380", name: "Italy", point: [12.5, 42.8], labelOffset: [9, 8] },
+      { id: "756", name: "Switzerland", point: [8.2, 46.8], labelOffset: [9, -11] },
       { id: "356", name: "India", point: [79, 22], labelOffset: [-9, 11] },
-      { id: "454", name: "Malawi", point: [34.3, -13.3], labelOffset: [-9, -8] }
+      { id: "250", name: "France", point: [2.5, 46.6], labelOffset: [-9, 10] }
     ].map((client) => ({
       ...client,
       geometry: countries.features.find((country) => String(country.id).padStart(3, "0") === client.id)
