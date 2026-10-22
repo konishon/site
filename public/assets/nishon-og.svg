@@ -44,13 +44,10 @@
   <circle cx="940" cy="310" r="212" fill="none" stroke="#8da1ff" stroke-opacity=".72" stroke-width="3"/>
 
   <g fill="#ffb100" stroke="#fff2cf" stroke-width="3">
-    <circle cx="1030" cy="278" r="7"/>
     <circle cx="817" cy="234" r="7"/>
     <circle cx="879" cy="220" r="7"/>
     <circle cx="908" cy="252" r="7"/>
-    <circle cx="962" cy="241" r="7"/>
     <circle cx="1002" cy="330" r="7"/>
-    <circle cx="866" cy="407" r="7"/>
   </g>
 
   <rect x="760" y="542" width="360" height="42" rx="21" fill="#171a23" stroke="#303542"/>
