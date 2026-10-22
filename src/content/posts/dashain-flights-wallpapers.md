@@ -102,4 +102,6 @@ Nishon Tandukar (nishon.com.np/dashain-flights-wallpapers). Flight data © adsb.
 
 The fonts in the images, Yatra One and Mukta, are under the SIL Open Font License, which asks for no credit on pictures.
 
+I also made wallpapers of the 1,898 places of worship mapped in Kathmandu Valley: see [Kathmandu Valley wallpapers](/city-of-temples-wallpapers).
+
 I also post these maps as videos, one for each Dashain day, plus a comparison with an ordinary Wednesday in September. Find them on [Instagram at @life.of.nishon](https://www.instagram.com/life.of.nishon/).

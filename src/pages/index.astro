@@ -55,12 +55,13 @@ const homeSchema = {
       url: siteUrl.href,
       author: { "@id": `${siteUrl.href}#nishon` },
       blogPost: [
+        "city-of-temples-wallpapers",
         "dashain-flights-wallpapers",
         "building-a-public-nepal-earthquake-dataset",
         "finding-nepals-local-level-from-a-coordinate",
         "visualizing-pathfinding-on-openstreetmap",
         "reading-the-landscape-with-ai"
-      ].map((slug) => ({ "@type": "BlogPosting", url: new URL(slug === "dashain-flights-wallpapers" ? slug : `${slug}.html`, siteUrl).href }))
+      ].map((slug) => ({ "@type": "BlogPosting", url: new URL(["dashain-flights-wallpapers", "city-of-temples-wallpapers"].includes(slug) ? slug : `${slug}.html`, siteUrl).href }))
     }
   ]
 };
@@ -670,8 +671,14 @@ const homeSchema = {
           <button class="filter" type="button" data-filter="technology" aria-pressed="false" aria-controls="article-list">Technology</button>
           <button class="filter" type="button" data-filter="notes" aria-pressed="false" aria-controls="article-list">Field notes</button>
         </div>
-        <p class="sr-only" id="filter-status" role="status" aria-live="polite">Showing all 9 articles.</p>
+        <p class="sr-only" id="filter-status" role="status" aria-live="polite">Showing all 10 articles.</p>
         <div class="post-grid" id="article-list">
+          <article class="post-card" data-topic="geospatial">
+            <div class="post-meta"><span>Open data + maps</span><span>3 min read</span><span>2026</span></div>
+            <h3>Kathmandu Valley Wallpapers: 1,898 Places of Worship</h3>
+            <p>Free phone and desktop wallpapers of the temples, shrines and stupas mapped in the valley.</p>
+            <a class="read-link" href="city-of-temples-wallpapers">Read article <span class="ui-icon icon-arrow-right" aria-hidden="true"></span></a>
+          </article>
           <article class="post-card" data-topic="geospatial">
             <div class="post-meta"><span>Open data + maps</span><span>4 min read</span><span>2026</span></div>
             <h3>Dashain Flights Wallpapers for Kathmandu and Pokhara</h3>

@@ -5,9 +5,10 @@ import { statSync } from "node:fs";
 const { downloads } = Astro.props;
 const previews = import.meta.glob("../assets/wallpapers/*-preview.jpg", { eager: true, import: "default" });
 
-const cities = [
-  { id: "kathmandu", name: "Kathmandu", note: "1,259 flights counted at Tribhuvan International Airport. Fulpati was the busiest day with 278." },
-  { id: "pokhara", name: "Pokhara", note: "195 flights counted at Pokhara International Airport, about 39 a day." }
+const groups = [   // files are grouped by name prefix; a group with no files is not shown
+  { prefix: "kathmandu-dashain", name: "Kathmandu", note: "1,259 flights counted at Tribhuvan International Airport. Fulpati was the busiest day with 278." },
+  { prefix: "pokhara-dashain", name: "Pokhara", note: "195 flights counted at Pokhara International Airport, about 39 a day." },
+  { prefix: "kathmandu-city-of-temples", name: "Kathmandu Valley", note: "1,898 temples, shrines and stupas mapped in OpenStreetMap in Kathmandu, Lalitpur and Bhaktapur." }
 ];
 
 const items = downloads.map((d) => {
@@ -17,7 +18,6 @@ const items = downloads.map((d) => {
   const bytes = statSync(`public/assets/wallpapers/${d.file}.jpg`).size;
   return {
     ...d,
-    city: parts[0],
     phone,
     dark,
     href: `/assets/wallpapers/${d.file}.jpg`,
@@ -28,13 +28,13 @@ const items = downloads.map((d) => {
 ---
 <section class="wp-gallery" aria-labelledby="download">
   <h2 id="download">Download</h2>
-  {cities.map((city) => (
+  {groups.filter((g) => items.some((i) => i.file.startsWith(g.prefix))).map((city) => (
     <div class="wp-city">
       <h3>{city.name}</h3>
       <p class="wp-note">{city.note}</p>
       {[false, true].map((phone) => (
         <div class={`wp-grid ${phone ? "wp-phone" : "wp-desktop"}`}>
-          {items.filter((i) => i.city === city.id && i.phone === phone).sort((a, b) => Number(a.dark) - Number(b.dark)).map((i) => (
+          {items.filter((i) => i.file.startsWith(city.prefix) && i.phone === phone).sort((a, b) => Number(a.dark) - Number(b.dark)).map((i) => (
             <figure class="wp-card">
               <a class="wp-thumb" href={i.href} target="_blank" rel="noopener" aria-label={`Open ${i.label} at full size`} style={`aspect-ratio:${i.width}/${i.height}`}>
                 <Image src={i.preview} alt={i.label} widths={phone ? [240, 480] : [480, 960]} sizes={phone ? "(max-width:600px) 45vw, 220px" : "(max-width:600px) 100vw, 380px"} loading="lazy" />

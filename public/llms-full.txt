@@ -15,6 +15,15 @@ Canonical author profiles:
 - LinkedIn: https://www.linkedin.com/in/nishon-tandukar/
 - Instagram: https://www.instagram.com/life.of.nishon/
 
+## Article: Kathmandu Valley Wallpapers: 1,898 Places of Worship
+
+Canonical URL: https://nishon.com.np/city-of-temples-wallpapers
+Published: 2026-11-01
+License: CC BY 4.0. Required credit: Nishon Tandukar (nishon.com.np/city-of-temples-wallpapers). Map and place data © OpenStreetMap contributors, ODbL 1.0 (openstreetmap.org/copyright). Terrain: SRTM and GMTED2010 data courtesy of the U.S. Geological Survey, via AWS Terrain Tiles.
+Data sources: OpenStreetMap via the Overpass API (places of worship, shrines, stupas, district borders, roads), AWS Terrain Tiles (elevation)
+
+Summary: Free light and dark phone (1440x3120) and desktop (3840x2160) wallpapers showing the 1,898 places of worship mapped in OpenStreetMap inside the Kathmandu, Lalitpur and Bhaktapur district borders (1,116 tagged Hindu, 282 Buddhist, the rest untagged). Each place is a dot over hard-edged colour steps of density, smoothed over about a kilometre. The count is a lower bound because OpenStreetMap only holds what has been mapped, and it includes shrines, stupas and a few churches and mosques.
+
 ## Article: Dashain Flights Wallpapers for Kathmandu and Pokhara
 
 Canonical URL: https://nishon.com.np/dashain-flights-wallpapers

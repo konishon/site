@@ -13,6 +13,7 @@ Nishon Notes is a public, English-language technical blog. Articles document ope
 
 ## Articles
 
+- [Kathmandu Valley Wallpapers: 1,898 Places of Worship](https://nishon.com.np/city-of-temples-wallpapers): 1,898 temples, shrines and stupas mapped in OpenStreetMap in Kathmandu, Lalitpur and Bhaktapur, as open-licensed (CC BY 4.0) light and dark phone and desktop wallpapers, with sources, method and limits.
 - [Dashain Flights Wallpapers for Kathmandu and Pokhara](https://nishon.com.np/dashain-flights-wallpapers): 1,259 flights over Kathmandu and 195 over Pokhara on 17 to 21 October 2026 from adsb.lol ADS-B data, as open-licensed (CC BY 4.0) phone and desktop wallpapers, with sources, method and limits.
 - [Building a Public Nepal Earthquake Dataset](https://nishon.com.np/building-a-public-nepal-earthquake-dataset.html): Automated extraction, deduplication, CSV/JSON/GeoJSON publication, GitHub Actions, and responsible use of Nepal earthquake records.
 - [Finding Nepal's Local Level from a Coordinate](https://nishon.com.np/finding-nepals-local-level-from-a-coordinate.html): FlatGeobuf, Fiona, Shapely STRtree, point-in-polygon lookup, name search, and boundary-data limitations.
