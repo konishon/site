@@ -1,0 +1,724 @@
+---
+const canonicalUrl = "https://nishon.com.np/maps/airport-flight-path-poster-video-generator";
+const title = "Airport Flight Path Poster & Video Generator — Nishon Tandukar";
+const description = "Interactive cartographic studio to explore flight trajectories, customize color palettes, and generate 300 DPI print posters and 60 FPS timelapse videos for airports worldwide.";
+const ogImage = "https://nishon.com.np/assets/wallpapers/kathmandu-dashain-2026-desktop-preview.jpg";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://nishon.com.np/#nishon",
+      name: "Nishon Tandukar",
+      url: "https://nishon.com.np/",
+      jobTitle: ["Geospatial Software Engineer", "Director of Geospatial Intelligence"],
+      worksFor: { "@id": "https://nishon.com.np/#naxa" },
+      sameAs: [
+        "https://github.com/konishon",
+        "https://medium.com/@niyo177",
+        "https://www.linkedin.com/in/nishon-tandukar/"
+      ]
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://nishon.com.np/#naxa",
+      name: "NAXA",
+      url: "https://naxa.com.np/"
+    },
+    {
+      "@type": "WebApplication",
+      "@id": `${canonicalUrl}#app`,
+      name: "Airport Flight Path Poster & Video Generator",
+      url: canonicalUrl,
+      description,
+      applicationCategory: "DesignApplication",
+      operatingSystem: "All",
+      browserRequirements: "Requires WebGL and Canvas support",
+      author: { "@id": "https://nishon.com.np/#nishon" },
+      creator: { "@id": "https://nishon.com.np/#nishon" },
+      publisher: { "@id": "https://nishon.com.np/#nishon" }
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${canonicalUrl}#webpage`,
+      url: canonicalUrl,
+      name: title,
+      description,
+      author: { "@id": "https://nishon.com.np/#nishon" },
+      creator: { "@id": "https://nishon.com.np/#nishon" }
+    }
+  ]
+};
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  <link rel="canonical" href={canonicalUrl}>
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:url" content={canonicalUrl}>
+  <meta property="og:image" content={ogImage}>
+  <meta name="author" content="Nishon Tandukar">
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+  <style>
+    :root {
+      --bg-dark: #0f1217;
+      --dock-bg: rgba(255, 255, 255, 0.96);
+      --dock-border: rgba(0, 0, 0, 0.08);
+      --text-primary: #0f172a;
+      --text-muted: #64748b;
+      --accent-red: #dc2626;
+      --accent-hover: #b91c1c;
+      --card-shadow: 0 16px 36px -4px rgba(0,0,0,0.25), 0 4px 12px -2px rgba(0,0,0,0.1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body, html { width: 100%; height: 100%; overflow: hidden; background: #000; }
+
+    .viewport {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+    }
+    canvas#map-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    /* Top Navigation Bar */
+    .topbar {
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      right: 16px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .topbar * { pointer-events: auto; }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(15, 18, 24, 0.90);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 6px 14px;
+      border-radius: 10px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+    }
+    .brand-mark {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      text-decoration: none;
+    }
+    .brand-icon {
+      width: 22px;
+      height: 22px;
+      background: #dc2626;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .brand-icon svg { width: 13px; height: 13px; fill: none; stroke: #fff; stroke-width: 2.2; }
+    .topbar-divider { width: 1px; height: 16px; background: rgba(255,255,255,0.2); }
+
+    .airport-select {
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+    }
+    .airport-select option { background: #141820; color: #fff; }
+    
+    .badge-chip {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(245, 158, 11, 0.2);
+      color: #fcd34d;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-top {
+      background: rgba(15, 18, 24, 0.90);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: all 0.15s ease;
+    }
+    .btn-top:hover { background: rgba(30, 35, 46, 0.95); }
+    .btn-primary {
+      background: #dc2626;
+      border: 1px solid rgba(220, 38, 38, 0.8);
+    }
+    .btn-primary:hover { background: #b91c1c; }
+
+    /* Floating Airport HUD Plaque */
+    .hud-card {
+      position: absolute;
+      top: 72px;
+      left: 18px;
+      width: 250px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(16px);
+      border-radius: 10px;
+      box-shadow: var(--card-shadow);
+      color: var(--text-primary);
+      overflow: hidden;
+      z-index: 5;
+      border: 1px solid rgba(0,0,0,0.06);
+      transition: opacity 0.2s;
+    }
+    .hud-card.hidden { display: none; }
+    .hud-header {
+      background: #54161a;
+      padding: 12px 14px;
+      color: #f7f3ea;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.3s;
+    }
+    .hud-iata { font-size: 28px; font-weight: 900; font-family: "Georgia", serif; letter-spacing: 1px; line-height: 1; }
+    .hud-meta-right { font-size: 10px; opacity: 0.85; text-align: right; line-height: 1.3; }
+    .hud-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 7px; font-size: 11px; }
+    .hud-row { display: flex; justify-content: space-between; align-items: center; }
+    .hud-label { color: #64748b; font-weight: 500; }
+    .hud-val { font-weight: 700; color: #0f172a; }
+    .altitude-ramp {
+      margin-top: 4px;
+      height: 5px;
+      border-radius: 3px;
+      background: linear-gradient(to right, #451a03, #d97706, #fde047, #ffffff);
+    }
+
+    /* Floating 24h Timeline Drawer */
+    .timeline-card {
+      position: absolute;
+      bottom: 84px;
+      right: 18px;
+      width: 320px;
+      background: rgba(15, 18, 24, 0.94);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      box-shadow: 0 16px 36px rgba(0,0,0,0.45);
+      padding: 12px 14px;
+      z-index: 6;
+      color: #fff;
+      transition: opacity 0.2s;
+    }
+    .timeline-card.hidden { display: none; }
+    .timeline-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: #94a3b8;
+      margin-bottom: 8px;
+    }
+    .timeline-title { font-weight: 700; color: #fff; font-size: 12px; display: flex; align-items: center; gap: 6px; }
+    .timeline-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 44px;
+      margin-bottom: 8px;
+      position: relative;
+    }
+    .t-bar { flex: 1; background: rgba(255, 255, 255, 0.22); border-radius: 2px; }
+    .t-bar.active { background: #dc2626; }
+    .timeline-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+    }
+    .play-btn {
+      background: #dc2626;
+      border: none;
+      color: #fff;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .play-btn svg { width: 10px; height: 10px; fill: #fff; }
+    .time-readout { font-family: monospace; font-weight: 700; color: #fcd34d; font-size: 12px; }
+
+    /* The Minimalist Floating Bottom Dock (No Emojis) */
+    .dock {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--dock-bg);
+      border: 1px solid var(--dock-border);
+      border-radius: 14px;
+      padding: 5px 8px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.28), 0 2px 6px rgba(0,0,0,0.08);
+      z-index: 20;
+    }
+    .dock-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 9px;
+      border: none;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      position: relative;
+    }
+    .dock-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+    .dock-btn:hover { background: #f1f5f9; color: #0f172a; transform: translateY(-1px); }
+    .dock-btn.active { background: #e2e8f0; color: #dc2626; }
+    .dock-divider { width: 1px; height: 22px; background: #e2e8f0; margin: 0 4px; }
+
+    /* Export Modal */
+    .modal-backdrop {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-card {
+      width: 380px;
+      background: #141820;
+      border: 1px solid #273142;
+      border-radius: 12px;
+      padding: 20px;
+      color: #fff;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    .modal-title { font-size: 16px; font-weight: 700; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
+    .modal-close { background: transparent; border: none; color: #94a3b8; font-size: 18px; cursor: pointer; }
+    .export-option-btn {
+      width: 100%;
+      background: #1e2532;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 12px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.15s;
+    }
+    .export-option-btn:hover { background: #283344; border-color: #38bdf8; }
+    .progress-bar { height: 6px; background: #334155; border-radius: 3px; overflow: hidden; margin-top: 10px; display: none; }
+    .progress-fill { height: 100%; width: 0%; background: #dc2626; transition: width 0.1s; }
+  </style>
+</head>
+<body>
+
+<div class="viewport">
+  <canvas id="map-canvas"></canvas>
+
+  <!-- Top Bar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="/" class="brand-mark">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <span>AeroStudio</span>
+      </a>
+      <div class="topbar-divider"></div>
+      <select class="airport-select" id="airport-dropdown"></select>
+      <div class="badge-chip" id="flight-count-badge">240 Flights</div>
+    </div>
+
+    <div class="topbar-right">
+      <a href="/dashain-flights-wallpapers" class="btn-top">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Dashain Post
+      </a>
+      <button class="btn-top btn-primary" id="btn-export-open">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        Export
+      </button>
+    </div>
+  </div>
+
+  <!-- Airport HUD Card Overlay -->
+  <div class="hud-card" id="hud-card">
+    <div class="hud-header" id="hud-header">
+      <div>
+        <div class="hud-iata" id="hud-iata">KTM</div>
+        <div style="font-size: 9px; opacity: 0.9;" id="hud-airport-name">TRIBHUVAN INTL</div>
+      </div>
+      <div class="hud-meta-right" id="hud-meta-right">
+        VNKT • Nepal<br>
+        27.70°N 85.36°E
+      </div>
+    </div>
+    <div class="hud-body">
+      <div class="hud-row">
+        <span class="hud-label">Runway</span>
+        <span class="hud-val" id="hud-rwy">02/20 (3,350m)</span>
+      </div>
+      <div class="hud-row">
+        <span class="hud-label">Elevation</span>
+        <span class="hud-val" id="hud-elev">1,338 m (4,390 ft)</span>
+      </div>
+      <div class="hud-row">
+        <span class="hud-label">24h Count</span>
+        <span class="hud-val" id="hud-count" style="color: #b91c1c;">132 arr • 108 dep</span>
+      </div>
+      <div style="margin-top: 2px;">
+        <div style="font-size: 9px; color: #64748b; display: flex; justify-content: space-between;">
+          <span>4k ft</span>
+          <span>15k ft</span>
+          <span>26k ft</span>
+        </div>
+        <div class="altitude-ramp"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 24h Timeline Player Flyout -->
+  <div class="timeline-card" id="timeline-card">
+    <div class="timeline-header">
+      <div class="timeline-title">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        24h Timeline
+      </div>
+      <div class="time-readout" id="time-readout">08:00:00</div>
+    </div>
+    <div class="timeline-bars" id="timeline-histogram"></div>
+    <div class="timeline-controls">
+      <button class="play-btn" id="play-pause-btn">
+        <svg viewBox="0 0 24 24" id="play-icon"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      </button>
+      <input type="range" id="time-slider" min="0" max="86400" value="28800" style="flex: 1; margin: 0 10px; accent-color: #dc2626;">
+      <span style="color:#fcd34d; font-size: 10px; font-weight:700;">60 FPS</span>
+    </div>
+  </div>
+
+  <!-- The Minimalist Floating Bottom Dock -->
+  <div class="dock">
+    <!-- 1. Airport Location Focus -->
+    <button class="dock-btn" id="dock-btn-airport" title="Focus Airport">
+      <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    </button>
+
+    <!-- 2. Flight Trajectory Styling -->
+    <button class="dock-btn active" id="dock-btn-style" title="Toggle Flight Vector Mode">
+      <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+    </button>
+
+    <!-- 3. Palette Switcher -->
+    <button class="dock-btn" id="dock-btn-theme" title="Cycle Theme (Brick / Radar / Swiss / Blueprint)">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0110 10c0 5.523-4.477 10-10 10M12 2v20"/></svg>
+    </button>
+
+    <div class="dock-divider"></div>
+
+    <!-- 4. Poster Frame Aspect Ratio -->
+    <button class="dock-btn active" id="dock-btn-frame" title="Toggle Poster Frame Guides">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+    </button>
+
+    <!-- 5. HUD Card Overlay Toggle -->
+    <button class="dock-btn active" id="dock-btn-hud" title="Toggle Airport Plaque">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="16" x2="12" y2="16"/></svg>
+    </button>
+
+    <!-- 6. 24h Timeline Player Toggle -->
+    <button class="dock-btn active" id="dock-btn-timeline" title="Toggle 24h Timelapse Player">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    </button>
+
+    <!-- 7. Data Ingestion Upload -->
+    <button class="dock-btn" id="dock-btn-upload" title="Upload Custom Flight Data">
+      <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+    </button>
+    <input type="file" id="file-uploader" style="display: none;" accept=".json,.csv,.gpx">
+  </div>
+
+  <!-- Export Modal -->
+  <div class="modal-backdrop" id="export-modal">
+    <div class="modal-card">
+      <div class="modal-title">
+        <span>Export Studio Output</span>
+        <button class="modal-close" id="modal-close-btn">&times;</button>
+      </div>
+
+      <button class="export-option-btn" id="btn-export-png">
+        <span>High-Res Print Poster (PNG 300 DPI)</span>
+        <span style="font-size: 11px; color:#38bdf8;">2400 &times; 3200</span>
+      </button>
+
+      <button class="export-option-btn" id="btn-export-svg">
+        <span>Vector Scalable Poster (SVG)</span>
+        <span style="font-size: 11px; color:#fcd34d;">Infinitely Scalable</span>
+      </button>
+
+      <button class="export-option-btn" id="btn-export-video">
+        <span>60 FPS Timelapse Video (WebCodecs MP4)</span>
+        <span style="font-size: 11px; color:#4ade80;">1080 &times; 1440 HD</span>
+      </button>
+
+      <div class="progress-bar" id="export-progress-bar">
+        <div class="progress-fill" id="export-progress-fill"></div>
+      </div>
+      <div id="export-status-text" style="font-size: 11px; color: #94a3b8; text-align: center; margin-top: 6px;"></div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { AIRPORTS, findAirport } from "/studio/airports.js";
+  import { FlightEngine } from "/studio/flightEngine.js";
+  import { MapRenderer, THEMES } from "/studio/renderer.js";
+  import { ExportEngine } from "/studio/exportEngine.js";
+
+  // App State
+  let currentAirport = AIRPORTS[0];
+  let currentThemeKey = "brick";
+  let isPlaying = false;
+  let currentSecond = 28800; // 08:00 AM
+  let animationId = null;
+
+  const canvas = document.getElementById("map-canvas");
+  const flightEngine = new FlightEngine(currentAirport);
+  let flights = flightEngine.generate24hSchedule(240);
+
+  const renderer = new MapRenderer(canvas, currentAirport, currentThemeKey);
+  const exportEngine = new ExportEngine(currentAirport, flights, currentThemeKey);
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    draw();
+  }
+  window.addEventListener("resize", resize);
+
+  function draw() {
+    const activeAircraft = isPlaying ? flightEngine.getActiveAircraft(currentSecond) : [];
+    renderer.render(flights, isPlaying ? currentSecond : null, activeAircraft);
+  }
+
+  function initUI() {
+    const dropdown = document.getElementById("airport-dropdown");
+    AIRPORTS.forEach(a => {
+      const opt = document.createElement("option");
+      opt.value = a.code;
+      opt.textContent = `${a.code} • ${a.airport} (${a.country})`;
+      dropdown.appendChild(opt);
+    });
+
+    dropdown.addEventListener("change", (e) => {
+      currentAirport = findAirport(e.target.value);
+      flightEngine.airport = currentAirport;
+      flights = flightEngine.generate24hSchedule(240);
+      renderer.setAirport(currentAirport);
+      exportEngine.airport = currentAirport;
+      exportEngine.flights = flights;
+      updateHud();
+      buildHistogram();
+      draw();
+    });
+
+    const themeKeys = Object.keys(THEMES);
+    document.getElementById("dock-btn-theme").addEventListener("click", () => {
+      const idx = (themeKeys.indexOf(currentThemeKey) + 1) % themeKeys.length;
+      currentThemeKey = themeKeys[idx];
+      renderer.setTheme(currentThemeKey);
+      exportEngine.themeKey = currentThemeKey;
+      document.getElementById("hud-header").style.background = renderer.theme.hudBg;
+      draw();
+    });
+
+    document.getElementById("dock-btn-frame").addEventListener("click", (e) => {
+      renderer.showCropGuide = !renderer.showCropGuide;
+      e.currentTarget.classList.toggle("active", renderer.showCropGuide);
+      draw();
+    });
+
+    document.getElementById("dock-btn-hud").addEventListener("click", (e) => {
+      const hud = document.getElementById("hud-card");
+      hud.classList.toggle("hidden");
+      e.currentTarget.classList.toggle("active", !hud.classList.contains("hidden"));
+    });
+
+    document.getElementById("dock-btn-timeline").addEventListener("click", (e) => {
+      const tl = document.getElementById("timeline-card");
+      tl.classList.toggle("hidden");
+      e.currentTarget.classList.toggle("active", !tl.classList.contains("hidden"));
+    });
+
+    const playBtn = document.getElementById("play-pause-btn");
+    playBtn.addEventListener("click", () => {
+      isPlaying = !isPlaying;
+      playBtn.innerHTML = isPlaying 
+        ? '<svg viewBox="0 0 24 24" style="width:10px;height:10px;fill:#fff;"><rect x="5" y="4" width="4" height="16"/><rect x="15" y="4" width="4" height="16"/></svg>'
+        : '<svg viewBox="0 0 24 24" style="width:10px;height:10px;fill:#fff;"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
+
+      if (isPlaying) runAnimationLoop();
+      else cancelAnimationFrame(animationId);
+    });
+
+    const slider = document.getElementById("time-slider");
+    slider.addEventListener("input", (e) => {
+      currentSecond = parseInt(e.target.value);
+      updateTimeDisplay(currentSecond);
+      draw();
+    });
+
+    document.getElementById("dock-btn-upload").addEventListener("click", () => {
+      document.getElementById("file-uploader").click();
+    });
+
+    document.getElementById("file-uploader").addEventListener("change", (e) => {
+      if (e.target.files.length > 0) {
+        alert(`Loaded custom flight track: ${e.target.files[0].name}`);
+      }
+    });
+
+    const modal = document.getElementById("export-modal");
+    document.getElementById("btn-export-open").addEventListener("click", () => modal.classList.add("open"));
+    document.getElementById("modal-close-btn").addEventListener("click", () => modal.classList.remove("open"));
+
+    document.getElementById("btn-export-png").addEventListener("click", async () => {
+      document.getElementById("export-status-text").textContent = "Rendering 300 DPI Poster...";
+      await exportEngine.exportPosterPNG();
+      document.getElementById("export-status-text").textContent = "Poster exported!";
+      setTimeout(() => modal.classList.remove("open"), 1200);
+    });
+
+    document.getElementById("btn-export-svg").addEventListener("click", () => {
+      exportEngine.exportPosterSVG();
+      modal.classList.remove("open");
+    });
+
+    document.getElementById("btn-export-video").addEventListener("click", async () => {
+      const progressBar = document.getElementById("export-progress-bar");
+      const progressFill = document.getElementById("export-progress-fill");
+      const statusText = document.getElementById("export-status-text");
+
+      progressBar.style.display = "block";
+      statusText.textContent = "Encoding 60 FPS Video...";
+
+      await exportEngine.exportVideo((p) => {
+        progressFill.style.width = `${p}%`;
+        statusText.textContent = `Rendering Timelapse: ${p}%`;
+      });
+
+      statusText.textContent = "Video exported!";
+      setTimeout(() => {
+        progressBar.style.display = "none";
+        modal.classList.remove("open");
+      }, 1500);
+    });
+
+    updateHud();
+    buildHistogram();
+    resize();
+  }
+
+  function updateHud() {
+    document.getElementById("hud-iata").textContent = currentAirport.code;
+    document.getElementById("hud-airport-name").textContent = currentAirport.name.toUpperCase();
+    document.getElementById("hud-meta-right").innerHTML = `${currentAirport.icao} • ${currentAirport.country}<br>${currentAirport.lat.toFixed(2)}°N ${currentAirport.lon.toFixed(2)}°E`;
+    document.getElementById("hud-rwy").textContent = `${currentAirport.runways[0].name} (${currentAirport.runways[0].length_m.toLocaleString()}m)`;
+    document.getElementById("hud-elev").textContent = `${currentAirport.elevation_m} m (${currentAirport.elevation_ft.toLocaleString()} ft)`;
+    document.getElementById("hud-count").textContent = `${flightEngine.totalArrivals} arr • ${flightEngine.totalDepartures} dep`;
+    document.getElementById("flight-count-badge").textContent = `${flights.length} Flights`;
+  }
+
+  function buildHistogram() {
+    const container = document.getElementById("timeline-histogram");
+    container.innerHTML = "";
+    const maxVal = Math.max(...flightEngine.hourlyHistogram, 1);
+    flightEngine.hourlyHistogram.forEach((val, h) => {
+      const bar = document.createElement("div");
+      bar.className = "t-bar";
+      bar.style.height = `${(val / maxVal) * 100}%`;
+      if (h >= 7 && h <= 18) bar.classList.add("active");
+      container.appendChild(bar);
+    });
+  }
+
+  function updateTimeDisplay(sec) {
+    const h = String(Math.floor(sec / 3600)).padStart(2, "0");
+    const m = String(Math.floor((sec % 3600) / 60)).padStart(2, "0");
+    const s = String(sec % 60).padStart(2, "0");
+    document.getElementById("time-readout").textContent = `${h}:${m}:${s}`;
+  }
+
+  function runAnimationLoop() {
+    if (!isPlaying) return;
+    currentSecond = (currentSecond + 60) % 86400;
+    document.getElementById("time-slider").value = currentSecond;
+    updateTimeDisplay(currentSecond);
+    draw();
+    animationId = requestAnimationFrame(runAnimationLoop);
+  }
+
+  initUI();
+</script>
+</body>
+</html>

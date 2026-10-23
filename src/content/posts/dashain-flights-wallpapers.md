@@ -49,6 +49,8 @@ faq:
 ---
 Five Dashain days of flights on one map, as wallpapers for your phone and your desktop, in a light and a dark version. Each line is one flight over Kathmandu or Pokhara, from Fulpati on 17 October to Vijaya Dashami on 21 October 2026.
 
+> **Interactive Studio:** Want to explore these flight paths dynamically or render your own prints and animations? Launch the [Airport Flight Path Poster & Video Generator](/maps/airport-flight-path-poster-video-generator) to inspect flights, customize palettes, and generate 300 DPI posters and 60 FPS timelapse videos for airports worldwide.
+
 ## How to read it
 
 Red lines are Nepali (domestic) flights. Blue lines are foreign (international) flights. Darker means lower, lighter means higher. The thick bundles are the approach and departure paths in and out of the valley. The orange ground is hills and the cream ground is the valley floor.
@@ -101,6 +103,8 @@ Nishon Tandukar (nishon.com.np/dashain-flights-wallpapers). Flight data © adsb.
 ```
 
 The fonts in the images, Yatra One and Mukta, are under the SIL Open Font License, which asks for no credit on pictures.
+
+I also made an in-browser studio to explore flight paths and export print posters or timelapse videos for airports worldwide: launch the [Airport Flight Path Poster & Video Generator](/maps/airport-flight-path-poster-video-generator).
 
 I also made wallpapers of the 1,898 places of worship mapped in Kathmandu Valley: see [Kathmandu Valley wallpapers](/city-of-temples-wallpapers).
 
