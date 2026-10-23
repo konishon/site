@@ -1,6 +1,7 @@
 /**
  * Global Airport Database for AeroStudio
- * Includes major commercial & regional hub coordinates, elevation, and runway vectors.
+ * Ground-truth aeronautical parameters aligned with maps/ktm.py, maps/pkr.py and ICAO specifications.
+ * Author: Nishon Tandukar (konishon)
  */
 
 export const AIRPORTS = [
@@ -14,27 +15,29 @@ export const AIRPORTS = [
     lon: 85.3591,
     elevation_ft: 4390,
     elevation_m: 1338,
+    utc_offset_s: 5.75 * 3600,
+    span_lon: 0.45,
+    hasRealDataset: true,
     runways: [
       { name: "02/20", heading: 19, length_m: 3350, dlat1: -0.0143, dlon1: -0.0056, dlat2: 0.0143, dlon2: 0.0056 }
-    ],
-    default_zoom: 11,
-    span_lon: 0.45
+    ]
   },
   {
     code: "PKR",
-    icao: "VNPK",
+    icao: "VNPR",
     name: "Pokhara",
     airport: "Pokhara International Airport",
     country: "Nepal",
-    lat: 28.1889,
-    lon: 83.9856,
-    elevation_ft: 2690,
-    elevation_m: 820,
+    lat: 28.1841,
+    lon: 84.0141,
+    elevation_ft: 2637,
+    elevation_m: 804,
+    utc_offset_s: 5.75 * 3600,
+    span_lon: 0.60,
+    hasRealDataset: true,
     runways: [
-      { name: "12/30", heading: 115, length_m: 2500, dlat1: 0.0048, dlon1: -0.0102, dlat2: -0.0048, dlon2: 0.0102 }
-    ],
-    default_zoom: 11.5,
-    span_lon: 0.35
+      { name: "12/30", heading: 296, length_m: 2500, dlat1: 0.0045, dlon1: -0.0107, dlat2: -0.0045, dlon2: 0.0107 }
+    ]
   },
   {
     code: "JFK",
@@ -46,12 +49,13 @@ export const AIRPORTS = [
     lon: -73.7781,
     elevation_ft: 13,
     elevation_m: 4,
+    utc_offset_s: -4 * 3600,
+    span_lon: 0.65,
+    hasRealDataset: false,
     runways: [
       { name: "04L/22R", heading: 44, length_m: 3682, dlat1: -0.012, dlon1: -0.012, dlat2: 0.012, dlon2: 0.012 },
       { name: "13R/31L", heading: 134, length_m: 4423, dlat1: 0.014, dlon1: -0.014, dlat2: -0.014, dlon2: 0.014 }
-    ],
-    default_zoom: 10.5,
-    span_lon: 0.65
+    ]
   },
   {
     code: "LHR",
@@ -63,12 +67,13 @@ export const AIRPORTS = [
     lon: -0.4543,
     elevation_ft: 83,
     elevation_m: 25,
+    utc_offset_s: 0,
+    span_lon: 0.60,
+    hasRealDataset: false,
     runways: [
       { name: "09L/27R", heading: 90, length_m: 3902, dlat1: 0.0, dlon1: -0.024, dlat2: 0.0, dlon2: 0.024 },
       { name: "09R/27L", heading: 90, length_m: 3660, dlat1: -0.006, dlon1: -0.022, dlat2: -0.006, dlon2: 0.022 }
-    ],
-    default_zoom: 10.5,
-    span_lon: 0.60
+    ]
   },
   {
     code: "HND",
@@ -78,14 +83,15 @@ export const AIRPORTS = [
     country: "Japan",
     lat: 35.5494,
     lon: 139.7798,
-    elevation_ft: 35,
-    elevation_m: 11,
+    elevation_ft: 21,
+    elevation_m: 6,
+    utc_offset_s: 9 * 3600,
+    span_lon: 0.55,
+    hasRealDataset: false,
     runways: [
-      { name: "16R/34L", heading: 156, length_m: 3000, dlat1: 0.012, dlon1: -0.005, dlat2: -0.012, dlon2: 0.005 },
-      { name: "05/23", heading: 47, length_m: 2500, dlat1: -0.008, dlon1: -0.009, dlat2: 0.008, dlon2: 0.009 }
-    ],
-    default_zoom: 11,
-    span_lon: 0.55
+      { name: "16L/34R", heading: 160, length_m: 3360, dlat1: 0.014, dlon1: -0.006, dlat2: -0.014, dlon2: 0.006 },
+      { name: "05/23", heading: 50, length_m: 2500, dlat1: -0.008, dlon1: -0.010, dlat2: 0.008, dlon2: 0.010 }
+    ]
   },
   {
     code: "DXB",
@@ -97,12 +103,12 @@ export const AIRPORTS = [
     lon: 55.3657,
     elevation_ft: 62,
     elevation_m: 19,
+    utc_offset_s: 4 * 3600,
+    span_lon: 0.50,
+    hasRealDataset: false,
     runways: [
-      { name: "12L/30R", heading: 121, length_m: 4000, dlat1: 0.009, dlon1: -0.016, dlat2: -0.009, dlon2: 0.016 },
-      { name: "12R/30L", heading: 121, length_m: 4450, dlat1: 0.006, dlon1: -0.018, dlat2: -0.006, dlon2: 0.018 }
-    ],
-    default_zoom: 11,
-    span_lon: 0.50
+      { name: "12L/30R", heading: 120, length_m: 4450, dlat1: 0.010, dlon1: -0.020, dlat2: -0.010, dlon2: 0.020 }
+    ]
   },
   {
     code: "SIN",
@@ -114,39 +120,16 @@ export const AIRPORTS = [
     lon: 103.9915,
     elevation_ft: 22,
     elevation_m: 7,
+    utc_offset_s: 8 * 3600,
+    span_lon: 0.50,
+    hasRealDataset: false,
     runways: [
-      { name: "02L/20R", heading: 23, length_m: 4000, dlat1: -0.016, dlon1: -0.007, dlat2: 0.016, dlon2: 0.007 },
-      { name: "02C/20C", heading: 23, length_m: 4000, dlat1: -0.016, dlon1: -0.001, dlat2: 0.016, dlon2: 0.001 }
-    ],
-    default_zoom: 11,
-    span_lon: 0.50
-  },
-  {
-    code: "ZRH",
-    icao: "LSZH",
-    name: "Zurich",
-    airport: "Zurich Airport",
-    country: "Switzerland",
-    lat: 47.4582,
-    lon: 8.5555,
-    elevation_ft: 1416,
-    elevation_m: 432,
-    runways: [
-      { name: "16/34", heading: 156, length_m: 3700, dlat1: 0.015, dlon1: -0.007, dlat2: -0.015, dlon2: 0.007 }
-    ],
-    default_zoom: 11,
-    span_lon: 0.45
+      { name: "02L/20R", heading: 23, length_m: 4000, dlat1: -0.016, dlon1: -0.007, dlat2: 0.016, dlon2: 0.007 }
+    ]
   }
 ];
 
-export function findAirport(query) {
-  if (!query) return AIRPORTS[0];
-  const q = query.trim().toUpperCase();
-  const match = AIRPORTS.find(a => 
-    a.code === q || 
-    a.icao === q || 
-    a.name.toUpperCase().includes(q) || 
-    a.airport.toUpperCase().includes(q)
-  );
-  return match || AIRPORTS[0];
+export function findAirport(codeOrIcao) {
+  const q = codeOrIcao.trim().toUpperCase();
+  return AIRPORTS.find(a => a.code === q || a.icao === q) || AIRPORTS[0];
 }

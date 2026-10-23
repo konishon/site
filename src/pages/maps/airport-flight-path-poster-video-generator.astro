@@ -118,53 +118,55 @@ const schema = {
       display: flex;
       align-items: center;
       gap: 12px;
-      background: rgba(15, 18, 24, 0.90);
-      backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      padding: 6px 14px;
-      border-radius: 10px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+      background: var(--dock-bg);
+      border: 1px solid var(--dock-border);
+      border-radius: 12px;
+      padding: 4px 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
     }
     .brand-mark {
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 14px;
       font-weight: 700;
-      color: #fff;
+      font-size: 13px;
+      color: var(--text-primary);
       text-decoration: none;
     }
     .brand-icon {
-      width: 22px;
-      height: 22px;
+      width: 20px;
+      height: 20px;
       background: #dc2626;
-      border-radius: 5px;
+      border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
+      color: #fff;
     }
-    .brand-icon svg { width: 13px; height: 13px; fill: none; stroke: #fff; stroke-width: 2.2; }
-    .topbar-divider { width: 1px; height: 16px; background: rgba(255,255,255,0.2); }
+    .brand-icon svg { width: 12px; height: 12px; fill: currentColor; }
+    .topbar-divider { width: 1px; height: 18px; background: #e2e8f0; }
 
     .airport-select {
       background: transparent;
       border: none;
-      color: #fff;
-      font-size: 13px;
       font-weight: 600;
+      font-size: 13px;
+      color: #1e293b;
       cursor: pointer;
       outline: none;
+      padding-right: 6px;
     }
-    .airport-select option { background: #141820; color: #fff; }
-    
     .badge-chip {
-      font-size: 10px;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: rgba(245, 158, 11, 0.2);
-      color: #fcd34d;
-      border: 1px solid rgba(245, 158, 11, 0.4);
+      background: #f1f5f9;
+      color: #475569;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .badge-chip.real {
+      background: #ecfdf5;
+      color: #059669;
     }
 
     .topbar-right {
@@ -173,69 +175,99 @@ const schema = {
       gap: 8px;
     }
     .btn-top {
-      background: rgba(15, 18, 24, 0.90);
-      backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: #fff;
-      padding: 8px 16px;
-      border-radius: 8px;
+      background: var(--dock-bg);
+      border: 1px solid var(--dock-border);
+      color: #1e293b;
       font-size: 12px;
       font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 10px;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 6px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
       text-decoration: none;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
       transition: all 0.15s ease;
     }
-    .btn-top:hover { background: rgba(30, 35, 46, 0.95); }
+    .btn-top:hover {
+      background: #f8fafc;
+      transform: translateY(-1px);
+    }
     .btn-primary {
       background: #dc2626;
-      border: 1px solid rgba(220, 38, 38, 0.8);
+      border-color: #dc2626;
+      color: #fff;
     }
-    .btn-primary:hover { background: #b91c1c; }
+    .btn-primary:hover {
+      background: #b91c1c;
+      color: #fff;
+    }
 
-    /* Floating Airport HUD Plaque */
+    /* Spatial HUD Card Overlay */
     .hud-card {
       position: absolute;
       top: 72px;
-      left: 18px;
-      width: 250px;
-      background: rgba(255, 255, 255, 0.96);
+      left: 16px;
+      width: 290px;
+      background: rgba(15, 18, 24, 0.94);
       backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 10px;
-      box-shadow: var(--card-shadow);
-      color: var(--text-primary);
-      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.45);
       z-index: 5;
-      border: 1px solid rgba(0,0,0,0.06);
+      overflow: hidden;
+      color: #fff;
       transition: opacity 0.2s;
     }
     .hud-card.hidden { display: none; }
     .hud-header {
-      background: #54161a;
       padding: 12px 14px;
-      color: #f7f3ea;
+      background: #8b342e;
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      transition: background 0.3s;
+      align-items: flex-start;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
-    .hud-iata { font-size: 28px; font-weight: 900; font-family: "Georgia", serif; letter-spacing: 1px; line-height: 1; }
-    .hud-meta-right { font-size: 10px; opacity: 0.85; text-align: right; line-height: 1.3; }
-    .hud-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 7px; font-size: 11px; }
-    .hud-row { display: flex; justify-content: space-between; align-items: center; }
-    .hud-label { color: #64748b; font-weight: 500; }
-    .hud-val { font-weight: 700; color: #0f172a; }
+    .hud-iata {
+      font-family: Georgia, serif;
+      font-weight: 900;
+      font-size: 32px;
+      line-height: 1;
+      letter-spacing: 2px;
+      color: #f2efe8;
+    }
+    .hud-meta-right {
+      text-align: right;
+      font-size: 10px;
+      line-height: 1.4;
+      color: #fcb000;
+      font-weight: 600;
+    }
+    .hud-body {
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .hud-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #94a3b8;
+    }
+    .hud-val {
+      font-weight: 600;
+      color: #f1f5f9;
+    }
     .altitude-ramp {
-      margin-top: 4px;
-      height: 5px;
+      height: 8px;
       border-radius: 3px;
-      background: linear-gradient(to right, #451a03, #d97706, #fde047, #ffffff);
+      background: linear-gradient(to right, rgb(196, 180, 168), rgb(228, 220, 210), rgb(255, 252, 246));
+      margin-top: 3px;
     }
 
-    /* Floating 24h Timeline Drawer */
+    /* 24h Timeline Player Flyout */
     .timeline-card {
       position: absolute;
       bottom: 84px;
@@ -292,7 +324,7 @@ const schema = {
     .play-btn svg { width: 10px; height: 10px; fill: #fff; }
     .time-readout { font-family: monospace; font-weight: 700; color: #fcd34d; font-size: 12px; }
 
-    /* The Minimalist Floating Bottom Dock (No Emojis) */
+    /* The Minimalist Floating Bottom Dock */
     .dock {
       position: absolute;
       bottom: 16px;
@@ -387,7 +419,7 @@ const schema = {
       </a>
       <div class="topbar-divider"></div>
       <select class="airport-select" id="airport-dropdown"></select>
-      <div class="badge-chip" id="flight-count-badge">240 Flights</div>
+      <div class="badge-chip real" id="flight-count-badge">Loading flights...</div>
     </div>
 
     <div class="topbar-right">
@@ -410,8 +442,8 @@ const schema = {
         <div style="font-size: 9px; opacity: 0.9;" id="hud-airport-name">TRIBHUVAN INTL</div>
       </div>
       <div class="hud-meta-right" id="hud-meta-right">
-        VNKT • Nepal<br>
-        27.70°N 85.36°E
+        VNKT &bull; Nepal<br>
+        27.70&deg;N 85.36&deg;E
       </div>
     </div>
     <div class="hud-body">
@@ -425,10 +457,14 @@ const schema = {
       </div>
       <div class="hud-row">
         <span class="hud-label">24h Count</span>
-        <span class="hud-val" id="hud-count" style="color: #b91c1c;">132 arr • 108 dep</span>
+        <span class="hud-val" id="hud-count" style="color: #fcb000;">Loading...</span>
+      </div>
+      <div class="hud-row">
+        <span class="hud-label">Dataset</span>
+        <span class="hud-val" id="hud-source" style="color: #4ade80;">Real ADS-B</span>
       </div>
       <div style="margin-top: 2px;">
-        <div style="font-size: 9px; color: #64748b; display: flex; justify-content: space-between;">
+        <div style="font-size: 9px; color: #94a3b8; display: flex; justify-content: space-between;">
           <span>4k ft</span>
           <span>15k ft</span>
           <span>26k ft</span>
@@ -460,24 +496,24 @@ const schema = {
   <!-- The Minimalist Floating Bottom Dock -->
   <div class="dock">
     <!-- 1. Airport Location Focus -->
-    <button class="dock-btn" id="dock-btn-airport" title="Focus Airport">
+    <button class="dock-btn" id="dock-btn-airport" title="Focus Center">
       <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
     </button>
 
     <!-- 2. Flight Trajectory Styling -->
-    <button class="dock-btn active" id="dock-btn-style" title="Toggle Flight Vector Mode">
+    <button class="dock-btn active" id="dock-btn-style" title="Toggle Poster Plaque">
       <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
     </button>
 
     <!-- 3. Palette Switcher -->
-    <button class="dock-btn" id="dock-btn-theme" title="Cycle Theme (Brick / Radar / Swiss / Blueprint)">
+    <button class="dock-btn" id="dock-btn-theme" title="Cycle Palette (Brick / Marigold / Radar / Swiss)">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0110 10c0 5.523-4.477 10-10 10M12 2v20"/></svg>
     </button>
 
     <div class="dock-divider"></div>
 
     <!-- 4. Poster Frame Aspect Ratio -->
-    <button class="dock-btn active" id="dock-btn-frame" title="Toggle Poster Frame Guides">
+    <button class="dock-btn" id="dock-btn-frame" title="Toggle 3:4 Poster Crop Guide">
       <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
     </button>
 
@@ -492,10 +528,10 @@ const schema = {
     </button>
 
     <!-- 7. Data Ingestion Upload -->
-    <button class="dock-btn" id="dock-btn-upload" title="Upload Custom Flight Data">
+    <button class="dock-btn" id="dock-btn-upload" title="Upload Custom ADS-B CSV">
       <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
     </button>
-    <input type="file" id="file-uploader" style="display: none;" accept=".json,.csv,.gpx">
+    <input type="file" id="file-uploader" style="display: none;" accept=".csv,.txt">
   </div>
 
   <!-- Export Modal -->
@@ -517,7 +553,7 @@ const schema = {
       </button>
 
       <button class="export-option-btn" id="btn-export-video">
-        <span>60 FPS Timelapse Video (WebCodecs MP4)</span>
+        <span>60 FPS Timelapse Video (WebCodecs MP4/WebM)</span>
         <span style="font-size: 11px; color:#4ade80;">1080 &times; 1440 HD</span>
       </button>
 
@@ -544,10 +580,8 @@ const schema = {
 
   const canvas = document.getElementById("map-canvas");
   const flightEngine = new FlightEngine(currentAirport);
-  let flights = flightEngine.generate24hSchedule(240);
-
   const renderer = new MapRenderer(canvas, currentAirport, currentThemeKey);
-  const exportEngine = new ExportEngine(currentAirport, flights, currentThemeKey);
+  const exportEngine = new ExportEngine(currentAirport, [], currentThemeKey, flightEngine);
 
   function resize() {
     canvas.width = window.innerWidth;
@@ -558,7 +592,22 @@ const schema = {
 
   function draw() {
     const activeAircraft = isPlaying ? flightEngine.getActiveAircraft(currentSecond) : [];
-    renderer.render(flights, isPlaying ? currentSecond : null, activeAircraft);
+    renderer.render(flightEngine.flights, isPlaying ? currentSecond : null, activeAircraft);
+  }
+
+  async function loadAirportData(airport) {
+    currentAirport = airport;
+    flightEngine.airport = currentAirport;
+    renderer.setAirport(currentAirport);
+    exportEngine.airport = currentAirport;
+
+    document.getElementById("flight-count-badge").textContent = "Loading dataset...";
+    await flightEngine.loadPrecomputed(currentAirport.code);
+    exportEngine.flights = flightEngine.flights;
+
+    updateHud();
+    buildHistogram();
+    draw();
   }
 
   function initUI() {
@@ -570,16 +619,9 @@ const schema = {
       dropdown.appendChild(opt);
     });
 
-    dropdown.addEventListener("change", (e) => {
-      currentAirport = findAirport(e.target.value);
-      flightEngine.airport = currentAirport;
-      flights = flightEngine.generate24hSchedule(240);
-      renderer.setAirport(currentAirport);
-      exportEngine.airport = currentAirport;
-      exportEngine.flights = flights;
-      updateHud();
-      buildHistogram();
-      draw();
+    dropdown.addEventListener("change", async (e) => {
+      const selected = findAirport(e.target.value);
+      await loadAirportData(selected);
     });
 
     const themeKeys = Object.keys(THEMES);
@@ -595,6 +637,12 @@ const schema = {
     document.getElementById("dock-btn-frame").addEventListener("click", (e) => {
       renderer.showCropGuide = !renderer.showCropGuide;
       e.currentTarget.classList.toggle("active", renderer.showCropGuide);
+      draw();
+    });
+
+    document.getElementById("dock-btn-style").addEventListener("click", (e) => {
+      renderer.showPosterHUD = !renderer.showPosterHUD;
+      e.currentTarget.classList.toggle("active", renderer.showPosterHUD);
       draw();
     });
 
@@ -633,8 +681,22 @@ const schema = {
     });
 
     document.getElementById("file-uploader").addEventListener("change", (e) => {
-      if (e.target.files.length > 0) {
-        alert(`Loaded custom flight track: ${e.target.files[0].name}`);
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          try {
+            flightEngine.parseCsv(event.target.result);
+            exportEngine.flights = flightEngine.flights;
+            updateHud();
+            buildHistogram();
+            draw();
+            alert(`Parsed ${flightEngine.flights.length} real flight tracks from ${file.name}`);
+          } catch (err) {
+            alert(`Error parsing CSV: ${err.message}`);
+          }
+        };
+        reader.readAsText(file);
       }
     });
 
@@ -643,7 +705,7 @@ const schema = {
     document.getElementById("modal-close-btn").addEventListener("click", () => modal.classList.remove("open"));
 
     document.getElementById("btn-export-png").addEventListener("click", async () => {
-      document.getElementById("export-status-text").textContent = "Rendering 300 DPI Poster...";
+      document.getElementById("export-status-text").textContent = "Rendering 300 DPI Poster (2400x3200)...";
       await exportEngine.exportPosterPNG();
       document.getElementById("export-status-text").textContent = "Poster exported!";
       setTimeout(() => modal.classList.remove("open"), 1200);
@@ -662,9 +724,9 @@ const schema = {
       progressBar.style.display = "block";
       statusText.textContent = "Encoding 60 FPS Video...";
 
-      await exportEngine.exportVideo((p) => {
+      await exportEngine.exportTimelapseVideo(20, (p) => {
         progressFill.style.width = `${p}%`;
-        statusText.textContent = `Rendering Timelapse: ${p}%`;
+        statusText.textContent = `Rendering 60 FPS Video: ${p}%`;
       });
 
       statusText.textContent = "Video exported!";
@@ -674,19 +736,24 @@ const schema = {
       }, 1500);
     });
 
-    updateHud();
-    buildHistogram();
-    resize();
+    // Initial load
+    loadAirportData(currentAirport).then(() => {
+      resize();
+    });
   }
 
   function updateHud() {
     document.getElementById("hud-iata").textContent = currentAirport.code;
-    document.getElementById("hud-airport-name").textContent = currentAirport.name.toUpperCase();
+    document.getElementById("hud-airport-name").textContent = currentAirport.airport.toUpperCase();
     document.getElementById("hud-meta-right").innerHTML = `${currentAirport.icao} • ${currentAirport.country}<br>${currentAirport.lat.toFixed(2)}°N ${currentAirport.lon.toFixed(2)}°E`;
     document.getElementById("hud-rwy").textContent = `${currentAirport.runways[0].name} (${currentAirport.runways[0].length_m.toLocaleString()}m)`;
     document.getElementById("hud-elev").textContent = `${currentAirport.elevation_m} m (${currentAirport.elevation_ft.toLocaleString()} ft)`;
     document.getElementById("hud-count").textContent = `${flightEngine.totalArrivals} arr • ${flightEngine.totalDepartures} dep`;
-    document.getElementById("flight-count-badge").textContent = `${flights.length} Flights`;
+    document.getElementById("hud-source").textContent = flightEngine.dataSourceName;
+
+    const countBadge = document.getElementById("flight-count-badge");
+    countBadge.textContent = `${flightEngine.flights.length} Flights`;
+    countBadge.className = flightEngine.isRealData ? "badge-chip real" : "badge-chip";
   }
 
   function buildHistogram() {
@@ -703,9 +770,11 @@ const schema = {
   }
 
   function updateTimeDisplay(sec) {
-    const h = String(Math.floor(sec / 3600)).padStart(2, "0");
-    const m = String(Math.floor((sec % 3600) / 60)).padStart(2, "0");
-    const s = String(sec % 60).padStart(2, "0");
+    // Show in local airport time
+    const localSec = (sec + (currentAirport.utc_offset_s || 0)) % 86400;
+    const h = String(Math.floor(localSec / 3600)).padStart(2, "0");
+    const m = String(Math.floor((localSec % 3600) / 60)).padStart(2, "0");
+    const s = String(localSec % 60).padStart(2, "0");
     document.getElementById("time-readout").textContent = `${h}:${m}:${s}`;
   }
 

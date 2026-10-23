@@ -1,19 +1,20 @@
 /**
- * Export Engine: High-DPI Poster & In-Browser Video
- * Produces 300 DPI print-ready PNG/SVG posters and 60 FPS MP4 timelapse videos.
+ * Export Engine: High-DPI Poster & In-Browser Video Timelapse
+ * Author: Nishon Tandukar (konishon)
  */
 
 import { MapRenderer } from "./renderer.js";
 
 export class ExportEngine {
-  constructor(airport, flights, themeKey = "brick") {
+  constructor(airport, flights, themeKey = "brick", flightEngine = null) {
     this.airport = airport;
     this.flights = flights;
     this.themeKey = themeKey;
+    this.flightEngine = flightEngine;
   }
 
   /**
-   * Generates a 300 DPI Print-Ready Poster PNG
+   * Generates a 300 DPI Print-Ready Poster PNG (2400 x 3200)
    */
   async exportPosterPNG(width = 2400, height = 3200) {
     const offscreen = document.createElement("canvas");
@@ -21,11 +22,9 @@ export class ExportEngine {
     offscreen.height = height;
 
     const renderer = new MapRenderer(offscreen, this.airport, this.themeKey);
-    renderer.showCropGuide = false; // no dashed guides on exported poster
+    renderer.showCropGuide = false;
+    renderer.showPosterHUD = true;
     renderer.render(this.flights);
-
-    // Draw Typographic Cartouche Plaque onto high-res canvas
-    this.renderPosterTypography(offscreen.getContext("2d"), width, height, renderer.theme);
 
     return new Promise((resolve) => {
       offscreen.toBlob((blob) => {
@@ -47,11 +46,13 @@ export class ExportEngine {
     const span = this.airport.span_lon;
     const centerLat = this.airport.lat;
     const centerLon = this.airport.lon;
-    const scale = (Math.min(width, height) / span) * 0.9;
+
+    const kx = width / span;
+    const ky = kx / Math.cos((centerLat * Math.PI) / 180);
 
     const proj = (lat, lon) => ({
-      x: width / 2 + (lon - centerLon) * scale,
-      y: height / 2 - (lat - centerLat) * scale * 1.15
+      x: (lon - centerLon) * kx + width / 2,
+      y: height / 2 - (lat - centerLat) * ky
     });
 
     let pathsSvg = "";
@@ -62,7 +63,8 @@ export class ExportEngine {
       for (let i = 1; i < pts.length; i++) {
         d += ` L ${pts[i].x.toFixed(1)} ${pts[i].y.toFixed(1)}`;
       }
-      pathsSvg += `  <path d="${d}" fill="none" stroke="#fcd34d" stroke-width="${f.isDomestic ? 1.6 : 2.2}" opacity="0.8" />\n`;
+      const strokeColor = f.isDomestic ? "#fcd34d" : "#f59e0b";
+      pathsSvg += `  <path d="${d}" fill="none" stroke="${strokeColor}" stroke-width="${f.isDomestic ? 1.6 : 2.2}" opacity="0.85" />\n`;
     }
 
     const r1 = proj(this.airport.lat + rwy.dlat1, this.airport.lon + rwy.dlon1);
@@ -70,23 +72,23 @@ export class ExportEngine {
 
     const svg = `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}">
-  <rect width="${width}" height="${height}" fill="#6e1f24" />
+  <rect width="${width}" height="${height}" fill="#8b342e" />
   
   <!-- Flight Paths -->
   <g id="flight-paths">
 ${pathsSvg}  </g>
 
   <!-- Runway -->
-  <line x1="${r1.x}" y1="${r1.y}" x2="${r2.x}" y2="${r2.y}" stroke="#ffffff" stroke-width="4.5" stroke-linecap="square" />
-  <circle cx="${width/2}" cy="${height/2}" r="4" fill="#ffffff" />
+  <line x1="${r1.x.toFixed(1)}" y1="${r1.y.toFixed(1)}" x2="${r2.x.toFixed(1)}" y2="${r2.y.toFixed(1)}" stroke="#1e1414" stroke-width="6" />
+  <line x1="${r1.x.toFixed(1)}" y1="${r1.y.toFixed(1)}" x2="${r2.x.toFixed(1)}" y2="${r2.y.toFixed(1)}" stroke="#f2efe8" stroke-width="2" />
 
-  <!-- Typography Cartouche -->
-  <g id="poster-hud" transform="translate(60, ${height - 240})">
-    <rect width="360" height="180" rx="8" fill="#54161a" opacity="0.95" />
-    <text x="24" y="58" font-family="Georgia, serif" font-size="44" font-weight="900" fill="#f7f3ea">${this.airport.code}</text>
-    <text x="24" y="92" font-family="sans-serif" font-size="14" font-weight="700" fill="#f7f3ea">${this.airport.airport.toUpperCase()}</text>
-    <text x="24" y="118" font-family="sans-serif" font-size="11" fill="#fed7aa">${this.airport.icao} • ${this.airport.country} • ELEV ${this.airport.elevation_ft} FT</text>
-    <text x="24" y="142" font-family="sans-serif" font-size="11" fill="#fcd34d">RUNWAY ${rwy.name} • 24 HOURS OF FLIGHTS</text>
+  <!-- Poster Cartouche -->
+  <g id="poster-hud" transform="translate(40, ${height - 240})">
+    <rect width="420" height="190" rx="10" fill="#8b342e" stroke="#1e1414" stroke-width="1.5" />
+    <text x="24" y="58" font-family="Georgia, serif" font-size="44" font-weight="900" fill="#f2efe8">${this.airport.code}</text>
+    <text x="24" y="90" font-family="sans-serif" font-size="13" font-weight="700" fill="#f2efe8">${this.airport.airport.toUpperCase()}</text>
+    <text x="24" y="112" font-family="sans-serif" font-size="11" fill="#d6d0c6">${this.airport.icao} \u2022 ${this.airport.country} \u2022 ${this.airport.lat.toFixed(2)}\u00b0N ${this.airport.lon.toFixed(2)}\u00b0E</text>
+    <text x="24" y="136" font-family="sans-serif" font-size="11" font-weight="700" fill="#fcb000">RUNWAY ${rwy.name} \u2022 ELEV ${this.airport.elevation_ft} FT</text>
   </g>
 </svg>`;
 
@@ -100,105 +102,92 @@ ${pathsSvg}  </g>
   }
 
   /**
-   * Renders the classic cartographic typography onto the high-res poster canvas
+   * Generates a 60 FPS Video Timelapse using Canvas captureStream + MediaRecorder
    */
-  renderPosterTypography(ctx, w, h, theme) {
-    const pad = w * 0.05;
-    const cardW = Math.min(420, w * 0.4);
-    const cardH = 180;
-    const x = pad;
-    const y = h - pad - cardH;
-
-    ctx.save();
-    // Card background
-    ctx.fillStyle = theme.hudBg;
-    ctx.beginPath();
-    ctx.roundRect(x, y, cardW, cardH, 8);
-    ctx.fill();
-
-    // IATA code
-    ctx.fillStyle = theme.hudText;
-    ctx.font = "900 48px Georgia, serif";
-    ctx.fillText(this.airport.code, x + 24, y + 54);
-
-    // Subtitle
-    ctx.font = "700 13px sans-serif";
-    ctx.fillText(this.airport.airport.toUpperCase(), x + 24, y + 84);
-
-    ctx.font = "500 11px sans-serif";
-    ctx.fillStyle = theme.trailHigh;
-    ctx.fillText(`${this.airport.icao} • ${this.airport.lat.toFixed(2)}°N ${this.airport.lon.toFixed(2)}°E • ELEV ${this.airport.elevation_ft} FT`, x + 24, y + 110);
-
-    ctx.fillStyle = theme.trailLow;
-    ctx.font = "600 11px sans-serif";
-    ctx.fillText(`RUNWAY ${this.airport.runways[0].name} • 24 HOURS OF FLIGHT TRACKS`, x + 24, y + 138);
-
-    ctx.restore();
-  }
-
-  /**
-   * Exports a 60 FPS Timelapse Video
-   * Uses WebCodecs VideoEncoder when available, with MediaRecorder fallback.
-   */
-  async exportVideo(onProgress = () => {}) {
-    const fps = 60;
-    const durationSec = 15; // 15s timelapse of 24h
-    const totalFrames = fps * durationSec;
+  async exportTimelapseVideo(durationSec = 20, onProgress = () => {}) {
     const width = 1080;
-    const height = 1440; // 3:4 Instagram Vertical
+    const height = 1440;
+    const fps = 60;
+    const totalFrames = durationSec * fps;
 
-    const canvas = document.createElement("canvas");
-    canvas.width = width;
-    canvas.height = height;
+    const offscreen = document.createElement("canvas");
+    offscreen.width = width;
+    offscreen.height = height;
 
-    const renderer = new MapRenderer(canvas, this.airport, this.themeKey);
+    const renderer = new MapRenderer(offscreen, this.airport, this.themeKey);
     renderer.showCropGuide = false;
+    renderer.showPosterHUD = true;
 
-    // Check for MediaRecorder or WebCodecs
-    const stream = canvas.captureStream(fps);
-    const mimeType = MediaRecorder.isTypeSupported("video/webm;codecs=vp9") 
-      ? "video/webm;codecs=vp9" 
-      : "video/webm";
+    // Use MediaRecorder
+    const stream = offscreen.captureStream(fps);
+    let mimeType = "video/webm;codecs=vp9";
+    if (!MediaRecorder.isTypeSupported(mimeType)) {
+      mimeType = "video/webm";
+    }
 
-    const mediaRecorder = new MediaRecorder(stream, { mimeType, videoBitsPerSecond: 8000000 });
+    const recorder = new MediaRecorder(stream, {
+      mimeType,
+      videoBitsPerSecond: 10_000_000
+    });
+
     const chunks = [];
-
-    mediaRecorder.ondataavailable = (e) => {
+    recorder.ondataavailable = (e) => {
       if (e.data.size > 0) chunks.push(e.data);
     };
 
-    return new Promise((resolve) => {
-      mediaRecorder.onstop = () => {
+    const completionPromise = new Promise((resolve, reject) => {
+      recorder.onstop = () => {
         const blob = new Blob(chunks, { type: mimeType });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = `${this.airport.code}_timelapse_60fps.webm`;
+        a.download = `${this.airport.code}_flight_timelapse_60fps.webm`;
         a.click();
         resolve(url);
       };
-
-      mediaRecorder.start();
-
-      let frame = 0;
-      const step = () => {
-        const progress = frame / totalFrames;
-        const currentSec = progress * 86400; // 0 to 24h
-        
-        renderer.render(this.flights, currentSec);
-        this.renderPosterTypography(canvas.getContext("2d"), width, height, renderer.theme);
-        
-        onProgress(Math.round(progress * 100));
-        frame++;
-
-        if (frame <= totalFrames) {
-          requestAnimationFrame(step);
-        } else {
-          setTimeout(() => mediaRecorder.stop(), 200);
-        }
-      };
-
-      step();
+      recorder.onerror = reject;
     });
+
+    recorder.start();
+
+    // Render frame by frame from t=0 to 86400
+    for (let frame = 0; frame < totalFrames; frame++) {
+      const progress = frame / totalFrames;
+      const currentSecond = progress * 86400;
+
+      const activeAircraft = this.flightEngine
+        ? this.flightEngine.getActiveAircraft(currentSecond)
+        : [];
+
+      renderer.render(this.flights, currentSecond, activeAircraft);
+
+      // Draw Time & Date HUD Overlay in top corner
+      const ctx = offscreen.getContext("2d");
+      const localSec = (currentSecond + (this.airport.utc_offset_s || 0)) % 86400;
+      const h24 = Math.floor(localSec / 3600);
+      const h12 = h24 % 12 || 12;
+      const m = Math.floor((localSec % 3600) / 60);
+      const ampm = h24 < 12 ? "AM" : "PM";
+      const timeStr = `${h12}:${m.toString().padStart(2, "0")} ${ampm}`;
+
+      ctx.save();
+      ctx.font = "900 24px -apple-system, sans-serif";
+      ctx.fillStyle = "#ffffff";
+      ctx.shadowColor = "rgba(0,0,0,0.8)";
+      ctx.shadowBlur = 6;
+      ctx.fillText(timeStr, 40, 60);
+      ctx.font = "600 13px -apple-system, sans-serif";
+      ctx.fillStyle = renderer.theme.accent;
+      ctx.fillText(`24h Simulation \u2022 60 FPS`, 40, 84);
+      ctx.restore();
+
+      onProgress(Math.round(progress * 100));
+
+      // Yield frame
+      await new Promise(r => setTimeout(r, 1000 / fps));
+    }
+
+    recorder.stop();
+    return completionPromise;
   }
 }
